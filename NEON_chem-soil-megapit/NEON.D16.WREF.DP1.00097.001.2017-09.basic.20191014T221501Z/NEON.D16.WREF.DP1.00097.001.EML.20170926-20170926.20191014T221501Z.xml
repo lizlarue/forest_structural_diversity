@@ -1,0 +1,2300 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:eml packageId="" system="https://neonscience.org" scope="system" xmlns:ns6="eml://ecoinformatics.org/party-2.1.1" xmlns:ns5="eml://ecoinformatics.org/text-2.1.1" xmlns:ns7="eml://ecoinformatics.org/physical-2.1.1" xmlns:ns2="eml://ecoinformatics.org/software-2.1.1" xmlns:ns4="eml://ecoinformatics.org/access-2.1.1" xmlns:ns3="eml://ecoinformatics.org/eml-2.1.1">
+    <access order="allowFirst" authSystem="https://neonscience.org/authentication">
+        <allow>
+            <principal>public</principal>
+            <permission>read</permission>
+        </allow>
+    </access>
+    <dataset id="NEON.D16.WREF.DP1.00097.001.20170926-20170926">
+        <shortName>NEON WREF Soil chemical properties (Megapit) 2017-09-26 to 2017-09-26</shortName>
+        <title>NEON Soil chemical properties (Megapit) at WREF, Domain 16, 2017-09-26 to 2017-09-26</title>
+        <creator id="neon_contact">
+            <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+            <address>
+                <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                <city>Boulder</city>
+                <administrativeArea>CO</administrativeArea>
+                <postalCode>80301</postalCode>
+                <country>USA</country>
+            </address>
+            <phone phonetype="voice">720-746-4844</phone>
+            <electronicMailAddress/>
+            <onlineUrl>http://www.neonscience.org</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+            <address>
+                <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                <city>Boulder</city>
+                <administrativeArea>CO</administrativeArea>
+                <postalCode>80301</postalCode>
+                <country>USA</country>
+            </address>
+            <phone phonetype="voice">720-746-4844</phone>
+            <electronicMailAddress/>
+            <onlineUrl>http://www.neonscience.org</onlineUrl>
+        </metadataProvider>
+        <pubDate>2019-10-14</pubDate>
+        <language>English</language>
+        <intellectualRights>
+	
+            <para>NEON Data Usage and Citation Policy</para>
+	
+            <para>Copyright © 2016 National Ecological Observatory Network</para>
+	
+            <para>Permission is hereby granted, free of charge, to any person or organization obtaining a
+		copy of the NEON Observatory data products, associated software and accompanying
+		documentation covered by this license (the "NEON Data Products") to use, reproduce, display,
+		distribute, publish, execute, and transmit the NEON Data Products, and to prepare derivative
+		works of the NEON Data Products, and to permit third-parties to whom the NEON Data Products
+		are furnished to do so, all subject to the following:</para>
+	
+            <para>The copyright notices in the NEON Data Products and this entire statement, including the
+		above copyright statement, license grant, this restriction and the following disclaimer,
+		must be included in all copies of the NEON Data Products, in whole or in part, and all
+		derivative works of the Data Products.</para>
+	
+            <para>The NEON data products are provided "as is", without warranty of any kind, express or
+		implied, including but not limited to the warranties of merchantability, fitness for a
+		particular purpose, title and non-infringement. In no event shall the copyright holders or
+		anyone distributing the neon data products be liable for any damages or other liability,
+		whether in contract, tort or otherwise, arising from, out of or in connection with the NEON
+		data products.</para>
+</intellectualRights>
+        <distribution>
+            <online>
+                <url function="information">http://data.neonscience.org/</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage id="WREF">
+                <geographicDescription>WREF, D16</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-121.951910</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-121.951910</eastBoundingCoordinate>
+                    <northBoundingCoordinate>45.820490</northBoundingCoordinate>
+                    <southBoundingCoordinate>45.820490</southBoundingCoordinate>
+                    <boundingAltitudes>
+                        <altitudeMinimum>351.259999999999990905052982270717620849609375</altitudeMinimum>
+                        <altitudeMaximum>351.259999999999990905052982270717620849609375</altitudeMaximum>
+                        <altitudeUnits>meter</altitudeUnits>
+                    </boundingAltitudes>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>2017-09-26</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>2017-09-26</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+        </coverage>
+        <purpose>Total content of a range of chemical elements, pH, and electrical conductivity in the &lt;= 2 mm soil fraction for each soil horizon. Data were derived from a sampling location expected to be representative of the area where the Instrumented Soil Plots per site are located and were collected once during site construction. Also see distributed soil data products.</purpose>
+        <maintenance>
+            <description>
+                
+                <para>These data are available via the NEON Data Portal
+                    (http://data.neonscience.org).</para>
+            </description>
+            <maintenanceUpdateFrequency>asNeeded</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+            <address>
+                <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                <city>Boulder</city>
+                <administrativeArea>CO</administrativeArea>
+                <postalCode>80301</postalCode>
+                <country>USA</country>
+            </address>
+            <phone phonetype="voice">720-746-4844</phone>
+            <electronicMailAddress/>
+            <onlineUrl>http://www.neonscience.org</onlineUrl>
+        </contact>
+        <publisher>
+            <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+            <address>
+                <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                <city>Boulder</city>
+                <administrativeArea>CO</administrativeArea>
+                <postalCode>80301</postalCode>
+                <country>USA</country>
+            </address>
+            <phone phonetype="voice">720-746-4844</phone>
+            <electronicMailAddress/>
+            <onlineUrl>http://www.neonscience.org</onlineUrl>
+        </publisher>
+        <project>
+            <title>National Ecological Research Network (NEON)</title>
+            <personnel>
+                <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+                <address>
+                    <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                    <city>Boulder</city>
+                    <administrativeArea>CO</administrativeArea>
+                    <postalCode>80301</postalCode>
+                    <country>USA</country>
+                </address>
+                <phone phonetype="voice">720-746-4844</phone>
+                <onlineUrl>http://www.neonscience.org</onlineUrl>
+                <role>originator</role>
+            </personnel>
+            <abstract>
+                
+                <para>The National Ecological Observatory Network is a project sponsored by the
+                    National Science Foundation.</para>
+                
+                <para>NEON's mission is to design, implement, and operate continental-scale research
+                    infrastructure to open new horizons in ecological science and education, and to
+                    enable ecological analyses and forecasts for the benefit of society.</para>
+            </abstract>
+            <funding>
+                
+                <para>NSF Awards EF-1029808, EF-1246537, EF-1138160, EF-0752017</para>
+            </funding>
+            <studyAreaDescription>
+                <citation id="neon_2011_sciencedesign">
+                    <title>"2011 Science Strategy: Enabling Continental-Scale Ecological
+                        Forecasting"</title>
+                    <creator>
+                        <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+                        <address>
+                            <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                            <city>Boulder</city>
+                            <administrativeArea>CO</administrativeArea>
+                            <postalCode>80301</postalCode>
+                            <country>USA</country>
+                        </address>
+                        <phone phonetype="voice">720-746-4844</phone>
+                        <electronicMailAddress/>
+                        <onlineUrl>http://www.neonscience.org</onlineUrl>
+                    </creator>
+                    <pubDate>2011</pubDate>
+                    <language>english</language>
+                    <intellectualRights>Copyright 2011 NEON, Inc. ALL RIGHTS
+                        RESERVED</intellectualRights>
+                    <distribution>
+                        <online>
+                            <url>http://www.neonscience.org/sites/default/files/basic-page-files/NEON_Strategy_2011u2_0.pdf</url>
+                        </online>
+                    </distribution>
+                    <report>
+                        <publisher>
+                            <organizationName>National Ecological Observatory Network (NEON)</organizationName>
+                            <address>
+                                <deliveryPoint>1685 38th Street, Suite 100</deliveryPoint>
+                                <city>Boulder</city>
+                                <administrativeArea>CO</administrativeArea>
+                                <postalCode>80301</postalCode>
+                                <country>USA</country>
+                            </address>
+                            <phone phonetype="voice">720-746-4844</phone>
+                            <electronicMailAddress/>
+                            <onlineUrl>http://www.neonscience.org</onlineUrl>
+                        </publisher>
+                        <totalPages>56</totalPages>
+                    </report>
+                </citation>
+            </studyAreaDescription>
+            <designDescription>
+                <citation>
+                    <references>neon_2011_sciencedesign</references>
+                </citation>
+            </designDescription>
+        </project>
+        <dataTable>
+            <entityName>NEON.D16.WREF.DP1.00097.001.mgc_perhorizon.2017-09.basic.20191014T221501Z</entityName>
+            <attributeList>
+                <attribute>
+                    <attributeName>domainID</attributeName>
+                    <attributeDefinition>Unique identifier of the NEON domain</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique identifier of the NEON domain</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>siteID</attributeName>
+                    <attributeDefinition>NEON site code</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NEON site code</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitNamedLocation</attributeName>
+                    <attributeDefinition>Named location identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Named location identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitID</attributeName>
+                    <attributeDefinition>An identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonID</attributeName>
+                    <attributeDefinition>An identifier for the soil horizon</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil horizon</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonName</attributeName>
+                    <attributeDefinition>Soil horizon name</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil horizon name</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>setDate</attributeName>
+                    <attributeDefinition>Date that trap was set</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>collectDate</attributeName>
+                    <attributeDefinition>Date of the collection event</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonTopDepth</attributeName>
+                    <attributeDefinition>Depth below the soil surface of the top of a soil horizon</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonBottomDepth</attributeName>
+                    <attributeDefinition>Depth below the soil surface of the bottom of a soil horizon</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>nrcsDescriptionID</attributeName>
+                    <attributeDefinition>NRCS identifier assigned to the soil profile description</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NRCS identifier assigned to the soil profile description</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>remarks</attributeName>
+                    <attributeDefinition>Technician notes; free text comments accompanying the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Technician notes; free text comments accompanying the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>uid</attributeName>
+                    <attributeDefinition>Unique ID within NEON database; an identifier for the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique ID within NEON database; an identifier for the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+            </attributeList>
+            <caseSensitive>yes</caseSensitive>
+            <numberOfRecords>9</numberOfRecords>
+        </dataTable>
+        <dataTable>
+            <entityName>NEON.D16.WREF.DP1.00097.001.mgc_perarchivesample.2017-09.basic.20191014T221501Z</entityName>
+            <attributeList>
+                <attribute>
+                    <attributeName>archiveBottomDepth</attributeName>
+                    <attributeDefinition>Bottom depth of the archive sample</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>remarks</attributeName>
+                    <attributeDefinition>Technician notes; free text comments accompanying the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Technician notes; free text comments accompanying the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>uid</attributeName>
+                    <attributeDefinition>Unique ID within NEON database; an identifier for the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique ID within NEON database; an identifier for the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>domainID</attributeName>
+                    <attributeDefinition>Unique identifier of the NEON domain</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique identifier of the NEON domain</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>siteID</attributeName>
+                    <attributeDefinition>NEON site code</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NEON site code</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitNamedLocation</attributeName>
+                    <attributeDefinition>Named location identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Named location identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitID</attributeName>
+                    <attributeDefinition>An identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonID</attributeName>
+                    <attributeDefinition>An identifier for the soil horizon</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil horizon</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonName</attributeName>
+                    <attributeDefinition>Soil horizon name</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil horizon name</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>setDate</attributeName>
+                    <attributeDefinition>Date that trap was set</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>collectDate</attributeName>
+                    <attributeDefinition>Date of the collection event</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>archiveID</attributeName>
+                    <attributeDefinition>Identifier for the archive sample</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Identifier for the archive sample</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>archiveLaboratoryName</attributeName>
+                    <attributeDefinition>Name of the laboratory or facility that is processing the archive sample</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Name of the laboratory or facility that is processing the archive sample</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>archiveTopDepth</attributeName>
+                    <attributeDefinition>Top depth of the archive sample</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+            </attributeList>
+            <caseSensitive>yes</caseSensitive>
+            <numberOfRecords>13</numberOfRecords>
+        </dataTable>
+        <dataTable>
+            <entityName>NEON.D16.WREF.DP1.00097.001.mgc_permegapit.2017-09.basic.20191014T221501Z</entityName>
+            <attributeList>
+                <attribute>
+                    <attributeName>pitID</attributeName>
+                    <attributeDefinition>An identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>decimalLatitude</attributeName>
+                    <attributeDefinition>The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>decimalDegree</customUnit>
+                            </unit>
+                            <precision>1.0E-6</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>decimalLongitude</attributeName>
+                    <attributeDefinition>The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>decimalDegree</customUnit>
+                            </unit>
+                            <precision>1.0E-6</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>geodeticDatum</attributeName>
+                    <attributeDefinition>Model used to measure horizontal position on the earth</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Model used to measure horizontal position on the earth</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>coordinateUncertainty</attributeName>
+                    <attributeDefinition>The horizontal distance (in meters) from the given decimalLatitude and decimalLongitude describing the smallest circle containing the whole of the Location. Zero is not a valid value for this term</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>meter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>elevation</attributeName>
+                    <attributeDefinition>Elevation (in meters) above sea level</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>meter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>elevationUncertainty</attributeName>
+                    <attributeDefinition>Uncertainty in elevation values (in meters)</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>meter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>setDate</attributeName>
+                    <attributeDefinition>Date that trap was set</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>collectDate</attributeName>
+                    <attributeDefinition>Date of the collection event</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilSeries</attributeName>
+                    <attributeDefinition>Soil taxonomy at the series level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the series level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilFamily</attributeName>
+                    <attributeDefinition>Soil taxonomy at the family level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the family level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilSubgroup</attributeName>
+                    <attributeDefinition>Soil taxonomy at the subgroup level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the subgroup level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilGreatGroup</attributeName>
+                    <attributeDefinition>Soil taxonomy at the great group level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the great group level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilSuborder</attributeName>
+                    <attributeDefinition>Soil taxonomy at the suborder level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the suborder level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilOrder</attributeName>
+                    <attributeDefinition>Soil taxonomy at the order level</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil taxonomy at the order level</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>samplingProtocolVersion</attributeName>
+                    <attributeDefinition>The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>recordedByA</attributeName>
+                    <attributeDefinition>An identifier for one of the people who recorded the data</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who recorded the data</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>recordedByB</attributeName>
+                    <attributeDefinition>An identifier for one of the people who recorded the data</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who recorded the data</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>recordedByC</attributeName>
+                    <attributeDefinition>An identifier for one of the people who recorded the data</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who recorded the data</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>recordedByD</attributeName>
+                    <attributeDefinition>An identifier for one of the people who recorded the data</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who recorded the data</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>recordedByE</attributeName>
+                    <attributeDefinition>An identifier for one of the people who recorded the data</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who recorded the data</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberA</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberB</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberC</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberD</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberE</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberF</attributeName>
+                    <attributeDefinition>An identifier for one of the people who described the soil profile</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for one of the people who described the soil profile</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>soilProfileDescriberInst</attributeName>
+                    <attributeDefinition>Institution of the person/people that performed the soil profile description</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Institution of the person/people that performed the soil profile description</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitDepth</attributeName>
+                    <attributeDefinition>Depth of the bottom of the soil pit below the soil surface</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>nrcsDescriptionID</attributeName>
+                    <attributeDefinition>NRCS identifier assigned to the soil profile description</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NRCS identifier assigned to the soil profile description</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>uid</attributeName>
+                    <attributeDefinition>Unique ID within NEON database; an identifier for the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique ID within NEON database; an identifier for the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>domainID</attributeName>
+                    <attributeDefinition>Unique identifier of the NEON domain</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique identifier of the NEON domain</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>siteID</attributeName>
+                    <attributeDefinition>NEON site code</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NEON site code</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitNamedLocation</attributeName>
+                    <attributeDefinition>Named location identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Named location identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+            </attributeList>
+            <caseSensitive>yes</caseSensitive>
+            <numberOfRecords>1</numberOfRecords>
+        </dataTable>
+        <dataTable>
+            <entityName>NEON.D16.WREF.DP1.00097.001.mgc_perbiogeosample.2017-09.basic.20191014T221501Z</entityName>
+            <attributeList>
+                <attribute>
+                    <attributeName>uid</attributeName>
+                    <attributeDefinition>Unique ID within NEON database; an identifier for the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique ID within NEON database; an identifier for the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>domainID</attributeName>
+                    <attributeDefinition>Unique identifier of the NEON domain</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Unique identifier of the NEON domain</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>siteID</attributeName>
+                    <attributeDefinition>NEON site code</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>NEON site code</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitNamedLocation</attributeName>
+                    <attributeDefinition>Named location identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Named location identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pitID</attributeName>
+                    <attributeDefinition>An identifier for the soil pit</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil pit</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonID</attributeName>
+                    <attributeDefinition>An identifier for the soil horizon</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>An identifier for the soil horizon</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoID</attributeName>
+                    <attributeDefinition>Identifier for the biogeochemistry sample</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Identifier for the biogeochemistry sample</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>horizonName</attributeName>
+                    <attributeDefinition>Soil horizon name</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Soil horizon name</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoHorizonProportion</attributeName>
+                    <attributeDefinition>Proportion of horizon represented by biogeochemistry sample on a volume basis</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>proportion</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoSampleType</attributeName>
+                    <attributeDefinition>Type of biogeochemistry sample</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Type of biogeochemistry sample</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>setDate</attributeName>
+                    <attributeDefinition>Date that trap was set</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>collectDate</attributeName>
+                    <attributeDefinition>Date of the collection event</attributeDefinition>
+                    <measurementScale>
+                        <dateTime>
+                            <formatString>yyyy-MM-dd(floor)</formatString>
+                        </dateTime>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>carbonTot</attributeName>
+                    <attributeDefinition>Total carbon concentration of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>nitrogenTot</attributeName>
+                    <attributeDefinition>Total nitrogen concentration of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.01</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>sulfurTot</attributeName>
+                    <attributeDefinition>Total sulfur concentration of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.01</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>estimatedOC</attributeName>
+                    <attributeDefinition>Estimated organic carbon concentration of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>airDryOvenDry</attributeName>
+                    <attributeDefinition>Airdry/ovendry ratio of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>proportion</customUnit>
+                            </unit>
+                            <precision>0.001</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>alMjelm</attributeName>
+                    <attributeDefinition>Total dissolution aluminum from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>caMjelm</attributeName>
+                    <attributeDefinition>Total dissolution calcium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>feMjelm</attributeName>
+                    <attributeDefinition>Total dissolution iron from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>kMjelm</attributeName>
+                    <attributeDefinition>Total dissolution potassium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>mgMjelm</attributeName>
+                    <attributeDefinition>Total dissolution magnesium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>mnMjelm</attributeName>
+                    <attributeDefinition>Total dissolution manganese from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>naMjelm</attributeName>
+                    <attributeDefinition>Total dissolution sodium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pMjelm</attributeName>
+                    <attributeDefinition>Total dissolution phosphorous from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>siMjelm</attributeName>
+                    <attributeDefinition>Total dissolution silicon from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>srMjelm</attributeName>
+                    <attributeDefinition>Total dissolution strontium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>tiMjelm</attributeName>
+                    <attributeDefinition>Total dissolution titanium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>zrMjelm</attributeName>
+                    <attributeDefinition>Total dissolution zirconium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>phCacl2</attributeName>
+                    <attributeDefinition>pH of the &lt;2 mm fraction in CaCl2</attributeDefinition>
+                    <measurementScale>
+                        <interval>
+                            <unit>
+                                <customUnit>pH</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </interval>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>phH2o</attributeName>
+                    <attributeDefinition>pH of the &lt;2 mm fraction in water</attributeDefinition>
+                    <measurementScale>
+                        <interval>
+                            <unit>
+                                <customUnit>pH</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </interval>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>ec12pre</attributeName>
+                    <attributeDefinition>1:2 Electrical conductivity of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>decisiemensPerMeter</customUnit>
+                            </unit>
+                            <precision>0.01</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>gypsumConc</attributeName>
+                    <attributeDefinition>Gypsum concentration of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>caco3Conc</attributeName>
+                    <attributeDefinition>Carbonate concentration of the &lt;2 mm fraction expressed as calcium carbonate</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>gramsPerKilogram</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>caNh4d</attributeName>
+                    <attributeDefinition>Ammonium acetate extractable Calcium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>kNh4d</attributeName>
+                    <attributeDefinition>Ammonium acetate extractable potassium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>mgNh4d</attributeName>
+                    <attributeDefinition>Ammonium acetate extractable magnesium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>naNh4d</attributeName>
+                    <attributeDefinition>Ammonium acetate extractable sodium from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>cecdNh4</attributeName>
+                    <attributeDefinition>Ammonium acetate cation exchange capacity (CEC) of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>alSatCecd33</attributeName>
+                    <attributeDefinition>Aluminum saturation of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>percent</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>baseSumCecd10</attributeName>
+                    <attributeDefinition>Sum of Ammonium acetate extractable bases from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>bsesatCecd10</attributeName>
+                    <attributeDefinition>Base saturation of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>percent</customUnit>
+                            </unit>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>ececCecd33</attributeName>
+                    <attributeDefinition>Effective cation exchange capacity (CEC) of the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>alKcl</attributeName>
+                    <attributeDefinition>KCl extractable aluminum from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimolesPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>feKcl</attributeName>
+                    <attributeDefinition>KCl extractable iron from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>mnKcl</attributeName>
+                    <attributeDefinition>KCl extractable manganese from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>milligramsPerKilogram</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>bSatx</attributeName>
+                    <attributeDefinition>Boron in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>brSatx</attributeName>
+                    <attributeDefinition>Bromine in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>caSatx</attributeName>
+                    <attributeDefinition>Calcium in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>clSatx</attributeName>
+                    <attributeDefinition>Chlorine in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>co3Satx</attributeName>
+                    <attributeDefinition>Carbonate in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>ecSatp</attributeName>
+                    <attributeDefinition>Electrical conductivity of the saturated paste from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>decisiemensPerMeter</customUnit>
+                            </unit>
+                            <precision>0.01</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>flSatx</attributeName>
+                    <attributeDefinition>Florine in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>waterSatx</attributeName>
+                    <attributeDefinition>Water content on a mass basis of the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>percent</customUnit>
+                            </unit>
+                            <precision>0.01</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>hco3Sx</attributeName>
+                    <attributeDefinition>Bicarbonate in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>kSatx</attributeName>
+                    <attributeDefinition>Potassium in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>mgSatx</attributeName>
+                    <attributeDefinition>Magnesium in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>naSatx</attributeName>
+                    <attributeDefinition>Sodium in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>no2Satx</attributeName>
+                    <attributeDefinition>Nitrite in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>no3Satx</attributeName>
+                    <attributeDefinition>Nitrate in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>pSatx</attributeName>
+                    <attributeDefinition>Phosphate in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>phSp</attributeName>
+                    <attributeDefinition>pH of the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <interval>
+                            <unit>
+                                <customUnit>pH</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </interval>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>resist</attributeName>
+                    <attributeDefinition>Resistivity of the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>siemensPerCentimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>so4Satx</attributeName>
+                    <attributeDefinition>Sulfate in the saturation extract from the &lt;2 mm fraction</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>millimolesPerLiter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>laboratoryName</attributeName>
+                    <attributeDefinition>Name of the laboratory or facility that is processing the sample</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Name of the laboratory or facility that is processing the sample</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>labProjID</attributeName>
+                    <attributeDefinition>Identifier for soil physical properties analyses</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Identifier for soil physical properties analyses</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoTopDepth</attributeName>
+                    <attributeDefinition>Top depth of the biogeochemistry sample</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoBottomDepth</attributeName>
+                    <attributeDefinition>Bottom depth of the biogeochemistry sample</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>biogeoCenterDepth</attributeName>
+                    <attributeDefinition>Depth of the center of the biogeochemistry sample</attributeDefinition>
+                    <measurementScale>
+                        <ratio>
+                            <unit>
+                                <customUnit>centimeter</customUnit>
+                            </unit>
+                            <precision>0.1</precision>
+                            <numericDomain>
+                                <numberType>real</numberType>
+                            </numericDomain>
+                        </ratio>
+                    </measurementScale>
+                </attribute>
+                <attribute>
+                    <attributeName>remarks</attributeName>
+                    <attributeDefinition>Technician notes; free text comments accompanying the record</attributeDefinition>
+                    <measurementScale>
+                        <nominal>
+                            <nonNumericDomain>
+                                <textDomain>
+                                    <definition>Technician notes; free text comments accompanying the record</definition>
+                                </textDomain>
+                            </nonNumericDomain>
+                        </nominal>
+                    </measurementScale>
+                </attribute>
+            </attributeList>
+            <caseSensitive>yes</caseSensitive>
+            <numberOfRecords>13</numberOfRecords>
+        </dataTable>
+    </dataset>
+    <additionalMetadata><metadata>
+<!--null-->
+<unitList xmlns="http://www.xml-cml.org/schema/stmml-1.1">
+    <unitType id="amount" name="amount">
+        <dimension name="amount"/>
+    </unitType>
+    <unitType id="angle" name="angle">
+        <dimension name="angle"/>
+    </unitType>
+    <unitType id="current" name="current">
+        <dimension name="current"/>
+    </unitType>
+    <unitType id="dimensionless" name="dimensionless">
+        <dimension name="dimensionless"/>
+    </unitType>
+    <unitType id="length" name="length">
+        <dimension name="length"/>
+    </unitType>
+    <unitType id="luminosity" name="luminosity">
+        <dimension name="luminosity"/>
+    </unitType>
+    <unitType id="mass" name="mass">
+        <dimension name="mass"/>
+    </unitType>
+    <unitType id="temperature" name="temperature">
+        <dimension name="temperature"/>
+    </unitType>
+    <unitType id="time" name="time">
+        <dimension name="time"/>
+    </unitType>
+    <unitType id="acceleration" name="acceleration">
+        <dimension name="length" power="1"/>
+        <dimension name="time" power="-2"/>
+    </unitType>
+    <unitType id="amountOfSubstanceConcentration" name="amountOfSubstanceConcentration">
+        <dimension name="amount" power="1"/>
+        <dimension name="length" power="-3"/>
+    </unitType>
+    <unitType id="amountOfSubstanceWeight" name="amountOfSubstanceWeight">
+        <dimension name="amount" power="1"/>
+        <dimension name="mass" power="-1"/>
+    </unitType>
+    <unitType id="amountOfSubstanceWeightFlux" name="amountOfSubstanceWeightFlux">
+        <dimension name="amount" power="1"/>
+        <dimension name="mass" power="-1"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="amountPerAmount" name="amountPerAmount">
+        <dimension name="amount" power="1"/>
+        <dimension name="amount" power="-1"/>
+    </unitType>
+    <unitType id="area" name="area">
+        <dimension name="length" power="2"/>
+    </unitType>
+    <unitType id="arealAmountDensityRate" name="arealAmountDensityRate">
+        <dimension name="amount" power="1"/>
+        <dimension name="length" power="-2"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="arealDensity" name="arealDensity">
+        <dimension name="dimensionless" power="1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="arealMassDensity" name="arealMassDensity">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="arealMassDensityRate" name="arealMassDensityRate">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="-2"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="capacitance" name="capacitance">
+        <dimension name="mass" power="-1"/>
+        <dimension name="length" power="-2"/>
+        <dimension name="time" power="4"/>
+        <dimension name="current" power="2"/>
+    </unitType>
+    <unitType id="catalyticActivity" name="catalyticActivity">
+        <dimension name="time" power="-1"/>
+        <dimension name="amount" power="1"/>
+    </unitType>
+    <unitType id="charge" name="charge">
+        <dimension name="current" power="1"/>
+        <dimension name="time" power="1"/>
+    </unitType>
+    <unitType id="conductance" name="conductance">
+        <dimension name="mass" power="-1"/>
+        <dimension name="length" power="-2"/>
+        <dimension name="time" power="3"/>
+        <dimension name="current" power="2"/>
+    </unitType>
+    <unitType id="conductivity" name="conductivity">
+        <dimension name="current" power="2"/>
+        <dimension name="mass" power="-1"/>
+        <dimension name="length" power="-3"/>
+        <dimension name="time" power="-3"/>
+    </unitType>
+    <unitType id="currentDensity" name="currentDensity">
+        <dimension name="current" power="1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="doseEquivalent" name="doseEquivalent">
+        <dimension name="time" power="-2"/>
+        <dimension name="length" power="2"/>
+    </unitType>
+    <unitType id="energy" name="energy">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-2"/>
+    </unitType>
+    <unitType id="force" name="force">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="1"/>
+        <dimension name="time" power="-2"/>
+    </unitType>
+    <unitType id="frequency" name="frequency">
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="illuminance" name="illuminance">
+        <dimension name="luminosity" power="1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="inductance" name="inductance">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-2"/>
+        <dimension name="current" power="-2"/>
+    </unitType>
+    <unitType id="intensity" name="intensity">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-3"/>
+    </unitType>
+    <unitType id="lengthReciprocal" name="lengthReciprocal">
+        <dimension name="length" power="-1"/>
+    </unitType>
+    <unitType id="luminance" name="luminance">
+        <dimension name="luminosity" power="1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="luminousFlux" name="luminousFlux">
+        <dimension name="luminosity" power="1"/>
+        <dimension name="length" power="2"/>
+    </unitType>
+    <unitType id="magneticFieldStrength" name="magneticFieldStrength">
+        <dimension name="current" power="1"/>
+        <dimension name="length" power="-1"/>
+    </unitType>
+    <unitType id="magneticFlux" name="magneticFlux">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-2"/>
+        <dimension name="current" power="-1"/>
+    </unitType>
+    <unitType id="magneticFluxDensity" name="magneticFluxDensity">
+        <dimension name="mass" power="1"/>
+        <dimension name="time" power="-2"/>
+        <dimension name="current" power="-1"/>
+    </unitType>
+    <unitType id="massDensity" name="massDensity">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="-3"/>
+    </unitType>
+    <unitType id="massFlux" name="massFlux">
+        <dimension name="mass" power="1"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="massPerMass" name="massPerMass">
+        <dimension name="mass" power="1"/>
+        <dimension name="mass" power="-1"/>
+    </unitType>
+    <unitType id="massSpecificCount" name="massSpecificCount">
+        <dimension name="dimensionless" power="1"/>
+        <dimension name="mass" power="-1"/>
+    </unitType>
+    <unitType id="massSpecificLength" name="massSpecificLength">
+        <dimension name="length" power="1"/>
+        <dimension name="mass" power="-1"/>
+    </unitType>
+    <unitType id="potentialDifference" name="potentialDifference">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-3"/>
+        <dimension name="current" power="-1"/>
+    </unitType>
+    <unitType id="power" name="power">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-3"/>
+    </unitType>
+    <unitType id="pressure" name="pressure">
+        <dimension name="mass" power="1"/>
+        <dimension name="time" power="-2"/>
+        <dimension name="length" power="1"/>
+    </unitType>
+    <unitType id="radionucleotideActivity" name="radionucleotideActivity">
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="resistance" name="resistance">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-3"/>
+        <dimension name="current" power="-2"/>
+    </unitType>
+    <unitType id="resistivity" name="resistivity">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="3"/>
+        <dimension name="time" power="-3"/>
+        <dimension name="current" power="-2"/>
+    </unitType>
+    <unitType id="specificArea" name="specificArea">
+        <dimension name="mass" power="-1"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="specificEnergy" name="specificEnergy">
+        <dimension name="time" power="-2"/>
+        <dimension name="length" power="2"/>
+    </unitType>
+    <unitType id="specificVolume" name="specificVolume">
+        <dimension name="mass" power="-1"/>
+        <dimension name="length" power="3"/>
+    </unitType>
+    <unitType id="speed" name="speed">
+        <dimension name="length" power="1"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="transmissivity" name="transmissivity">
+        <dimension name="length" power="2"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="variance" name="variance">
+        <dimension name="amount" power="2"/>
+    </unitType>
+    <unitType id="volume" name="volume">
+        <dimension name="length" power="3"/>
+    </unitType>
+    <unitType id="volumePerVolume" name="volumePerVolume">
+        <dimension name="length" power="3"/>
+        <dimension name="length" power="-3"/>
+    </unitType>
+    <unitType id="volumetricArea" name="volumetricArea">
+        <dimension name="length" power="3"/>
+        <dimension name="length" power="-2"/>
+    </unitType>
+    <unitType id="volumetricDensity" name="volumetricDensity">
+        <dimension name="dimensionless" power="1"/>
+        <dimension name="length" power="-3"/>
+    </unitType>
+    <unitType id="volumetricMass" name="volumetricMass">
+        <dimension name="length" power="3"/>
+        <dimension name="mass" power="1"/>
+    </unitType>
+    <unitType id="volumetricMassDensityRate" name="volumetricMassDensityRate">
+        <dimension name="mass" power="1"/>
+        <dimension name="length" power="-3"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unitType id="volumetricRate" name="volumetricRate">
+        <dimension name="length" power="3"/>
+        <dimension name="time" power="-1"/>
+    </unitType>
+    <unit id="proportion" abbreviation="proportion" name="proportion" unitType="amountPerAmount"/>
+    <unit id="meter" abbreviation="m" name="meter" parentSI="meter" unitType="length" multiplierToSI="1"/>
+    <unit id="gramsPerKilogram" abbreviation="g/kg" name="gramsPerKilogram" parentSI="kilogramsPerKilogram" unitType="massPerMass" multiplierToSI="0.001"/>
+    <unit id="pH" abbreviation="pH" name="pH" unitType="amountOfSubstanceConcentration"/>
+    <unit id="decimalDegree" abbreviation="DD" name="decimalDegree" parentSI="radian" unitType="angle" multiplierToSI="0.0174533"/>
+    <unit id="millimolesPerLiter" abbreviation="mmol/L" name="millimolesPerLiter" parentSI="molesPerCubicMeter" unitType="amountOfSubstanceConcentration" multiplierToSI="1"/>
+    <unit id="centimolesPerKilogram" abbreviation="cmol/kg" name="centimolesPerKilogram" parentSI="molesPerKilogram" unitType="amountOfSubstanceWeight" multiplierToSI="0.01"/>
+    <unit id="siemensPerCentimeter" abbreviation="S/cm" name="siemensPerCentimeter" parentSI="siemensPerMeter" unitType="conductivity" multiplierToSI="0.01"/>
+    <unit id="percent" abbreviation="%" name="percent" unitType="amountPerAmount"/>
+    <unit id="centimeter" abbreviation="cm" name="centimeter" parentSI="meter" unitType="length" multiplierToSI="0.01"/>
+    <unit id="milligramsPerKilogram" abbreviation="mg/kg" name="milligramsPerKilogram" parentSI="kilogramsPerKilogram" unitType="massPerMass" multiplierToSI="0.000001"/>
+    <unit id="decisiemensPerMeter" abbreviation="dS/m" name="decisiemensPerMeter" parentSI="siemensPerMeter" unitType="conductance" multiplierToSI="0.1"/>
+</unitList></metadata></additionalMetadata>
+</ns3:eml>

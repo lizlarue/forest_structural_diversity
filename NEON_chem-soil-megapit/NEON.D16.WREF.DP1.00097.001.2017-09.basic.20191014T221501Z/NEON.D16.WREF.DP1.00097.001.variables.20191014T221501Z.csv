@@ -1,0 +1,132 @@
+table,fieldName,description,dataType,units,downloadPkg
+mgc_permegapit,uid,"Unique ID within NEON database; an identifier for the record",string,NA,basic
+mgc_permegapit,domainID,"Unique identifier of the NEON domain",string,NA,basic
+mgc_permegapit,siteID,"NEON site code",string,NA,basic
+mgc_permegapit,pitNamedLocation,"Named location identifier for the soil pit",string,NA,basic
+mgc_permegapit,pitID,"An identifier for the soil pit",string,NA,basic
+mgc_permegapit,decimalLatitude,"The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area",real,decimalDegree,basic
+mgc_permegapit,decimalLongitude,"The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area",real,decimalDegree,basic
+mgc_permegapit,geodeticDatum,"Model used to measure horizontal position on the earth",string,NA,basic
+mgc_permegapit,coordinateUncertainty,"The horizontal distance (in meters) from the given decimalLatitude and decimalLongitude describing the smallest circle containing the whole of the Location. Zero is not a valid value for this term",real,meter,basic
+mgc_permegapit,elevation,"Elevation (in meters) above sea level",real,meter,basic
+mgc_permegapit,elevationUncertainty,"Uncertainty in elevation values (in meters)",real,meter,basic
+mgc_permegapit,setDate,"Date that trap was set",dateTime,NA,basic
+mgc_permegapit,collectDate,"Date of the collection event",dateTime,NA,basic
+mgc_permegapit,soilSeries,"Soil taxonomy at the series level",string,NA,basic
+mgc_permegapit,soilFamily,"Soil taxonomy at the family level",string,NA,basic
+mgc_permegapit,soilSubgroup,"Soil taxonomy at the subgroup level",string,NA,basic
+mgc_permegapit,soilGreatGroup,"Soil taxonomy at the great group level",string,NA,basic
+mgc_permegapit,soilSuborder,"Soil taxonomy at the suborder level",string,NA,basic
+mgc_permegapit,soilOrder,"Soil taxonomy at the order level",string,NA,basic
+mgc_permegapit,samplingProtocolVersion,"The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX",string,NA,basic
+mgc_permegapit,recordedByA,"An identifier for one of the people who recorded the data",string,NA,basic
+mgc_permegapit,recordedByB,"An identifier for one of the people who recorded the data",string,NA,basic
+mgc_permegapit,recordedByC,"An identifier for one of the people who recorded the data",string,NA,basic
+mgc_permegapit,recordedByD,"An identifier for one of the people who recorded the data",string,NA,basic
+mgc_permegapit,recordedByE,"An identifier for one of the people who recorded the data",string,NA,basic
+mgc_permegapit,soilProfileDescriberA,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberB,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberC,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberD,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberE,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberF,"An identifier for one of the people who described the soil profile",string,NA,basic
+mgc_permegapit,soilProfileDescriberInst,"Institution of the person/people that performed the soil profile description",string,NA,basic
+mgc_permegapit,pitDepth,"Depth of the bottom of the soil pit below the soil surface",real,centimeter,basic
+mgc_permegapit,nrcsDescriptionID,"NRCS identifier assigned to the soil profile description",string,NA,basic
+mgc_perhorizon,uid,"Unique ID within NEON database; an identifier for the record",string,NA,basic
+mgc_perhorizon,domainID,"Unique identifier of the NEON domain",string,NA,basic
+mgc_perhorizon,siteID,"NEON site code",string,NA,basic
+mgc_perhorizon,pitNamedLocation,"Named location identifier for the soil pit",string,NA,basic
+mgc_perhorizon,pitID,"An identifier for the soil pit",string,NA,basic
+mgc_perhorizon,horizonID,"An identifier for the soil horizon",string,NA,basic
+mgc_perhorizon,horizonName,"Soil horizon name",string,NA,basic
+mgc_perhorizon,setDate,"Date that trap was set",dateTime,NA,basic
+mgc_perhorizon,collectDate,"Date of the collection event",dateTime,NA,basic
+mgc_perhorizon,horizonTopDepth,"Depth below the soil surface of the top of a soil horizon",real,centimeter,basic
+mgc_perhorizon,horizonBottomDepth,"Depth below the soil surface of the bottom of a soil horizon",real,centimeter,basic
+mgc_perhorizon,nrcsDescriptionID,"NRCS identifier assigned to the soil profile description",string,NA,basic
+mgc_perhorizon,remarks,"Technician notes; free text comments accompanying the record",string,NA,basic
+mgc_perbiogeosample,uid,"Unique ID within NEON database; an identifier for the record",string,NA,basic
+mgc_perbiogeosample,domainID,"Unique identifier of the NEON domain",string,NA,basic
+mgc_perbiogeosample,siteID,"NEON site code",string,NA,basic
+mgc_perbiogeosample,pitNamedLocation,"Named location identifier for the soil pit",string,NA,basic
+mgc_perbiogeosample,pitID,"An identifier for the soil pit",string,NA,basic
+mgc_perbiogeosample,horizonID,"An identifier for the soil horizon",string,NA,basic
+mgc_perbiogeosample,biogeoID,"Identifier for the biogeochemistry sample",string,NA,basic
+mgc_perbiogeosample,horizonName,"Soil horizon name",string,NA,basic
+mgc_perbiogeosample,biogeoHorizonProportion,"Proportion of horizon represented by biogeochemistry sample on a volume basis",real,proportion,basic
+mgc_perbiogeosample,biogeoSampleType,"Type of biogeochemistry sample",string,NA,basic
+mgc_perbiogeosample,setDate,"Date that trap was set",dateTime,NA,basic
+mgc_perbiogeosample,collectDate,"Date of the collection event",dateTime,NA,basic
+mgc_perbiogeosample,carbonTot,"Total carbon concentration of the <2 mm fraction",real,gramsPerKilogram,basic
+mgc_perbiogeosample,nitrogenTot,"Total nitrogen concentration of the <2 mm fraction",real,gramsPerKilogram,basic
+mgc_perbiogeosample,sulfurTot,"Total sulfur concentration of the <2 mm fraction",real,gramsPerKilogram,basic
+mgc_perbiogeosample,estimatedOC,"Estimated organic carbon concentration of the <2 mm fraction",real,gramsPerKilogram,basic
+mgc_perbiogeosample,airDryOvenDry,"Airdry/ovendry ratio of the <2 mm fraction",real,proportion,basic
+mgc_perbiogeosample,alMjelm,"Total dissolution aluminum from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,caMjelm,"Total dissolution calcium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,feMjelm,"Total dissolution iron from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,kMjelm,"Total dissolution potassium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,mgMjelm,"Total dissolution magnesium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,mnMjelm,"Total dissolution manganese from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,naMjelm,"Total dissolution sodium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,pMjelm,"Total dissolution phosphorous from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,siMjelm,"Total dissolution silicon from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,srMjelm,"Total dissolution strontium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,tiMjelm,"Total dissolution titanium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,zrMjelm,"Total dissolution zirconium from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,phCacl2,"pH of the <2 mm fraction in CaCl2",real,pH,basic
+mgc_perbiogeosample,phH2o,"pH of the <2 mm fraction in water",real,pH,basic
+mgc_perbiogeosample,ec12pre,"1:2 Electrical conductivity of the <2 mm fraction",real,decisiemensPerMeter,basic
+mgc_perbiogeosample,gypsumConc,"Gypsum concentration of the <2 mm fraction",real,gramsPerKilogram,basic
+mgc_perbiogeosample,caco3Conc,"Carbonate concentration of the <2 mm fraction expressed as calcium carbonate",real,gramsPerKilogram,basic
+mgc_perbiogeosample,caNh4d,"Ammonium acetate extractable Calcium from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,kNh4d,"Ammonium acetate extractable potassium from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,mgNh4d,"Ammonium acetate extractable magnesium from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,naNh4d,"Ammonium acetate extractable sodium from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,cecdNh4,"Ammonium acetate cation exchange capacity (CEC) of the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,alSatCecd33,"Aluminum saturation of the <2 mm fraction",real,percent,basic
+mgc_perbiogeosample,baseSumCecd10,"Sum of Ammonium acetate extractable bases from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,bsesatCecd10,"Base saturation of the <2 mm fraction",real,percent,basic
+mgc_perbiogeosample,ececCecd33,"Effective cation exchange capacity (CEC) of the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,alKcl,"KCl extractable aluminum from the <2 mm fraction",real,centimolesPerKilogram,basic
+mgc_perbiogeosample,feKcl,"KCl extractable iron from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,mnKcl,"KCl extractable manganese from the <2 mm fraction",real,milligramsPerKilogram,basic
+mgc_perbiogeosample,bSatx,"Boron in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,brSatx,"Bromine in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,caSatx,"Calcium in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,clSatx,"Chlorine in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,co3Satx,"Carbonate in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,ecSatp,"Electrical conductivity of the saturated paste from the <2 mm fraction",real,decisiemensPerMeter,basic
+mgc_perbiogeosample,flSatx,"Florine in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,waterSatx,"Water content on a mass basis of the saturation extract from the <2 mm fraction",real,percent,basic
+mgc_perbiogeosample,hco3Sx,"Bicarbonate in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,kSatx,"Potassium in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,mgSatx,"Magnesium in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,naSatx,"Sodium in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,no2Satx,"Nitrite in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,no3Satx,"Nitrate in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,pSatx,"Phosphate in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,phSp,"pH of the saturation extract from the <2 mm fraction",real,pH,basic
+mgc_perbiogeosample,resist,"Resistivity of the saturation extract from the <2 mm fraction",real,siemensPerCentimeter,basic
+mgc_perbiogeosample,so4Satx,"Sulfate in the saturation extract from the <2 mm fraction",real,millimolesPerLiter,basic
+mgc_perbiogeosample,laboratoryName,"Name of the laboratory or facility that is processing the sample",string,NA,basic
+mgc_perbiogeosample,labProjID,"Identifier for soil physical properties analyses",string,NA,basic
+mgc_perbiogeosample,biogeoTopDepth,"Top depth of the biogeochemistry sample",real,centimeter,basic
+mgc_perbiogeosample,biogeoBottomDepth,"Bottom depth of the biogeochemistry sample",real,centimeter,basic
+mgc_perbiogeosample,biogeoCenterDepth,"Depth of the center of the biogeochemistry sample",real,centimeter,basic
+mgc_perbiogeosample,remarks,"Technician notes; free text comments accompanying the record",string,NA,basic
+mgc_perarchivesample,uid,"Unique ID within NEON database; an identifier for the record",string,NA,basic
+mgc_perarchivesample,domainID,"Unique identifier of the NEON domain",string,NA,basic
+mgc_perarchivesample,siteID,"NEON site code",string,NA,basic
+mgc_perarchivesample,pitNamedLocation,"Named location identifier for the soil pit",string,NA,basic
+mgc_perarchivesample,pitID,"An identifier for the soil pit",string,NA,basic
+mgc_perarchivesample,horizonID,"An identifier for the soil horizon",string,NA,basic
+mgc_perarchivesample,horizonName,"Soil horizon name",string,NA,basic
+mgc_perarchivesample,setDate,"Date that trap was set",dateTime,NA,basic
+mgc_perarchivesample,collectDate,"Date of the collection event",dateTime,NA,basic
+mgc_perarchivesample,archiveID,"Identifier for the archive sample",string,NA,basic
+mgc_perarchivesample,archiveLaboratoryName,"Name of the laboratory or facility that is processing the archive sample",string,NA,basic
+mgc_perarchivesample,archiveTopDepth,"Top depth of the archive sample",real,centimeter,basic
+mgc_perarchivesample,archiveBottomDepth,"Bottom depth of the archive sample",real,centimeter,basic
+mgc_perarchivesample,remarks,"Technician notes; free text comments accompanying the record",string,NA,basic
