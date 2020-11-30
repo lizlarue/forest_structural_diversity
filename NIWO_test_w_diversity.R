@@ -5,7 +5,7 @@ library(lidR)
 library(gstat)
 library(neondiversity)
 
-wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data/"
+wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),

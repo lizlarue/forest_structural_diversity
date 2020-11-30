@@ -5,7 +5,7 @@ library(lidR)
 library(gstat)
 library(neondiversity)
 
-wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data/"
+wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 CUPE <- readLAS(paste0(wd,"NEON_D04_CUPE_DP1_714000_2006000_classified_point_cloud_colorized.laz"))

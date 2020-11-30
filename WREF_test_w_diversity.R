@@ -5,7 +5,7 @@ library(lidR)
 library(gstat)
 library(neondiversity)
 
-wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data/"
+wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"))
