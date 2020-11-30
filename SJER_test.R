@@ -6,7 +6,7 @@ library(gstat)
 
 #######################################
 #example data only
-wd <- "/Users/rana7082/Dropbox/forest_structure_disturbance/"
+wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data/"
 setwd(wd)
 
 TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_cloud_colorized.laz"),

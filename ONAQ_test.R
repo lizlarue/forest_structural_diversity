@@ -21,7 +21,7 @@ summary(HARV)
 
 ############### Set working directory ######
 #set the working of the downloaded data
-wd <- "/Users/rana7082/Dropbox/forest_structure_disturbance/"
+wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data"
 setwd(wd)
 
 ############ Read in LiDAR data ###########
