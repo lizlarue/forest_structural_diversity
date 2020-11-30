@@ -3,6 +3,7 @@
 
 library(lidR)
 library(gstat)
+library(neondiversity)
 
 #######################################
 #example data only

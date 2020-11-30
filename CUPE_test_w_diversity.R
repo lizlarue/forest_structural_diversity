@@ -3,6 +3,7 @@
 
 library(lidR)
 library(gstat)
+library(neondiversity)
 
 wd <- "/Users/rana7082/Documents/research/forest_structural_disturbance/data/"
 setwd(wd)
