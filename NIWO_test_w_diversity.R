@@ -13,8 +13,11 @@ NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_clo
 summary(NIWO)
 
 #Let's correct for elevation and measure structural diversity for NIWO
-x <- 454500 
-y <- 4425608
+x <- ((max(NIWO$X) - min(NIWO$X))/2)+ min(NIWO$X)
+y <- ((max(NIWO$Y) - min(NIWO$Y))/2)+ min(NIWO$Y)
+
+#x <- 454500 
+#y <- 4425608
 
 data.200m <- lasclipRectangle(NIWO, 
                               xleft = (x - 100), ybottom = (y - 100),
@@ -96,7 +99,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= TRUE)
+coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO')
 
 coverDivN <- coverN[[2]]
 

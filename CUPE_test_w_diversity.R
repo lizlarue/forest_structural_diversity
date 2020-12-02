@@ -14,8 +14,11 @@ CUPE <- readLAS(paste0(wd,"NEON_D04_CUPE_DP1_714000_2006000_classified_point_clo
 summary(CUPE)
 
 #Let's correct for elevation and measure structural diversity for CUPE
-x <- 714500
-y <- 2006500
+x <- ((max(CUPE$X) - min(CUPE$X))/2)+ min(CUPE$X)
+y <- ((max(CUPE$Y) - min(CUPE$Y))/2)+ min(CUPE$Y)
+
+#x <- 714500
+#y <- 2006500
 
 data.200m <- lasclipRectangle(CUPE, 
                               xleft = (x - 100), ybottom = (y - 100),
