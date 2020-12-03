@@ -144,11 +144,11 @@ combo6
 write.table(combo6, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
-ggplot(combo3, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo6, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo3, aes(x = max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo6, aes(x = max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo3, aes(x = rumple.aop, y = exotic_SR))+
+ggplot(combo6, aes(x = rumple.aop, y = exotic_SR))+
   geom_point()
