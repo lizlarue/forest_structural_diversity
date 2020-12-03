@@ -162,3 +162,25 @@ ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, labe
 ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+
+###these are not that useful
+ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+ggplot(combo14, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
