@@ -143,27 +143,40 @@ combo14 <- combo14 %>%
   mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
 
 library(ggplot2)
-ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
-  geom_point()+
-  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
-  geom_point()+
-  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
-
-ggplot(combo14, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
-  geom_point()+
-  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
-
-ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
-  geom_point()+
-  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
-
+#external heterogeneity
 ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
+#internal heterogeneity
+ggplot(combo14, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
+#mean canopy height
+ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+#gap fraction
+ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+#max canopy height
+ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+#ratio of outer canopy surface area to ground surface area 
+ggplot(combo14, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+
+
+###
 ###these are not that useful
 ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
