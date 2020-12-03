@@ -127,6 +127,9 @@ KONZ_table <- KONZ_table %>%
 KONZ_table <- KONZ_table %>%
   select(-easting, -northing)
 
+KONZ_table <- KONZ_table %>%
+  left_join(veg_types)
+
 KONZ_table
 
 combo2 <- rbind(combo, KONZ_table)
@@ -137,13 +140,13 @@ combo2
 #all_sites_table <- all_sites_table %>%
 #select(-easting, -northing)
 
-wd
-#carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
 
-KONZ_table <- KONZ_table %>%
-  left_join(veg_types)
+#carSpeeds <- read.csv(file = 'data/car-speeds.csv')
+#veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
+  #select(Site.ID, Dominant.NLCD.Classes)
+
+#KONZ_table <- KONZ_table %>%
+  #left_join(veg_types)
 
 #add veg class to table 
 #all_sites_table <- all_sites_table %>%

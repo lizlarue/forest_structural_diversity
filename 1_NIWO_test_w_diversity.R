@@ -8,6 +8,7 @@ library(neondiversity)
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
+#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
 NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
                 filter = "-drop_z_below 2460 -drop_z_above 2947")
 summary(NIWO)
@@ -128,7 +129,7 @@ NIWO_table <- NIWO_table %>%
 NIWO_table <- NIWO_table %>%
   select(-easting, -northing)
 
-veg_types <- read.csv(file = 'field-sites.csv') %>%
+veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
   select(Site.ID, Dominant.NLCD.Classes)
 
 NIWO_table <- NIWO_table %>%

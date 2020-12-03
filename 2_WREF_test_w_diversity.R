@@ -138,17 +138,17 @@ combo
 
 #####
 #for all sites
-all_sites_table <- all_sites_table %>%
-  select(-easting, -northing)
+#all_sites_table <- all_sites_table %>%
+  #select(-easting, -northing)
 
 
 #carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-veg_types <- read.csv(file = 'field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
+#veg_types <- read.csv(file = 'field-sites.csv') %>%
+  #select(Site.ID, Dominant.NLCD.Classes)
 
 #add veg class to table 
-all_sites_table <- all_sites_table %>%
-  left_join(veg_types)
+#all_sites_table <- all_sites_table %>%
+  #left_join(veg_types)
 
 
 
