@@ -11,19 +11,19 @@ wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 ############ Read in LiDAR data ###########
-#PUUM <- readLAS(paste0(wd,"NEON_D20_PUUM_DP1_252000_2167000_classified_point_cloud_colorized.laz"))
-PUUM <- readLAS(paste0(wd,"NEON_D20_PUUM_DP1_252000_2167000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 1853 -drop_z_above 2015")
+#WOOD <- readLAS(paste0(wd,"NEON_D09_WOOD_DP1_479000_5219000_classified_point_cloud_colorized.laz"))
+WOOD <- readLAS(paste0(wd,"NEON_D09_WOOD_DP1_479000_5219000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below 198 -drop_z_above 1558")
 
-summary(PUUM)
-#plot(PUUM)
+summary(WOOD)
+#plot(WOOD)
 
 
 #set center of plot based on extent
-x <- ((max(PUUM$X) - min(PUUM$X))/2)+ min(PUUM$X)
-y <- ((max(PUUM$Y) - min(PUUM$Y))/2)+ min(PUUM$Y)
+x <- ((max(WOOD$X) - min(WOOD$X))/2)+ min(WOOD$X)
+y <- ((max(WOOD$Y) - min(WOOD$Y))/2)+ min(WOOD$Y)
 
-data.200m <- lasclipRectangle(PUUM, 
+data.200m <- lasclipRectangle(WOOD, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
@@ -36,7 +36,7 @@ data.40m <- lasclipRectangle(data.200m,
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
 plot(data.40m)
-
+#this doesn't look right
 
 #Zip up all the code we previously used and write function to 
 #run all 13 metrics in a single function. 
@@ -80,13 +80,13 @@ structural_diversity_metrics <- function(data.40m) {
   print(out.plot)
 }
 
-PUUM_structural_diversity <- structural_diversity_metrics(data.40m)
+WOOD_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
 #####################################
 #diversity data
-devtools::insPUUM_github("admahood/neondiversity")
+devtools::insWOOD_github("admahood/neondiversity")
 
 # load packages
 library(neonUtilities)
@@ -102,7 +102,7 @@ library(devtools)
 library(neondiversity)
 
 #no cover data at this site
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'PUUM')
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'WOOD')
 
 coverDiv <- cover[[2]]
 
@@ -122,35 +122,35 @@ inv <- cover2 %>%
 exotic_SR <-length(unique(inv$scientificName))
 
 
-PUUM_table <- cbind(PUUM_structural_diversity, all_SR, exotic_SR)
+WOOD_table <- cbind(WOOD_structural_diversity, all_SR, exotic_SR)
 
-PUUM_table <- PUUM_table %>%
-  mutate(Site.ID = "PUUM")
+WOOD_table <- WOOD_table %>%
+  mutate(Site.ID = "WOOD")
 
-PUUM_table <- PUUM_table %>%
+WOOD_table <- WOOD_table %>%
   select(-easting, -northing)
 
-PUUM_table <- PUUM_table %>%
+WOOD_table <- WOOD_table %>%
   left_join(veg_types)
 
 
-combo13 <- rbind(combo12, PUUM_table)
-combo13
+combo15 <- rbind(combo14, WOOD_table)
+combo15
 
-write.table(combo13, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
-ggplot(combo13, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo13, aes(x = max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo13, aes(x = rumple.aop, y = exotic_SR))+
+ggplot(combo15, aes(x = rumple.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo13, aes(x = deepgap.fraction.aop, y = exotic_SR))+
+ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo13, aes(x = top.rugosity.aop, y = exotic_SR))+
+ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR))+
   geom_point()
