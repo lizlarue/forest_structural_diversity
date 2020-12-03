@@ -148,21 +148,25 @@ library(ggplot2)
 ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
 
 #internal heterogeneity
 ggplot(combo14, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
 
 #mean canopy height
 ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
 
 #gap fraction
 ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
 
 #max canopy height
 ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
