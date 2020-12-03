@@ -123,12 +123,16 @@ YELL_table <- cbind(YELL_structural_diversity, all_SR, exotic_SR)
 YELL_table <- YELL_table %>%
   mutate(Site.ID = "YELL")
 
-
 YELL_table <- YELL_table %>%
   select(-easting, -northing)
 
+YELL_table <- YELL_table %>%
+  left_join(veg_types)
+
 YELL_table
 
+combo3 <- rbind(combo2, YELL_table)
+combo3
 
 
 #####
@@ -136,13 +140,12 @@ YELL_table
 #all_sites_table <- all_sites_table %>%
   #select(-easting, -northing)
 
-wd
 #carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
+#veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
+  #select(Site.ID, Dominant.NLCD.Classes)
 
-YELL_table <- YELL_table %>%
-  left_join(veg_types)
+#YELL_table <- YELL_table %>%
+  #left_join(veg_types)
 
 #add veg class to table 
 #all_sites_table <- all_sites_table %>%
