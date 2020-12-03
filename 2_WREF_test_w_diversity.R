@@ -8,14 +8,17 @@ library(neondiversity)
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"))
+#WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"))
 WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"),
                 filter = "-drop_z_below 425 -drop_z_above 1082")
 summary(WREF)
 
 #Let's correct for elevation and measure structural diversity for WREF
-x <- 578500
-y <- 5072500
+x <- ((max(WREF$X) - min(WREF$X))/2)+ min(WREF$X)
+y <- ((max(WREF$Y) - min(WREF$Y))/2)+ min(WREF$Y)
+
+#x <- 578500
+#y <- 5072500
 
 data.200m <- lasclipRectangle(WREF, 
                               xleft = (x - 100), ybottom = (y - 100),
