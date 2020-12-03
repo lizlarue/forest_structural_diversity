@@ -15,7 +15,7 @@ setwd(wd)
 SJER <- readLAS(paste0(wd,"NEON_D17_SJER_DP1_255000_4110000_classified_point_cloud_colorized.laz"),
                 filter = "-drop_z_below 187 -drop_z_above 616")
 summary(SJER)
-plot(SJER)
+#plot(SJER)
 
 
 #set center of plot based on extent
@@ -38,6 +38,7 @@ data.40m <- lasclipRectangle(data.200m,
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
 plot(data.40m)
+#not sure if this looks right
 
 
 #Zip up all the code we previously used and write function to 
@@ -137,10 +138,10 @@ SJER_table <- SJER_table %>%
   left_join(veg_types)
 
 
-combo3 <- rbind(combo2, SJER_table)
-combo3
+combo6 <- rbind(combo5, SJER_table)
+combo6
 
-write.table(combo3, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+write.table(combo6, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
 ggplot(combo3, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
