@@ -5,22 +5,27 @@ library(lidR)
 library(gstat)
 library(neondiversity)
 
+############### Set working directory ######
+#set the working of the downloaded data
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-CUPE <- readLAS(paste0(wd,"NEON_D04_CUPE_DP1_714000_2006000_classified_point_cloud_colorized.laz"))
-CUPE <- readLAS(paste0(wd,"NEON_D04_CUPE_DP1_714000_2006000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 0 -drop_z_above 850")
-summary(CUPE)
+############ Read in LiDAR data ###########
+#SJER <- readLAS(paste0(wd,"NEON_D17_SJER_DP1_255000_4110000_classified_point_cloud_colorized.laz"))
+SJER <- readLAS(paste0(wd,"NEON_D17_SJER_DP1_255000_4110000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below 187 -drop_z_above 616")
+summary(SJER)
+plot(SJER)
 
-#Let's correct for elevation and measure structural diversity for CUPE
-x <- ((max(CUPE$X) - min(CUPE$X))/2)+ min(CUPE$X)
-y <- ((max(CUPE$Y) - min(CUPE$Y))/2)+ min(CUPE$Y)
 
-#x <- 714500
-#y <- 2006500
+#set center of plot based on extent
+x <- ((max(SJER$X) - min(SJER$X))/2)+ min(SJER$X)
+y <- ((max(SJER$Y) - min(SJER$Y))/2)+ min(SJER$Y)
 
-data.200m <- lasclipRectangle(CUPE, 
+#x <- 255500 #easting 
+#y <- 4110500 #northing
+
+data.200m <- lasclipRectangle(SJER, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
@@ -77,9 +82,7 @@ structural_diversity_metrics <- function(data.40m) {
   print(out.plot)
 }
 
-CUPE_structural_diversity <- structural_diversity_metrics(data.40m)
-
-
+SJER_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
@@ -101,52 +104,50 @@ library(devtools)
 library(neondiversity)
 
 #no cover data at this site
-#coverC <- loadByProduct (dpID = "DP1.10058.001", site = 'CUPE', check.size= TRUE)
+coverS <- loadByProduct (dpID = "DP1.10058.001", site = 'SJER')
 
-#coverDivC <- coverC[[2]]
+coverDivS <- coverS[[2]]
 
-#unique(coverDivC$divDataType)
+unique(coverDivS$divDataType)
 
-#cover2C <- coverDivC %>%
-  #filter(divDataType=="plantSpecies")
+cover2S <- coverDivS %>%
+  filter(divDataType=="plantSpecies")
 
-#all_SR <-length(unique(cover2C$scientificName))
+all_SR <-length(unique(cover2S$scientificName))
 
-#summary(cover2C$nativeStatusCode)
+summary(cover2S$nativeStatusCode)
 
 #subset of invasive only
-#inv <- cover2C %>%
-  #filter(nativeStatusCode=="I")
+inv <- cover2S %>%
+  filter(nativeStatusCode=="I")
 
-#exotic_SR <-length(unique(inv$scientificName))
-
-
-#CUPE_table <- cbind(CUPE_structural_diversity, all_SR, exotic_SR)
-
-#CUPE_table <- CUPE_table %>%
-  #mutate(Site.ID = "CUPE")
+exotic_SR <-length(unique(inv$scientificName))
 
 
-#CUPE_table <- CUPE_table %>%
-  #select(-easting, -northing)
+SJER_table <- cbind(SJER_structural_diversity, all_SR, exotic_SR)
 
-#CUPE_table <- CUPE_table %>%
-  #left_join(veg_types)
+SJER_table <- SJER_table %>%
+  mutate(Site.ID = "SJER")
 
 
-#combo2 <- rbind(combo, CUPE_table)
-#combo2
-
-#####
-#for all sites
-all_sites_table <- all_sites_table %>%
+SJER_table <- SJER_table %>%
   select(-easting, -northing)
 
-
-#carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-veg_types <- read.csv(file = 'field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
-
-#add veg class to table 
-all_sites_table <- all_sites_table %>%
+SJER_table <- SJER_table %>%
   left_join(veg_types)
+
+
+combo3 <- rbind(combo2, SJER_table)
+combo3
+
+write.table(combo3, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+
+library(ggplot2)
+ggplot(combo3, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
+  geom_point()
+
+ggplot(combo3, aes(x = max.canopy.ht.aop, y = exotic_SR))+
+  geom_point()
+
+ggplot(combo3, aes(x = rumple.aop, y = exotic_SR))+
+  geom_point()
