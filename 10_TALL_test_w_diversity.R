@@ -11,20 +11,20 @@ wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 ############ Read in LiDAR data ###########
-#OSBS <- readLAS(paste0(wd,"NEON_D03_OSBS_DP1_408000_3285000_classified_point_cloud_colorized.laz"))
-OSBS <- readLAS(paste0(wd,"NEON_D03_OSBS_DP1_408000_3285000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below -338 -drop_z_above 969")
+#TALL <- readLAS(paste0(wd,"NEON_D08_TALL_DP1_456000_3648000_classified_point_cloud_colorized.laz"))
+TALL <- readLAS(paste0(wd,"NEON_D08_TALL_DP1_456000_3648000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below -272 -drop_z_above 1077")
 #should I filter this to zero?
 
-summary(OSBS)
-#plot(OSBS)
+summary(TALL)
+#plot(TALL)
 
 
 #set center of plot based on extent
-x <- ((max(OSBS$X) - min(OSBS$X))/2)+ min(OSBS$X)
-y <- ((max(OSBS$Y) - min(OSBS$Y))/2)+ min(OSBS$Y)
+x <- ((max(TALL$X) - min(TALL$X))/2)+ min(TALL$X)
+y <- ((max(TALL$Y) - min(TALL$Y))/2)+ min(TALL$Y)
 
-data.200m <- lasclipRectangle(OSBS, 
+data.200m <- lasclipRectangle(TALL, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
@@ -37,7 +37,7 @@ data.40m <- lasclipRectangle(data.200m,
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
 plot(data.40m)
-#looks good
+#looks a little weird, but not wrong
 
 #Zip up all the code we previously used and write function to 
 #run all 13 metrics in a single function. 
@@ -81,7 +81,7 @@ structural_diversity_metrics <- function(data.40m) {
   print(out.plot)
 }
 
-OSBS_structural_diversity <- structural_diversity_metrics(data.40m)
+TALL_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
@@ -103,49 +103,49 @@ library(devtools)
 library(neondiversity)
 
 #no cover data at this site
-coverO <- loadByProduct (dpID = "DP1.10058.001", site = 'OSBS')
+coverT <- loadByProduct (dpID = "DP1.10058.001", site = 'TALL')
 
-coverDivO <- coverO[[2]]
+coverDivT <- coverT[[2]]
 
-unique(coverDivO$divDataType)
+unique(coverDivT$divDataType)
 
-cover2O <- coverDivO %>%
+cover2T <- coverDivT %>%
   filter(divDataType=="plantSpecies")
 
-all_SR <-length(unique(cover2O$scientificName))
+all_SR <-length(unique(cover2T$scientificName))
 
-summary(cover2O$nativeStatusCode)
+summary(cover2T$nativeStatusCode)
 
 #subset of invasive only
-inv <- cover2O %>%
+inv <- cover2T %>%
   filter(nativeStatusCode=="I")
 
 exotic_SR <-length(unique(inv$scientificName))
 
 
-OSBS_table <- cbind(OSBS_structural_diversity, all_SR, exotic_SR)
+TALL_table <- cbind(TALL_structural_diversity, all_SR, exotic_SR)
 
-OSBS_table <- OSBS_table %>%
-  mutate(Site.ID = "OSBS")
+TALL_table <- TALL_table %>%
+  mutate(Site.ID = "TALL")
 
-OSBS_table <- OSBS_table %>%
+TALL_table <- TALL_table %>%
   select(-easting, -northing)
 
-OSBS_table <- OSBS_table %>%
+TALL_table <- TALL_table %>%
   left_join(veg_types)
 
 
-combo8 <- rbind(combo7, OSBS_table)
-combo8
+combo9 <- rbind(combo8, TALL_table)
+combo9
 
-write.table(combo8, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+write.table(combo9, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
-ggplot(combo8, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo9, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo8, aes(x = max.canopy.ht.aop, y = exotic_SR))+
+ggplot(combo9, aes(x = max.canopy.ht.aop, y = exotic_SR))+
   geom_point()
 
-ggplot(combo8, aes(x = rumple.aop, y = exotic_SR))+
+ggplot(combo9, aes(x = rumple.aop, y = exotic_SR))+
   geom_point()
