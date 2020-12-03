@@ -129,7 +129,8 @@ KONZ_table <- KONZ_table %>%
 
 KONZ_table
 
-
+combo2 <- rbind(combo, KONZ_table)
+combo2
 
 #####
 #for all sites

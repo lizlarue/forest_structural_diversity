@@ -125,9 +125,11 @@ NIWO_table <- cbind(NIWO_structural_diversity, all_SR, exotic_SR)
 NIWO_table <- NIWO_table %>%
   mutate(Site.ID = "NIWO")
 
-
 NIWO_table <- NIWO_table %>%
   select(-easting, -northing)
+
+veg_types <- read.csv(file = 'field-sites.csv') %>%
+  select(Site.ID, Dominant.NLCD.Classes)
 
 NIWO_table <- NIWO_table %>%
   left_join(veg_types)
@@ -138,17 +140,17 @@ NIWO_table
 
 #####
 #for all sites
-all_sites_table <- all_sites_table %>%
-  select(-easting, -northing)
+#all_sites_table <- all_sites_table %>%
+  #select(-easting, -northing)
   
 
 #carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-veg_types <- read.csv(file = 'field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
+#veg_types <- read.csv(file = 'field-sites.csv') %>%
+  #select(Site.ID, Dominant.NLCD.Classes)
 
 #add veg class to table 
-all_sites_table <- all_sites_table %>%
-  left_join(veg_types)
+#all_sites_table <- all_sites_table %>%
+  #left_join(veg_types)
 
 
 ######################
