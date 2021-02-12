@@ -11,19 +11,19 @@ wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
 ############ Read in LiDAR data ###########
-#SRER <- readLAS(paste0(wd,"NEON_D14_SRER_DP1_517000_3521000_classified_point_cloud_colorized.laz"))
-SRER <- readLAS(paste0(wd,"NEON_D14_SRER_DP1_517000_3521000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 223 -drop_z_above 2171")
+#BONA <- readLAS(paste0(wd,"NEON_D19_BONA_DP1_471000_7222000_classified_point_cloud_colorized.laz"))
+BONA <- readLAS(paste0(wd,"NEON_D19_BONA_DP1_471000_7222000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below -438 -drop_z_above 1412")
 
-summary(SRER)
-#plot(SRER)
+summary(BONA)
+#plot(BONA)
 
 
 #set center of plot based on extent
-x <- ((max(SRER$X) - min(SRER$X))/2)+ min(SRER$X)
-y <- ((max(SRER$Y) - min(SRER$Y))/2)+ min(SRER$Y)
+x <- ((max(BONA$X) - min(BONA$X))/2)+ min(BONA$X)
+y <- ((max(BONA$Y) - min(BONA$Y))/2)+ min(BONA$Y)
 
-data.200m <- lasclipRectangle(SRER, 
+data.200m <- lasclipRectangle(BONA, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
@@ -36,7 +36,7 @@ data.40m <- lasclipRectangle(data.200m,
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
 plot(data.40m)
-#this doesn't look better than grasslands!
+#looks good
 
 #Zip up all the code we previously used and write function to 
 #run all 13 metrics in a single function. 
@@ -80,13 +80,13 @@ structural_diversity_metrics <- function(data.40m) {
   print(out.plot)
 }
 
-SRER_structural_diversity <- structural_diversity_metrics(data.40m)
+BONA_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
 #####################################
 #diversity data
-devtools::insSRER_github("admahood/neondiversity")
+devtools::insBONA_github("admahood/neondiversity")
 
 # load packages
 library(neonUtilities)
@@ -101,8 +101,8 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'SRER')
+#
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'BONA')
 
 coverDiv <- cover[[2]]
 
@@ -122,86 +122,86 @@ inv <- cover2 %>%
 exotic_SR <-length(unique(inv$scientificName))
 
 
-SRER_table <- cbind(SRER_structural_diversity, all_SR, exotic_SR)
+BONA_table <- cbind(BONA_structural_diversity, all_SR, exotic_SR)
 
-SRER_table <- SRER_table %>%
-  mutate(Site.ID = "SRER")
+BONA_table <- BONA_table %>%
+  mutate(Site.ID = "BONA")
 
-SRER_table <- SRER_table %>%
+BONA_table <- BONA_table %>%
   select(-easting, -northing)
 
-SRER_table <- SRER_table %>%
+BONA_table <- BONA_table %>%
   left_join(veg_types)
 
 
-combo14 <- rbind(combo13, SRER_table)
-combo14
+combo15 <- rbind(combo14, BONA_table)
+combo15
 
-write.table(combo14, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
-combo14 <- combo14 %>%
-  mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
+#combo15 <- combo15 %>%
+  #mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
 
 library(ggplot2)
 #library(ggpmisc)
 #my.formula <- y ~ x
 
 #external heterogeneity
-ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
   geom_smooth(method = "lm")
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo14)
+fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo15)
 summary(fit)
 #r2 = 0.094, p=0.285
 
 #internal heterogeneity
-ggplot(combo14, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ sd.sd.aop, data = combo14)
+fit <- lm(exotic_SR ~ sd.sd.aop, data = combo15)
 summary(fit)
 #r2 = 0.013, p=0.69
 
 #mean canopy height
-ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo14)
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo15)
 summary(fit)
 #r2 = 0.0006, p=0.93
 
 #gap fraction
-ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo14)
+fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo15)
 summary(fit)
 #r2 = 0.013, p=0.908
 
 #max canopy height
-ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo14)
+fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo15)
 summary(fit)
 #r2 = 0.056, p=0.417
 
 #ratio of outer canopy surface area to ground surface area 
-ggplot(combo14, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ rumple.aop, data = combo14)
+fit <- lm(exotic_SR ~ rumple.aop, data = combo15)
 summary(fit)
 #r2 = 0.00058, p=0.93
 
@@ -209,22 +209,22 @@ summary(fit)
 
 ###
 ###these are not that useful
-ggplot(combo14, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo14, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo14, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo14, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo14, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
