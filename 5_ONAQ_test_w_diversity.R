@@ -105,7 +105,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
+#
 coverO <- loadByProduct (dpID = "DP1.10058.001", site = 'ONAQ')
 
 coverDivO <- coverO[[2]]
@@ -144,7 +144,7 @@ combo4
 
 
 ######################
-#soil chem for NIWO
+#soil chem for ONAQ
 ONAQ_soil_chem_0 <- read.csv(file = 'NEON.D15.ONAQ.DP1.00096.001.mgp_perbiogeosample.2014-06.basic.20201006T215549Z.csv')
 
 
