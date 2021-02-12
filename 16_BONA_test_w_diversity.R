@@ -139,92 +139,101 @@ combo15
 
 write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
+#remove SRER (shrub) and CUPE (no cover data)
+
 #combo15 <- combo15 %>%
   #mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
+
+#combo15 <- combo15[!(combo15$Site.ID == "SRER")]
+#combo15 <- combo15[!(combo15$Site.ID == "CUPE")]
+
+combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER")
+#combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER" & Site.ID!="SCBI")
+
 
 library(ggplot2)
 #library(ggpmisc)
 #my.formula <- y ~ x
 
 #external heterogeneity
-ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = top.rugosity.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
   geom_smooth(method = "lm")
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo15)
+fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.094, p=0.285
+#r2 = 0.115, p=0.23
 
 #internal heterogeneity
-ggplot(combo15, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = sd.sd.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ sd.sd.aop, data = combo15)
+fit <- lm(exotic_SR ~ sd.sd.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.013, p=0.69
+#r2 = 0.011, p=0.71
 
 #mean canopy height
-ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo15)
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.0006, p=0.93
+#r2 = 0.023, p=0.88
 
 #gap fraction
-ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = deepgap.fraction.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo15)
+fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.013, p=0.908
+#r2 = 2.396e-06, p=0.99
 
 #max canopy height
-ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = max.canopy.ht.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo15)
+fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.056, p=0.417
+#r2 = 0.066, p=0.37
 
 #ratio of outer canopy surface area to ground surface area 
-ggplot(combo15, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = rumple.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ rumple.aop, data = combo15)
+fit <- lm(exotic_SR ~ rumple.aop, data = combo15sub)
 summary(fit)
-#r2 = 0.00058, p=0.93
+#r2 = 0.00034, p=0.94
 
 
 
 ###
 ###these are not that useful
-ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
