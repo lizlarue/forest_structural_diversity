@@ -151,6 +151,8 @@ write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER")
 #combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER" & Site.ID!="SCBI")
 
+combo15sub$native_SR <-combo15sub$all_SR - combo15sub$exotic_SR
+
 
 library(ggplot2)
 #library(ggpmisc)
@@ -276,6 +278,45 @@ ggplot(combo15sub, aes(x = rumple.aop, y = log(exotic_cov +1), label = Site.ID))
 fit <- lm(log(exotic_cov +1) ~ rumple.aop, data = combo15sub)
 summary(fit)
 #r2 = 0.01186, p=0.711
+
+
+
+
+
+#####################################################
+#try with native SR
+
+#external heterogeneity
+fit <- lm(exotic_SR ~ top.rugosity.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.12, p=0.48
+
+#internal heterogeneity
+fit <- lm(exotic_SR ~ sd.sd.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.017, p=0.91
+
+#mean canopy height
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.009, p=0.948
+
+#gap fraction
+fit <- lm(exotic_SR ~ deepgap.fraction.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.0063, p=0.9656
+
+#max canopy height
+fit <- lm(exotic_SR ~ max.canopy.ht.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.1117, p=0.52
+
+#ratio of outer canopy surface area to ground surface area 
+fit <- lm(exotic_SR ~ rumple.aop + native_SR, data = combo15sub)
+summary(fit)
+#r2 = 0.006157, p=0.9666
+
+
 
 
 
