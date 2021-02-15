@@ -117,8 +117,10 @@ inv <- cover2K %>%
 
 exotic_SR <-length(unique(inv$scientificName))
 
+exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
 
-KONZ_table <- cbind(KONZ_structural_diversity, all_SR, exotic_SR)
+
+KONZ_table <- cbind(KONZ_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 KONZ_table <- KONZ_table %>%
   mutate(Site.ID = "KONZ")

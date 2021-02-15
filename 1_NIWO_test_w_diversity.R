@@ -120,7 +120,7 @@ inv <- cover2N %>%
 
 exotic_SR <-length(unique(inv$scientificName))
 
-exotic_cover <- sum(inv$percentCover)
+exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
 
 
 NIWO_table <- cbind(NIWO_structural_diversity, all_SR, exotic_SR, exotic_cover)
