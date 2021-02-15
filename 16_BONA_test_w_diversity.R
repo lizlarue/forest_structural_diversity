@@ -215,10 +215,76 @@ fit <- lm(exotic_SR ~ rumple.aop, data = combo15sub)
 summary(fit)
 #r2 = 0.00034, p=0.94
 
+#####################################################
+#try with cover data
+
+#external heterogeneity
+ggplot(combo15sub, aes(x = top.rugosity.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ top.rugosity.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.028, p=0.567
+
+#internal heterogeneity
+ggplot(combo15sub, aes(x = sd.sd.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ sd.sd.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.005, p=0.81
+
+#mean canopy height
+ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ mean.max.canopy.ht.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.0003, p=0.95
+
+#gap fraction
+ggplot(combo15sub, aes(x = deepgap.fraction.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ deepgap.fraction.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.0049, p=0.81
+
+#max canopy height
+ggplot(combo15sub, aes(x = max.canopy.ht.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+fit <- lm(log(exotic_cov +1) ~ max.canopy.ht.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.238, p=0.0764
+
+#ratio of outer canopy surface area to ground surface area 
+ggplot(combo15sub, aes(x = rumple.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+fit <- lm(log(exotic_cov +1) ~ rumple.aop, data = combo15sub)
+summary(fit)
+#r2 = 0.01186, p=0.711
 
 
+
+
+
+
+################################################
 ###
-###these are not that useful
+###these are less useful
 ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
