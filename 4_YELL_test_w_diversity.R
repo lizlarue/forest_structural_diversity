@@ -117,8 +117,10 @@ inv <- cover2Y %>%
 
 exotic_SR <-length(unique(inv$scientificName))
 
+exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
 
-YELL_table <- cbind(YELL_structural_diversity, all_SR, exotic_SR)
+
+YELL_table <- cbind(YELL_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 YELL_table <- YELL_table %>%
   mutate(Site.ID = "YELL")
