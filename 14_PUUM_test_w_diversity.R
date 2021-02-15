@@ -101,8 +101,8 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'PUUM')
+
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'PUUM', check.size = FALSE)
 
 coverDiv <- cover[[2]]
 
@@ -119,10 +119,17 @@ summary(cover2$nativeStatusCode)
 inv <- cover2 %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-PUUM_table <- cbind(PUUM_structural_diversity, all_SR, exotic_SR)
+
+PUUM_table <- cbind(PUUM_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 PUUM_table <- PUUM_table %>%
   mutate(Site.ID = "PUUM")
@@ -137,6 +144,10 @@ PUUM_table <- PUUM_table %>%
 combo13 <- rbind(combo12, PUUM_table)
 combo13
 
+
+
+
+##########################################
 write.table(combo13, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
