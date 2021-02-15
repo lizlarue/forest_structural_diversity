@@ -106,7 +106,7 @@ library(devtools)
 library(neondiversity)
 
 #
-coverO <- loadByProduct (dpID = "DP1.10058.001", site = 'ONAQ')
+coverO <- loadByProduct (dpID = "DP1.10058.001", site = 'ONAQ', check.size = FALSE)
 
 coverDivO <- coverO[[2]]
 
