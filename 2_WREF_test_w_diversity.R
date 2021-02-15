@@ -119,8 +119,10 @@ inv <- cover2W %>%
 
 exotic_SR <-length(unique(inv$scientificName))
 
+exotic_cover <- sum(inv$percentCover)
 
-WREF_table <- cbind(WREF_structural_diversity, all_SR, exotic_SR)
+
+WREF_table <- cbind(WREF_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 WREF_table <- WREF_table %>%
   mutate(Site.ID = "WREF")
