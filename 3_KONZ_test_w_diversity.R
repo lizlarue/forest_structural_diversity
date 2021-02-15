@@ -98,7 +98,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-coverK <- loadByProduct (dpID = "DP1.10058.001", site = 'KONZ')
+coverK <- loadByProduct (dpID = "DP1.10058.001", site = 'KONZ', check.size = FALSE)
 
 coverDivK <- coverK[[2]]
 
