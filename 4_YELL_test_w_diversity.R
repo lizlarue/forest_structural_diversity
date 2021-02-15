@@ -122,7 +122,7 @@ exotic_SR <-length(unique(inv$scientificName))
 exotic_cover <- inv %>%
   group_by(plotID) %>%
   summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
-  summarize(meancov = mean(sumz))
+  summarize(exotic_cov = mean(sumz))
 
 
 YELL_table <- cbind(YELL_structural_diversity, all_SR, exotic_SR, exotic_cover)
