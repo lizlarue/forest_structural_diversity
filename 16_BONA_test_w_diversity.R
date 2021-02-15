@@ -326,22 +326,22 @@ summary(fit)
 ################################################
 ###
 ###these are less useful
-ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15sub, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15sub, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = rumple.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15sub, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15sub, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo15sub, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
