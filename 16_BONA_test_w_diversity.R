@@ -102,7 +102,7 @@ library(devtools)
 library(neondiversity)
 
 #
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'BONA')
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'BONA', check.size = FALSE)
 
 coverDiv <- cover[[2]]
 
@@ -119,10 +119,17 @@ summary(cover2$nativeStatusCode)
 inv <- cover2 %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-BONA_table <- cbind(BONA_structural_diversity, all_SR, exotic_SR)
+
+BONA_table <- cbind(BONA_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 BONA_table <- BONA_table %>%
   mutate(Site.ID = "BONA")
@@ -140,12 +147,6 @@ combo15
 write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 #remove SRER (shrub) and CUPE (no cover data)
-
-#combo15 <- combo15 %>%
-  #mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
-
-#combo15 <- combo15[!(combo15$Site.ID == "SRER")]
-#combo15 <- combo15[!(combo15$Site.ID == "CUPE")]
 
 combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER")
 #combo15sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER" & Site.ID!="SCBI")
