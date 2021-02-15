@@ -133,8 +133,6 @@ exotic_cover <- inv %>%
   summarize(exotic_cov = mean(sumz))
 
 
-#exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
-
 
 ONAQ_table <- cbind(ONAQ_structural_diversity, all_SR, exotic_SR, exotic_cover)
 

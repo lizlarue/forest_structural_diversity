@@ -105,7 +105,7 @@ library(devtools)
 library(neondiversity)
 
 #no cover data at this site
-coverS <- loadByProduct (dpID = "DP1.10058.001", site = 'SJER')
+coverS <- loadByProduct (dpID = "DP1.10058.001", site = 'SJER', check.size = FALSE)
 
 coverDivS <- coverS[[2]]
 
@@ -122,10 +122,17 @@ summary(cover2S$nativeStatusCode)
 inv <- cover2S %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-SJER_table <- cbind(SJER_structural_diversity, all_SR, exotic_SR)
+
+SJER_table <- cbind(SJER_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 SJER_table <- SJER_table %>%
   mutate(Site.ID = "SJER")
@@ -141,6 +148,9 @@ SJER_table <- SJER_table %>%
 combo6 <- rbind(combo5, SJER_table)
 combo6
 
+
+
+#############################################
 write.table(combo6, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
