@@ -101,8 +101,8 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'SRER')
+
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'SRER', check.size = FALSE)
 
 coverDiv <- cover[[2]]
 
@@ -119,10 +119,17 @@ summary(cover2$nativeStatusCode)
 inv <- cover2 %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-SRER_table <- cbind(SRER_structural_diversity, all_SR, exotic_SR)
+
+SRER_table <- cbind(SRER_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 SRER_table <- SRER_table %>%
   mutate(Site.ID = "SRER")
