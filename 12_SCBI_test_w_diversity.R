@@ -102,7 +102,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
+
 coverS <- loadByProduct (dpID = "DP1.10058.001", site = 'SCBI', check.size = FALSE)
 
 coverDivS <- coverS[[2]]
