@@ -1,5 +1,7 @@
 #### Spectral diversity functions
+#https://github.com/elaliberte/specdiv/blob/master/functions/specdiv_functions.R
 # Etienne Laliberté, February 2019
+
 
 
 ### Brightness normalization -----
