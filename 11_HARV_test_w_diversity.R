@@ -102,8 +102,8 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-#no cover data at this site
-coverH <- loadByProduct (dpID = "DP1.10058.001", site = 'HARV')
+
+coverH <- loadByProduct (dpID = "DP1.10058.001", site = 'HARV', check.size = FALSE)
 
 coverDivH <- coverH[[2]]
 
@@ -120,10 +120,17 @@ summary(cover2H$nativeStatusCode)
 inv <- cover2H %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-HARV_table <- cbind(HARV_structural_diversity, all_SR, exotic_SR)
+
+HARV_table <- cbind(HARV_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 HARV_table <- HARV_table %>%
   mutate(Site.ID = "HARV")
@@ -138,6 +145,10 @@ HARV_table <- HARV_table %>%
 combo10 <- rbind(combo9, HARV_table)
 combo10
 
+
+
+
+####################################
 write.table(combo10, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 library(ggplot2)
