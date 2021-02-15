@@ -123,10 +123,20 @@ summary(cover2O$nativeStatusCode)
 inv <- cover2O %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(meancov = mean(sumz))
 
-ONAQ_table <- cbind(ONAQ_structural_diversity, all_SR, exotic_SR)
+
+#exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
+
+
+ONAQ_table <- cbind(ONAQ_structural_diversity, all_SR, exotic_SR, exotic_cover)
 
 ONAQ_table <- ONAQ_table %>%
   mutate(Site.ID = "ONAQ")

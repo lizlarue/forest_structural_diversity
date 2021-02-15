@@ -100,7 +100,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO')
+coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= FALSE)
 
 coverDivN <- coverN[[2]]
 
@@ -118,9 +118,14 @@ summary(cover2N$nativeStatusCode)
 inv <- cover2N %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
-exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(meancov = mean(sumz))
 
 
 NIWO_table <- cbind(NIWO_structural_diversity, all_SR, exotic_SR, exotic_cover)

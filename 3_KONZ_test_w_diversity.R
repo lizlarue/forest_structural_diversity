@@ -115,9 +115,14 @@ summary(cover2K$nativeStatusCode)
 inv <- cover2K %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
-exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(meancov = mean(sumz))
 
 
 KONZ_table <- cbind(KONZ_structural_diversity, all_SR, exotic_SR, exotic_cover)

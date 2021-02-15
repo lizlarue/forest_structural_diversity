@@ -100,7 +100,7 @@ library(sp)
 library(devtools)
 library(neondiversity)
 
-coverW <- loadByProduct (dpID = "DP1.10058.001", site = 'WREF', check.size= TRUE)
+coverW <- loadByProduct (dpID = "DP1.10058.001", site = 'WREF', check.size = FALSE)
 
 coverDivW <- coverW[[2]]
 
@@ -117,9 +117,14 @@ summary(cover2W$nativeStatusCode)
 inv <- cover2W %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
-exotic_cover <- sum(inv$percentCover, na.rm = TRUE)
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(meancov = mean(sumz))
 
 
 WREF_table <- cbind(WREF_structural_diversity, all_SR, exotic_SR, exotic_cover)
