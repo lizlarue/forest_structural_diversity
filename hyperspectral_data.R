@@ -7,8 +7,11 @@ library(rhdf5)
 library(raster)
 library(rgdal)
 library(maps)
+library(plyr)
+library(reshape2)
+library(ggplot2)
 
-
+#Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R
 #When we refer to bands in this tutorial, we will note the band numbers for this example dataset, which are different from NEON production data. To convert a band number (b) from this example data subset to the equivalent band in a full NEON hyperspectral file (b'), use the following equation: b' = 1+4*(b-1).
 
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
@@ -165,7 +168,7 @@ H5close()
 
 
 ####################################################################################
-
+#Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R
 #The function band2Rast slices a band of data from the HDF5 file, and extracts the reflectance. It them converts the data to a matrix, converts it to a raster and returns a spatially corrected raster for the specified band.
 
 
@@ -305,6 +308,158 @@ plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 
 ####################################################################################
+#Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R
+
+# Define the file name to be opened
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+# look at the HDF5 file structure 
+h5ls(f,all=T)
+
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+
+# extract all bands from a single pixel
+aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
+
+# The line above generates a vector of reflectance values.
+# Next, we reshape the data and turn them into a dataframe
+b <- adply(aPixel,c(1))
+
+# create clean data frame
+aPixeldf <- b[2]
+
+# add wavelength data to matrix
+aPixeldf$Wavelength <- wavelengths
+
+head(aPixeldf)
+
+
+# grab scale factor from the Reflectance attributes
+reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+
+scaleFact <- reflectanceAttr$Scale_Factor
+
+# add scaled data column to DF
+aPixeldf$scaled <- (aPixeldf$V1/as.vector(scaleFact))
+
+# make nice column names
+names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
+head(aPixeldf)
+
+
+ggplot(data=aPixeldf)+
+  geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+  xlab("Wavelength (nm)")+
+  ylab("Reflectance")
 
 
 
+#############################################################################
+#Select pixels and compare spectral signatures in R
+
+# define filepath to the hyperspectral dataset
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+
+# grab scale factor from the Reflectance attributes
+reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+
+scaleFact <- reflInfo$Scale_Factor
+
+# Read in RGB image as a 'stack' rather than a plain 'raster'
+rgbStack <- stack(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"))
+
+# Plot as RGB image
+plotRGB(rgbStack,
+        r=1,g=2,b=3, scale=300, 
+        stretch = "lin")
+
+# change plotting parameters to better see the points and numbers generated from clicking
+par(col="red", cex=3)
+
+# use the 'click' function
+c <- click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.lab="red")
+close()
+
+# convert raster cell number into row and column (used to extract spectral signature below)
+c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
+c$col <- c$cell%%ncol(rgbStack)
+
+# create a new dataframe from the band wavelengths so that we can add
+# the reflectance values for each cover type
+Pixel_df <- as.data.frame(wavelengths)
+
+# loop through each of the cells that we selected
+for(i in 1:length(c$cell)){
+  # extract Spectra from a single pixel
+  aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",
+                   index=list(NULL,c$col[i],c$row[i]))
+  
+  # scale reflectance values from 0-1
+  aPixel <- aPixel/as.vector(scaleFact)
+  
+  # reshape the data and turn into dataframe
+  b <- adply(aPixel,c(1))
+  
+  # rename the column that we just created
+  names(b)[2] <- paste0("Point_",i)
+  
+  # add reflectance values for this pixel to our combined data.frame called Pixel_df
+  Pixel_df <- cbind(Pixel_df,b[2])
+}
+
+# Use the melt() function to reshape the dataframe into a format that ggplot prefers
+Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
+
+# Now, let's plot some spectral signatures!
+ggplot()+
+  geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
+                      labels = c("Field", "Tree", "Roof","Soil","Water"))+
+  labs(color = "Cover Type")+
+  ggtitle("Land cover spectral signatures")+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab("Wavelength")
+
+
+
+# grab Reflectance metadata (which contains absorption band limits)
+reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
+
+ab1 <- reflMetadata$Band_Window_1_Nanometers
+ab2 <- reflMetadata$Band_Window_2_Nanometers
+
+
+
+# Plot spectral signatures again with rectangles showing the absorption bands
+ggplot()+
+  geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color="black", fill="grey40", alpha=0.8)+
+  geom_rect(mapping=aes(ymin=min(Pixel.melt$Reflectance),ymax=max(Pixel.melt$Reflectance), xmin=ab2[1], xmax=ab2[2]), color="black", fill="grey40", alpha=0.8)+
+  scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
+                      labels = c("Field", "Tree", "Roof","Soil","Water"))+
+  labs(color = "Cover Type")+
+  ggtitle("Land cover spectral signatures")+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab("Wavelength")
+
+
+# Duplicate the spectral signatures into a new data.frame
+Pixel.melt.masked <- Pixel.melt
+
+# Mask out all values within each of the two atmospheric absorbtion bands
+Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab1[1]&Pixel.melt.masked$wavelengths<ab1[2],]$Reflectance <- NA
+Pixel.melt.masked[Pixel.melt.masked$wavelengths>ab2[1]&Pixel.melt.masked$wavelengths<ab2[2],]$Reflectance <- NA
+
+
+# Plot the masked spectral signatures
+ggplot()+
+  geom_line(data = Pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  scale_colour_manual(values = c("green2", "green4", "grey50","tan4","blue3"),
+                      labels = c("Field", "Tree", "Roof", "Soil", "Water"))+
+  labs(color = "Cover Type")+
+  ggtitle("Land cover spectral signatures")+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab("Wavelength")
