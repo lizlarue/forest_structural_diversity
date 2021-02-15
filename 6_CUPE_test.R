@@ -101,7 +101,7 @@ library(devtools)
 library(neondiversity)
 
 #no cover data at this site
-#coverC <- loadByProduct (dpID = "DP1.10058.001", site = 'CUPE', check.size= TRUE)
+#coverC <- loadByProduct (dpID = "DP1.10058.001", site = 'CUPE', check.size= FALSE)
 
 #coverDivC <- coverC[[2]]
 
@@ -118,7 +118,14 @@ library(neondiversity)
 #inv <- cover2C %>%
   #filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 #exotic_SR <-length(unique(inv$scientificName))
+
+#mean plot percent cover of exotics
+#exotic_cover <- inv %>%
+  #group_by(plotID) %>%
+  #summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  #summarize(exotic_cov = mean(sumz))
 
 
 #CUPE_table <- cbind(CUPE_structural_diversity, all_SR, exotic_SR)
@@ -127,6 +134,7 @@ CUPE_table <- CUPE_structural_diversity
 
 CUPE_table$all_SR <- NA
 CUPE_table$exotic_SR <- NA
+CUPE_table$exotic_cov <- NA
 
 CUPE_table <- CUPE_table %>%
   mutate(Site.ID = "CUPE")
@@ -136,6 +144,9 @@ CUPE_table <- CUPE_table %>%
 
 CUPE_table <- CUPE_table %>%
   left_join(veg_types)
+
+CUPE_table
+combo4
 
 combo5 <- rbind(combo4, CUPE_table)
 combo5
