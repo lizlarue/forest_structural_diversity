@@ -4,6 +4,13 @@
 library(lidR)
 library(gstat)
 library(neondiversity)
+library(rhdf5)
+library(raster)
+library(rgdal)
+library(maps)
+library(plyr)
+library(reshape2)
+library(ggplot2)
 
 ############### Set working directory ######
 #set the working of the downloaded data
@@ -151,14 +158,74 @@ combo6
 
 
 #############################################
-write.table(combo6, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
-library(ggplot2)
-ggplot(combo6, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
+View(h5ls(f,all=T))
 
-ggplot(combo6, aes(x = max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
 
-ggplot(combo6, aes(x = rumple.aop, y = exotic_SR))+
-  geom_point()
+
+# get information about the wavelengths of this dataset
+wavelengthInfo <- h5readAttributes(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengthInfo
+
+
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+head(wavelengths)
+tail(wavelengths)
+
+# First, we need to extract the reflectance metadata:
+reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
+reflInfo
+
+# Next, we read the different dimensions
+nRows <- reflInfo$Dimensions[1]
+nCols <- reflInfo$Dimensions[2]
+nBands <- reflInfo$Dimensions[3]
+
+nRows
+nCols
+nBands
+#426 bands
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+
+
+
+
+# Calculate NDVI
+# select bands to use in calculation (red, NIR)
+ndvi_bands <- c(58,90) #bands c(58,90) in full NEON hyperspectral dataset
+
+# create raster list and then a stack using those two bands
+ndvi_rast <- lapply(ndvi_bands,FUN=band2Raster, file = f,
+                    noDataValue=myNoDataValue, 
+                    extent=rasExt, CRS=myCRS)
+ndvi_stack <- stack(ndvi_rast)
+
+# make the names pretty
+bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
+names(ndvi_stack) <- bandNDVINames
+
+# view the properties of the new raster stack
+ndvi_stack
+
+#calculate NDVI
+NDVI <- function(x) {
+  (x[,2]-x[,1])/(x[,2]+x[,1])
+}
+ndvi_calc <- calc(ndvi_stack,NDVI)
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
+
+
+# Now, play with breaks and colors to create a meaningful map
+# add a color map with 4 colors
+myCol <- rev(terrain.colors(4)) # use the 'rev()' function to put green as the highest NDVI value
+# add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
+brk <- c(0, .25, .5, .75, 1)
+
+# plot the image using breaks
+plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
+
