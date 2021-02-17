@@ -139,25 +139,50 @@ KONZ_table <- KONZ_table %>%
 
 KONZ_table
 
+
+
+
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D06_KONZ_DP3_708000_4325000_reflectance.h5")
+
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/KONZ/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+KONZ_table$specCV <- CV
+
 combo2 <- rbind(combo, KONZ_table)
 combo2
 
-#####
-#for all sites
-#all_sites_table <- all_sites_table %>%
-#select(-easting, -northing)
 
-
-#carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-#veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
-  #select(Site.ID, Dominant.NLCD.Classes)
-
-#KONZ_table <- KONZ_table %>%
-  #left_join(veg_types)
-
-#add veg class to table 
-#all_sites_table <- all_sites_table %>%
-#left_join(veg_types)
 
 
 ######################
