@@ -152,41 +152,16 @@ SJER_table <- SJER_table %>%
   left_join(veg_types)
 
 
-combo6 <- rbind(combo5, SJER_table)
-combo6
+#combo6 <- rbind(combo5, SJER_table)
+#combo6
 
 
 
 #############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
 f <- paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
-View(h5ls(f,all=T))
-
-
-
-# get information about the wavelengths of this dataset
-wavelengthInfo <- h5readAttributes(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
-wavelengthInfo
-
-
-# read in the wavelength information from the HDF5 file
-wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
-head(wavelengths)
-tail(wavelengths)
-
-# First, we need to extract the reflectance metadata:
-reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
-reflInfo
-
-# Next, we read the different dimensions
-nRows <- reflInfo$Dimensions[1]
-nCols <- reflInfo$Dimensions[2]
-nBands <- reflInfo$Dimensions[3]
-
-nRows
-nCols
-nBands
-#426 bands
 
 ###
 #for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
@@ -213,6 +188,20 @@ dat <- rbind(dat, rowz)
 
 dat
 
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+SJER_table$specCV <- CV
+
+combo6 <- rbind(combo5, SJER_table)
+combo6
+
+
+
+################################################################
+#before the for loop
 #extract one band
 b9 <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
   
@@ -237,6 +226,34 @@ tab <- cbind(paste0(9), meanref, SDref)
 
 
 ######
+# Next, we read the different dimensions
+nRows <- reflInfo$Dimensions[1]
+nCols <- reflInfo$Dimensions[2]
+nBands <- reflInfo$Dimensions[3]
+
+nRows
+nCols
+nBands
+#426 bands
+
+
+View(h5ls(f,all=T))
+
+
+
+# get information about the wavelengths of this dataset
+wavelengthInfo <- h5readAttributes(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengthInfo
+
+
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+head(wavelengths)
+tail(wavelengths)
+
+# First, we need to extract the reflectance metadata:
+reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
+reflInfo
 
 
 
