@@ -191,6 +191,80 @@ nBands
 ###
 #for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
 
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+#extract one band
+b <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+
+# set all values equal to -9999 to NA
+b[b == myNoDataValue] <- NA
+
+#calculate mean and sd
+meanref <- mean(b)
+SDref <- sd(b)
+
+rowz <- cbind(i, meanref, SDref)
+
+dat <- rbind(dat, rowz)
+}
+
+dat
+
+#extract one band
+b9 <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
+  
+#set all values equal to -9999 to NA
+b9[b9 == myNoDataValue] <- NA
+  
+#calculate mean and sd
+meanref <- mean(b9)
+SDref <- sd(b9)
+  
+tab <- cbind(paste0(9), meanref, SDref)
+
+
+
+
+
+
+
+
+
+
+
+
+######
+
+
+
+
+# convert from array to matrix
+b9 <- b9[1,,]
+
+# Extract the EPSG from the h5 dataset
+myEPSG <- h5read(f, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
+# convert the EPSG code to a CRS string
+myCRS <- crs(paste0("+init=epsg:",myEPSG))
+# if there is a no data value in our raster - let's define it
+
+
+
+# We need to transpose x and y values in order for our 
+# final image to plot properly
+b9 <- t(b9)
+
+# define final raster with projection info 
+b9r <- raster(b9, 
+              crs=myCRS)
+
+
+
+
+
+
 
 
 
