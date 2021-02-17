@@ -167,8 +167,8 @@ for (i in 1:426){
   b[b == myNoDataValue] <- NA
   
   #calculate mean and sd
-  meanref <- mean(b)
-  SDref <- sd(b)
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
   
   rowz <- cbind(i, meanref, SDref)
   
