@@ -141,6 +141,44 @@ SRER_table <- SRER_table %>%
   left_join(veg_types)
 
 
+
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D14_SRER_DP3_520000_3515000_reflectance.h5")
+
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/SRER/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+SRER_table$specCV <- CV
+
 combo14 <- rbind(combo13, SRER_table)
 combo14
 
