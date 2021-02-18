@@ -141,6 +141,45 @@ PUUM_table <- PUUM_table %>%
   left_join(veg_types)
 
 
+
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D20_PUUM_DP3_260000_2166000_reflectance.h5")
+
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/PUUM/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+PUUM_table$specCV <- CV
+
+
 combo13 <- rbind(combo12, PUUM_table)
 combo13
 
@@ -148,20 +187,4 @@ combo13
 
 
 ##########################################
-write.table(combo13, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
-library(ggplot2)
-ggplot(combo13, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo13, aes(x = max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo13, aes(x = rumple.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo13, aes(x = deepgap.fraction.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo13, aes(x = top.rugosity.aop, y = exotic_SR))+
-  geom_point()
