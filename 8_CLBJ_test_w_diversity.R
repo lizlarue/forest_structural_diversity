@@ -169,7 +169,6 @@ for (i in 1:426){
   dat <- rbind(dat, rowz)
 }
 
-dat
 
 dat$calc <- dat$SDref/dat$meanref
 
