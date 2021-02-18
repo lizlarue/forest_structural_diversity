@@ -200,19 +200,6 @@ combo6
 
 
 
-################################################################
-#before the for loop
-#extract one band
-b9 <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(9,1:nCols,1:nRows)) 
-  
-#set all values equal to -9999 to NA
-b9[b9 == myNoDataValue] <- NA
-  
-#calculate mean and sd
-meanref <- mean(b9)
-SDref <- sd(b9)
-  
-tab <- cbind(paste0(9), meanref, SDref)
 
 
 
@@ -221,10 +208,8 @@ tab <- cbind(paste0(9), meanref, SDref)
 
 
 
-
-
-
-
+##############################################
+#other exploration with spectral diversity
 ######
 # Next, we read the different dimensions
 nRows <- reflInfo$Dimensions[1]
