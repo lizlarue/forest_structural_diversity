@@ -141,6 +141,44 @@ UNDE_table <- UNDE_table %>%
   left_join(veg_types)
 
 
+
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D05_UNDE_DP3_310000_5113000_reflectance.h5")
+
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/UNDE/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+UNDE_table$specCV <- CV
+
 combo12 <- rbind(combo11, UNDE_table)
 combo12
 
@@ -149,14 +187,3 @@ combo12
 
 
 #############################
-write.table(combo12, file = "prelim_results.csv", sep = ",", row.names = FALSE)
-
-library(ggplot2)
-ggplot(combo12, aes(x = mean.max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo12, aes(x = max.canopy.ht.aop, y = exotic_SR))+
-  geom_point()
-
-ggplot(combo12, aes(x = rumple.aop, y = exotic_SR))+
-  geom_point()
