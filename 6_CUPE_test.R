@@ -145,22 +145,48 @@ CUPE_table <- CUPE_table %>%
 CUPE_table <- CUPE_table %>%
   left_join(veg_types)
 
-CUPE_table
-combo4
+
+
+
+
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D04_CUPE_DP3_714000_2004000_reflectance.h5")
+
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/CUPE/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+CUPE_table$specCV <- CV
+
 
 combo5 <- rbind(combo4, CUPE_table)
 combo5
 
-#####
-#for all sites
-#all_sites_table <- all_sites_table %>%
-  #select(-easting, -northing)
-
-
-#carSpeeds <- read.csv(file = 'data/car-speeds.csv')
-#veg_types <- read.csv(file = 'field-sites.csv') %>%
-  #select(Site.ID, Dominant.NLCD.Classes)
-
-#add veg class to table 
-#all_sites_table <- all_sites_table %>%
-  #left_join(veg_types)
