@@ -10,83 +10,104 @@ library(neondiversity)
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-############ Read in LiDAR data ###########
-#ABBY <- readLAS(paste0(wd,"NEON_D16_ABBY_DP1_550000_5064000_classified_point_cloud_colorized.laz"))
-ABBY <- readLAS(paste0(wd,"NEON_D16_ABBY_DP1_550000_5064000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 202 -drop_z_above 774")
+############ No LiDAR data for GUAN###########
+#GUAN <- readLAS(paste0(wd,"NEON_D16_GUAN_DP1_550000_5064000_classified_point_cloud_colorized.laz"))
+#GUAN <- readLAS(paste0(wd,"NEON_D16_GUAN_DP1_550000_5064000_classified_point_cloud_colorized.laz"),
+                #filter = "-drop_z_below 202 -drop_z_above 774")
 
-summary(ABBY)
-#plot(ABBY)
+#summary(GUAN)
+#plot(GUAN)
 
 
 #set center of plot based on extent
-x <- ((max(ABBY$X) - min(ABBY$X))/2)+ min(ABBY$X)
-y <- ((max(ABBY$Y) - min(ABBY$Y))/2)+ min(ABBY$Y)
+#x <- ((max(GUAN$X) - min(GUAN$X))/2)+ min(GUAN$X)
+#y <- ((max(GUAN$Y) - min(GUAN$Y))/2)+ min(GUAN$Y)
 
-data.200m <- lasclipRectangle(ABBY, 
-                              xleft = (x - 100), ybottom = (y - 100),
-                              xright = (x + 100), ytop = (y + 100))
+#data.200m <- lasclipRectangle(GUAN, 
+                              #xleft = (x - 100), ybottom = (y - 100),
+                              #xright = (x + 100), ytop = (y + 100))
 
-dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
+#dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-data.200m <- lasnormalize(data.200m, dtm)
+#data.200m <- lasnormalize(data.200m, dtm)
 
-data.40m <- lasclipRectangle(data.200m, 
-                             xleft = (x - 20), ybottom = (y - 20),
-                             xright = (x + 20), ytop = (y + 20))
-data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
-plot(data.40m)
+#data.40m <- lasclipRectangle(data.200m, 
+                             #xleft = (x - 20), ybottom = (y - 20),
+                             #xright = (x + 20), ytop = (y + 20))
+#data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
+#plot(data.40m)
 #looks good
 
 #Zip up all the code we previously used and write function to 
 #run all 13 metrics in a single function. 
-structural_diversity_metrics <- function(data.40m) {
-  chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
-  mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
-  max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
-  rumple <- rumple_index(chm) 
-  top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
-  cells <- length(chm@data@values) 
-  chm.0 <- chm
-  chm.0[is.na(chm.0)] <- 0 
-  zeros <- which(chm.0@data@values == 0) 
-  deepgaps <- length(zeros) 
-  deepgap.fraction <- deepgaps/cells 
-  cover.fraction <- 1 - deepgap.fraction 
-  vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
-  sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
-  sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
-  Zs <- data.40m@data$Z
-  Zs <- Zs[!is.na(Zs)]
-  entro <- entropy(Zs, by = 1) 
-  gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
-  GFP.AOP <- mean(gap_frac$gf) 
-  LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
-  VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
-  VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
-  out.plot <- data.frame(
-    matrix(c(x, y, mean.max.canopy.ht,max.canopy.ht, 
-             rumple,deepgaps, deepgap.fraction, 
-             cover.fraction, top.rugosity, vert.sd, 
-             sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
-           ncol = 15)) 
-  colnames(out.plot) <- 
-    c("easting", "northing", "mean.max.canopy.ht.aop",
-      "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
-      "deepgap.fraction.aop", "cover.fraction.aop",
-      "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
-      "entropy.aop", "GFP.AOP.aop",
-      "VAI.AOP.aop", "VCI.AOP.aop") 
-  print(out.plot)
-}
+#structural_diversity_metrics <- function(data.40m) {
+  #chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
+  #mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
+  #max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
+  #rumple <- rumple_index(chm) 
+  #top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
+  #cells <- length(chm@data@values) 
+  #chm.0 <- chm
+  #chm.0[is.na(chm.0)] <- 0 
+  #zeros <- which(chm.0@data@values == 0) 
+  #deepgaps <- length(zeros) 
+  #deepgap.fraction <- deepgaps/cells 
+  #cover.fraction <- 1 - deepgap.fraction 
+  #vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
+  #sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
+  #sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
+  #Zs <- data.40m@data$Z
+  #Zs <- Zs[!is.na(Zs)]
+  #entro <- entropy(Zs, by = 1) 
+  #gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
+  #GFP.AOP <- mean(gap_frac$gf) 
+  #LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
+  #VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
+  #VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
+  #out.plot <- data.frame(
+    #matrix(c(x, y, mean.max.canopy.ht,max.canopy.ht, 
+             #rumple,deepgaps, deepgap.fraction, 
+             #cover.fraction, top.rugosity, vert.sd, 
+             #sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
+          #ncol = 15)) 
+  #colnames(out.plot) <- 
+    #c("easting", "northing", "mean.max.canopy.ht.aop",
+     # "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
+      #"deepgap.fraction.aop", "cover.fraction.aop",
+      #"top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
+      #"entropy.aop", "GFP.AOP.aop",
+      #"VAI.AOP.aop", "VCI.AOP.aop") 
+  #print(out.plot)
+#}
 
-ABBY_structural_diversity <- structural_diversity_metrics(data.40m)
+#GUAN_structural_diversity <- structural_diversity_metrics(data.40m)
+
+
+#put in NAs since there are no lidar data
+head(combo15)
+GUAN_structural_diversity <- data.frame("easting" = NA, "northing" = NA, "mean.max.canopy.ht.aop" = NA, "max.canopy.ht.aop" = NA, "rumple.aop" = NA, "deepgaps.aop" = NA, "deepgap.fraction.aop" = NA, "cover.fraction.aop" = NA, "top.rugosity.aop" = NA, "vert.sd.aop" = NA, "sd.sd.aop" = NA, "entropy.aop" = NA, "GFP.AOP.aop" = NA, "VAI.AOP.aop" = NA, "VCI.AOP.aop" = NA)
+#GUAN_structural_diversity$easting <-NA
+#GUAN_structural_diversity$northing <- NA
+#GUAN_structural_diversity$mean.max.canopy.ht.aop <- NA
+#GUAN_structural_diversity$max.canopy.ht.aop <- NA
+#GUAN_structural_diversity$rumple.aop <- NA
+#GUAN_structural_diversity$deepgaps.aop <- NA
+#GUAN_structural_diversity$deepgap.fraction.aop <- NA
+#GUAN_structural_diversity$cover.fraction.aop <- NA
+#GUAN_structural_diversity$top.rugosity.aop <- NA
+#GUAN_structural_diversity$vert.sd.aop <- NA
+#GUAN_structural_diversity$sd.sd.aop <- NA
+#GUAN_structural_diversity$entropy.aop <- NA
+#GUAN_structural_diversity$GFP.AOP.aop <- NA
+#GUAN_structural_diversity$VAI.AOP.aop <- NA
+#GUAN_structural_diversity$VCI.AOP.aop <- NA
+
 
 
 
 #####################################
 #diversity data
-devtools::insABBY_github("admahood/neondiversity")
+devtools::insGUAN_github("admahood/neondiversity")
 
 # load packages
 library(neonUtilities)
@@ -102,7 +123,7 @@ library(devtools)
 library(neondiversity)
 
 #
-cover <- loadByProduct (dpID = "DP1.10058.001", site = 'ABBY')
+cover <- loadByProduct (dpID = "DP1.10058.001", site = 'GUAN', check.size = FALSE)
 
 coverDiv <- cover[[2]]
 
@@ -119,112 +140,275 @@ summary(cover2$nativeStatusCode)
 inv <- cover2 %>%
   filter(nativeStatusCode=="I")
 
+#total SR of exotics across all plots
 exotic_SR <-length(unique(inv$scientificName))
 
+#mean plot percent cover of exotics
+exotic_cover <- inv %>%
+  group_by(plotID) %>%
+  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+  summarize(exotic_cov = mean(sumz))
 
-ABBY_table <- cbind(ABBY_structural_diversity, all_SR, exotic_SR)
 
-ABBY_table <- ABBY_table %>%
-  mutate(Site.ID = "ABBY")
 
-ABBY_table <- ABBY_table %>%
+GUAN_table <- cbind(GUAN_structural_diversity, all_SR, exotic_SR, exotic_cover)
+
+GUAN_table <- GUAN_table %>%
+  mutate(Site.ID = "GUAN")
+
+GUAN_table <- GUAN_table %>%
   select(-easting, -northing)
 
-ABBY_table <- ABBY_table %>%
+GUAN_table <- GUAN_table %>%
   left_join(veg_types)
 
 
-combo15 <- rbind(combo14, ABBY_table)
-combo15
 
-write.table(combo15, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+#############################################
+#calculate spectral reflectance as CV
+#as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
+f <- paste0(wd,"NEON_D04_GUAN_DP3_730000_1990000_reflectance.h5")
 
-#combo15 <- combo15 %>%
-#mutate(cover = if_else(Dominant.NLCD.Classes == "Shrub/Scrub", "shrub", "forest"))
+
+###
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+
+myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+
+dat <- data.frame()
+
+for (i in 1:426){
+  #extract one band
+  b <- h5read(f,"/GUAN/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+  
+  # set all values equal to -9999 to NA
+  b[b == myNoDataValue] <- NA
+  
+  #calculate mean and sd
+  meanref <- mean(b, na.rm = TRUE)
+  SDref <- sd(b, na.rm = TRUE)
+  
+  rowz <- cbind(i, meanref, SDref)
+  
+  dat <- rbind(dat, rowz)
+}
+
+
+dat$calc <- dat$SDref/dat$meanref
+
+CV <- sum(dat$calc)/426
+
+
+GUAN_table$specCV <- CV
+
+
+combo16 <- rbind(combo15, GUAN_table)
+combo16
+
+
+
+
+
+
+
+write.table(combo16, file = "prelim_results.csv", sep = ",", row.names = FALSE)
+
+#remove SRER (shrub) and CUPE (no cover data)
+
+combo16sub <-subset(combo16, Site.ID!="CUPE" & Site.ID!="SRER")
+#combo16sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER" & Site.ID!="SCBI")
+
+combo16sub$native_SR <-combo16sub$all_SR - combo16sub$exotic_SR
+
 
 library(ggplot2)
 #library(ggpmisc)
 #my.formula <- y ~ x
 
 #external heterogeneity
-ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = top.rugosity.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
   geom_smooth(method = "lm")
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo15)
+fit <- lm(exotic_SR ~ top.rugosity.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.094, p=0.285
+#r2 = 0.115, p=0.23
 
 #internal heterogeneity
-ggplot(combo15, aes(x = sd.sd.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = sd.sd.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ sd.sd.aop, data = combo15)
+fit <- lm(exotic_SR ~ sd.sd.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.013, p=0.69
+#r2 = 0.011, p=0.71
 
 #mean canopy height
-ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo15)
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.0006, p=0.93
+#r2 = 0.023, p=0.88
 
 #gap fraction
-ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = deepgap.fraction.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 #expect to see negative relationship here
 
-fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo15)
+fit <- lm(exotic_SR ~ deepgap.fraction.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.013, p=0.908
+#r2 = 2.396e-06, p=0.99
 
 #max canopy height
-ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = max.canopy.ht.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo15)
+fit <- lm(exotic_SR ~ max.canopy.ht.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.056, p=0.417
+#r2 = 0.066, p=0.37
 
 #ratio of outer canopy surface area to ground surface area 
-ggplot(combo15, aes(x = rumple.aop, y = exotic_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = rumple.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-fit <- lm(exotic_SR ~ rumple.aop, data = combo15)
+fit <- lm(exotic_SR ~ rumple.aop, data = combo16sub)
 summary(fit)
-#r2 = 0.00058, p=0.93
+#r2 = 0.00034, p=0.94
+
+#####################################################
+#try with cover data
+
+#external heterogeneity
+ggplot(combo16sub, aes(x = top.rugosity.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ top.rugosity.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.028, p=0.567
+
+#internal heterogeneity
+ggplot(combo16sub, aes(x = sd.sd.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ sd.sd.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.005, p=0.81
+
+#mean canopy height
+ggplot(combo16sub, aes(x = mean.max.canopy.ht.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ mean.max.canopy.ht.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.0003, p=0.95
+
+#gap fraction
+ggplot(combo16sub, aes(x = deepgap.fraction.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ deepgap.fraction.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.0049, p=0.81
+
+#max canopy height
+ggplot(combo16sub, aes(x = max.canopy.ht.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+fit <- lm(log(exotic_cov +1) ~ max.canopy.ht.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.238, p=0.0764
+
+#ratio of outer canopy surface area to ground surface area 
+ggplot(combo16sub, aes(x = rumple.aop, y = log(exotic_cov +1), label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+
+fit <- lm(log(exotic_cov +1) ~ rumple.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.01186, p=0.711
 
 
 
+
+
+#####################################################
+#try with native SR
+
+#external heterogeneity
+fit <- lm(exotic_SR ~ top.rugosity.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.12, p=0.48
+
+#internal heterogeneity
+fit <- lm(exotic_SR ~ sd.sd.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.017, p=0.91
+
+#mean canopy height
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.009, p=0.948
+
+#gap fraction
+fit <- lm(exotic_SR ~ deepgap.fraction.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.0063, p=0.9656
+
+#max canopy height
+fit <- lm(exotic_SR ~ max.canopy.ht.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.1117, p=0.52
+
+#ratio of outer canopy surface area to ground surface area 
+fit <- lm(exotic_SR ~ rumple.aop + native_SR, data = combo16sub)
+summary(fit)
+#r2 = 0.006157, p=0.9666
+
+
+
+
+
+
+
+
+################################################
 ###
-###these are not that useful
-ggplot(combo15, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+###these are less useful
+ggplot(combo16sub, aes(x = mean.max.canopy.ht.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = max.canopy.ht.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = rumple.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = rumple.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = deepgap.fraction.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
 
-ggplot(combo15, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, color = cover, label = Site.ID))+
+ggplot(combo16sub, aes(x = top.rugosity.aop, y = exotic_SR/all_SR, label = Site.ID))+
   geom_point()+
   geom_text(aes(label=Site.ID),hjust=0, vjust=0)
