@@ -214,7 +214,6 @@ combo16
 write.table(combo16, file = "prelim_results.csv", sep = ",", row.names = FALSE)
 
 #remove SRER (shrub) and CUPE (no cover data)
-
 combo16sub <-subset(combo16, Site.ID!="CUPE" & Site.ID!="SRER")
 #combo16sub <-subset(combo15, Site.ID!="CUPE" & Site.ID!="SRER" & Site.ID!="SCBI")
 
@@ -222,9 +221,9 @@ combo16sub$native_SR <-combo16sub$all_SR - combo16sub$exotic_SR
 
 
 library(ggplot2)
-#library(ggpmisc)
-#my.formula <- y ~ x
 
+
+#linear regression with structural data and exotic SR
 #external heterogeneity
 ggplot(combo16sub, aes(x = top.rugosity.aop, y = exotic_SR, label = Site.ID))+
   geom_point()+
@@ -285,7 +284,7 @@ summary(fit)
 #r2 = 0.00034, p=0.94
 
 #####################################################
-#try with cover data
+#linear regression with structural diversity and cover data
 
 #external heterogeneity
 ggplot(combo16sub, aes(x = top.rugosity.aop, y = log(exotic_cov +1), label = Site.ID))+
@@ -350,42 +349,195 @@ summary(fit)
 
 
 
+
+
 #####################################################
-#try with native SR
+#linear regression with spectral data and exotic SR and cover
+ggplot(combo16sub, aes(x = specCV, y = exotic_SR, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+#expect to see negative relationship here
+
+fit <- lm(exotic_SR ~ specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.005, p=0.7974
+
+
+ggplot(combo16sub, aes(x = specCV, y = exotic_cov, label = Site.ID))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0)
+#expect to see negative relationship here
+
+fit <- lm(exotic_cov ~ specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.09527, p=0.263
+
+
+
+#####################################################
+#multiple regression with structural diversity and specCV
 
 #external heterogeneity
-fit <- lm(exotic_SR ~ top.rugosity.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ top.rugosity.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.12, p=0.48
+#r2 = 0.1156, p=0.5088
 
 #internal heterogeneity
-fit <- lm(exotic_SR ~ sd.sd.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ sd.sd.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.017, p=0.91
+#r2 = 0.0199, p=0.8952
 
 #mean canopy height
-fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.009, p=0.948
+#r2 = 0.0157, p=0.9167
 
 #gap fraction
-fit <- lm(exotic_SR ~ deepgap.fraction.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ deepgap.fraction.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.0063, p=0.9656
+#r2 = 0.02167, p=0.8865
 
 #max canopy height
-fit <- lm(exotic_SR ~ max.canopy.ht.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ max.canopy.ht.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.1117, p=0.52
+#r2 = 0.075, p=0.6476
 
 #ratio of outer canopy surface area to ground surface area 
-fit <- lm(exotic_SR ~ rumple.aop + native_SR, data = combo16sub)
+fit <- lm(exotic_SR ~ rumple.aop + specCV, data = combo16sub)
 summary(fit)
-#r2 = 0.006157, p=0.9666
+#r2 = 0.02473, p=0.8713
 
 
 
+#####################################################
+#multiple regression with structural diversity, native_SR and specCV
 
+#external heterogeneity
+fit <- lm(exotic_SR ~ top.rugosity.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.12, p=0.7076
+
+#internal heterogeneity
+fit <- lm(exotic_SR ~ sd.sd.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.0244, p=0.9675
+
+#mean canopy height
+fit <- lm(exotic_SR ~ mean.max.canopy.ht.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.0199, p=0.9758
+
+#gap fraction
+fit <- lm(exotic_SR ~ deepgap.fraction.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.028, p=0.9595
+
+#max canopy height
+fit <- lm(exotic_SR ~ max.canopy.ht.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.1163, p=0.73
+
+#ratio of outer canopy surface area to ground surface area 
+fit <- lm(exotic_SR ~ rumple.aop + native_SR + specCV, data = combo16sub)
+summary(fit)
+#r2 = 0.02687, p=0.9628
+
+
+
+################################################
+#spectral diversity vs. structural diversity
+
+#external heterogeneity
+fit <- lm(specCV ~ top.rugosity.aop, data = combo16sub)
+summary(fit)
+#r2 = 0.1655, p = 0.1489
+
+#internal heterogeneity
+fit <- lm(specCV ~ sd.sd.aop, data = combo16sub)
+summary(fit)
+#r2= 0.122, p = 0.2205
+
+#mean canopy height
+fit <- lm(specCV ~ mean.max.canopy.ht.aop, data = combo16sub)
+summary(fit)
+#r2=0.2863, p=0.04863
+
+#mean canopy height and exotic SR
+fit <- lm(specCV ~ mean.max.canopy.ht.aop + exotic_SR, data = combo16sub)
+summary(fit)
+#r2=0.2962, p=0.1449
+
+#mean canopy height and exotic cov
+fit <- lm(specCV ~ mean.max.canopy.ht.aop + exotic_cov, data = combo16sub)
+summary(fit)
+#r2=0.4067, p=0.05664
+
+#exotic cov
+fit <- lm(specCV ~ exotic_cov, data = combo16sub)
+summary(fit)
+#r2=0.09527, p=0.263
+
+#gap fraction
+fit <- lm(specCV ~ deepgap.fraction.aop, data = combo16sub)
+summary(fit)
+#r2=0.2967, p=0.0440
+
+#gap fraction and exotic SR
+fit <- lm(specCV ~ deepgap.fraction.aop + exotic_SR, data = combo16sub)
+summary(fit)
+#r2=0.3119, p=0.128
+
+#gap fraction and exotic cov
+fit <- lm(specCV ~ deepgap.fraction.aop + exotic_cov, data = combo16sub)
+summary(fit)
+#r2=0.4368, p=0.04251
+
+#spec div and exotic
+fit <- lm(specCV ~ exotic_cov, data = combo16sub)
+summary(fit)
+#r2=0.09527, p=0.263
+
+#max canopy height
+fit <- lm(specCV ~ max.canopy.ht.aop, data = combo16sub)
+summary(fit)
+#r2=0.011, p=0.72
+
+#ratio of outer canopy surface area to ground surface area 
+fit <- lm(specCV ~ rumple.aop, data = combo16sub)
+summary(fit)
+#r2=0.28, p=0.05157
+
+#choose most dominant cover type
+combo16sub$dominantforest <- gsub( " .*$", "", combo16sub$Dominant.NLCD.Classes)
+
+#mean canopy height
+ggplot(combo16sub, aes(x = mean.max.canopy.ht.aop, y = specCV, label = Site.ID, color = dominantforest))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+
+#gap fractionn
+ggplot(combo16sub, aes(x = deepgap.fraction.aop, y = specCV, label = Site.ID, color = dominantforest))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+
+#ratio of outer canopy surface area to ground surface area
+ggplot(combo16sub, aes(x = rumple.aop, y = specCV, label = Site.ID, color = dominantforest))+
+  geom_point()+
+  geom_text(aes(label=Site.ID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")
+
+################################################
+#linear mixed models
+#getting this error: Error: number of levels of each grouping factor must be < number of observations
+library(lme4)
+library(lmerTest)
+
+final_mods <- list()
+final_mods$exotic_cov <- lmer(exotic_cov ~ top.rugosity.aop * native_SR * specCV *Dominant.NLCD.Classes + (1|Site.ID), 
+                       data=combo16sub, REML = TRUE)
 
 
 
