@@ -4,7 +4,7 @@
 library(lidR)
 library(gstat)
 library(neondiversity)
-library(dplyr)
+
 
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
@@ -15,10 +15,9 @@ NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_clo
 #NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
                 #filter = "-drop_z_below 2460 -drop_z_above 2947")
 
-NIWO <- NIWO %>%
-  lidR::classify_noise(las, algorithm)
-
+#remove outliers by classifying as noise, then removing noise
 NIWO <- lidR::classify_noise(NIWO, sor(15,3))
+NIWO <- filter_poi(NIWO, Classification != LASNOISE)
 
 summary(NIWO)
 
@@ -41,6 +40,7 @@ dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 #normalize the data based on the digital terrain model (correct for elevation)
 data.200m <- lasnormalize(data.200m, dtm)
 
+#might not need this step
 #subset to a 40 m x 40 m (1600m2) subtile
 data.40m <- lasclipRectangle(data.200m, 
                              xleft = (x - 20), ybottom = (y - 20),
@@ -95,94 +95,13 @@ structural_diversity_metrics <- function(data.40m) {
 NIWO_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
-###
-#mosaicking
-
-NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_447000_4426000_classified_point_cloud_colorized.laz"))
-NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_447000_4426000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 2930 -drop_z_above 3541")
-summary(NIWO)
-
-#Let's correct for elevation and measure structural diversity for NIWO
-#find center point of tile
-x <- ((max(NIWO$X) - min(NIWO$X))/2)+ min(NIWO$X)
-y <- ((max(NIWO$Y) - min(NIWO$Y))/2)+ min(NIWO$Y)
-
-#subset to 200 m x 200 m (400m2) subtile
-data.200m <- lasclipRectangle(NIWO, 
-                              xleft = (x - 100), ybottom = (y - 100),
-                              xright = (x + 100), ytop = (y + 100))
-
-dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
-
-data.200m <- lasnormalize(data.200m, dtm)
-
-#subset to 40 m x 40 m (160m2) subtile
-data.40m <- lasclipRectangle(data.200m, 
-                             xleft = (x - 20), ybottom = (y - 20),
-                             xright = (x + 20), ytop = (y + 20))
-
-data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
-plot(data.40m)
-
-
-
-NIWO1 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_450000_4427000_classified_point_cloud_colorized.laz"))
-NIWO1 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_450000_4427000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 2812 -drop_z_above 3263")
-summary(NIWO1)
-
-#Let's correct for elevation and measure structural diversity for NIWO
-x <- ((max(NIWO1$X) - min(NIWO1$X))/2)+ min(NIWO1$X)
-y <- ((max(NIWO1$Y) - min(NIWO1$Y))/2)+ min(NIWO1$Y)
-
-
-data.200m1 <- lasclipRectangle(NIWO1, 
-                              xleft = (x - 100), ybottom = (y - 100),
-                              xright = (x + 100), ytop = (y + 100))
-
-dtm1 <- grid_terrain(data.200m1, 1, kriging(k = 10L))
-
-data.200m1 <- lasnormalize(data.200m1, dtm)
-
-data.40m1 <- lasclipRectangle(data.200m1, 
-                             xleft = (x - 20), ybottom = (y - 20),
-                             xright = (x + 20), ytop = (y + 20))
-data.40m1@data$Z[data.40m1@data$Z <= .5] <- 0  
-plot(data.40m1)
-
-
-
-NIWO2 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_455000_4425000_classified_point_cloud_colorized.laz"))
-NIWO2 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_455000_4425000_classified_point_cloud_colorized.laz"),
-                 filter = "-drop_z_below 2388 -drop_z_above 2836")
-summary(NIWO2)
-
-#Let's correct for elevation and measure structural diversity for NIWO
-x <- ((max(NIWO2$X) - min(NIWO2$X))/2)+ min(NIWO2$X)
-y <- ((max(NIWO2$Y) - min(NIWO2$Y))/2)+ min(NIWO2$Y)
-
-
-data.200m2 <- lasclipRectangle(NIWO2, 
-                               xleft = (x - 100), ybottom = (y - 100),
-                               xright = (x + 100), ytop = (y + 100))
-
-dtm2 <- grid_terrain(data.200m2, 1, kriging(k = 10L))
-
-data.200m2 <- lasnormalize(data.200m2, dtm)
-
-data.40m2 <- lasclipRectangle(data.200m2, 
-                              xleft = (x - 20), ybottom = (y - 20),
-                              xright = (x + 20), ytop = (y + 20))
-data.40m2@data$Z[data.40m2@data$Z <= .5] <- 0  
-plot(data.40m2)
 
 
 
 
 #####################################
 #diversity data
-devtools::install_github("admahood/neondiversity")
+#devtools::install_github("admahood/neondiversity")
 
 # load packages
 library(neonUtilities)
@@ -199,9 +118,35 @@ library(neondiversity)
 
 coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= FALSE)
 
-coverDivN <- coverN[[2]]
+#cover is measured in 1 m2 subplots
+coverDivN1 <- coverN[[3]]
 
-coverDivN10 <- coverN[[1]]
+#OR could also get species richness from 10 m2 subplots, but no cover data#
+coverDivN10 <- coverN[[2]]
+
+locations1 <-unique(coverDivN1[c("plotID", "subplotID", "decimalLatitude", "decimalLongitude")])
+
+locations10 <-unique(coverDivN10[c("plotID", "subplotID", "decimalLatitude", "decimalLongitude")])
+
+ggplot() + 
+  geom_sf() +
+  geom_point(data = locations1, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") +
+  geom_point(data = locations10, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "blue")
+
+
+#OR#
+locations2 <- st_as_sf(locations1, coords = c("decimalLongitude", "decimalLatitude"), 
+                  crs = 4326)
+locations20 <- st_as_sf(locations10, coords = c("decimalLongitude", "decimalLatitude"), 
+                       crs = 4326)
+
+ggplot() + 
+  geom_sf() +
+  geom_sf(data = locations2, size = 2, color = "darkred") +
+  geom_sf(data = locations20, size = 2, color = "blue")
+
+
+
 
 unique(coverDivN$divDataType)
 
