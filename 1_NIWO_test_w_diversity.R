@@ -120,55 +120,23 @@ library(rgdal)
 coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= FALSE)
 
 #cover is measured in 1 m2 subplots
-coverDivN1 <- coverN[[3]]
+coverDivN <- coverN[[3]]
 
 #OR could also get species richness from 10 m2 subplots, but no cover data#
 coverDivN10 <- coverN[[2]]
 
+#subplot info
 locations1 <-unique(coverDivN1[c("plotID", "subplotID", "decimalLatitude", "decimalLongitude")])
-
 locations10 <-unique(coverDivN10[c("plotID", "subplotID", "decimalLatitude", "decimalLongitude")])
 
+#plot info
 #33 plots for NIWO
 plots <-unique(coverDivN1[c("plotID", "decimalLatitude", "decimalLongitude")])
 
-#site_locations <- st_read("data/terrestrialSamplingBoundaries.shp")
-site_locations <- readOGR(dsn="data/", layer = "terrestrialSamplingBoundaries")
-plot_locations <- readOGR(dsn="data/", layer = "NEON_TOS_Plot_Centroids")
-
-ggplot() + 
-  geom_polygon(data = site_locations, aes(x = lat, y = long))+
-  geom_point(data = plot_locations, aes(x = latitude, y = longitude))
-
-summary(site_locations)
-head(site_locations)
-
-plot(site_locations)
-plot(plot_locations)
-
-
+#view plot locations
 ggplot() + 
   geom_sf() +
   geom_point(data = plots, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") 
-
-#this is only plotting plots (i.e., no separate info for subplot lat/long)
-ggplot() + 
-  geom_sf() +
-  geom_point(data = locations1, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") 
-
-
-#OR#
-locations2 <- st_as_sf(locations1, coords = c("decimalLongitude", "decimalLatitude"), 
-                  crs = 4326)
-locations20 <- st_as_sf(locations10, coords = c("decimalLongitude", "decimalLatitude"), 
-                       crs = 4326)
-
-ggplot() + 
-  geom_sf() +
-  geom_sf(data = locations2, size = 2, color = "darkred") +
-  geom_sf(data = locations20, size = 2, color = "blue")
-
-
 
 
 unique(coverDivN$divDataType)
@@ -182,6 +150,7 @@ dates <- unique(cover2N$monthyear)
 dates
 
 #extract data for monthyear combo of interest
+#pull in list of monthyear combo by site
 cover2N <- cover2N %>%
   filter(monthyear == '2018-08' | monthyear == '2019-08' | monthyear == '2020-08')
 
