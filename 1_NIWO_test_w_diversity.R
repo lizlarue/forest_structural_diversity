@@ -115,6 +115,7 @@ library(sf)
 library(sp)
 library(devtools)
 library(neondiversity)
+library(rgdal)
 
 coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= FALSE)
 
@@ -128,10 +129,32 @@ locations1 <-unique(coverDivN1[c("plotID", "subplotID", "decimalLatitude", "deci
 
 locations10 <-unique(coverDivN10[c("plotID", "subplotID", "decimalLatitude", "decimalLongitude")])
 
+#33 plots for NIWO
+plots <-unique(coverDivN1[c("plotID", "decimalLatitude", "decimalLongitude")])
+
+#site_locations <- st_read("data/terrestrialSamplingBoundaries.shp")
+site_locations <- readOGR(dsn="data/", layer = "terrestrialSamplingBoundaries")
+plot_locations <- readOGR(dsn="data/", layer = "NEON_TOS_Plot_Centroids")
+
+ggplot() + 
+  geom_polygon(data = site_locations, aes(x = lat, y = long))+
+  geom_point(data = plot_locations, aes(x = latitude, y = longitude))
+
+summary(site_locations)
+head(site_locations)
+
+plot(site_locations)
+plot(plot_locations)
+
+
 ggplot() + 
   geom_sf() +
-  geom_point(data = locations1, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") +
-  geom_point(data = locations10, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "blue")
+  geom_point(data = plots, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") 
+
+#this is only plotting plots (i.e., no separate info for subplot lat/long)
+ggplot() + 
+  geom_sf() +
+  geom_point(data = locations1, aes(x = decimalLongitude, y = decimalLatitude), size = 2, color = "darkred") 
 
 
 #OR#
