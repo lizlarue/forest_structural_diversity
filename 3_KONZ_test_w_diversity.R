@@ -107,6 +107,11 @@ unique(coverDivK$divDataType)
 cover2K <- coverDivK %>%
   filter(divDataType=="plantSpecies")
 
+cover2K$monthyear <- substr(cover2K$endDate,1,7)
+
+dates <- unique(cover2K$monthyear)
+dates
+
 all_SR <-length(unique(cover2K$scientificName))
 
 summary(cover2K$nativeStatusCode)

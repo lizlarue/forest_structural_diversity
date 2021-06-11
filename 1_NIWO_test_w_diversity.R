@@ -8,35 +8,49 @@ library(neondiversity)
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
-NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
+###
+#original code, random tile#
+NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
+#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
                 filter = "-drop_z_below 2460 -drop_z_above 2947")
+
+NIWO <- NIWO %>%
+  classify_noise(las, algorithm)
+
+NIWO <- classify_noise(NIWO, sor(15,3))
+
 summary(NIWO)
 
-#Let's correct for elevation and measure structural diversity for NIWO
+
+#find center point of tile
 x <- ((max(NIWO$X) - min(NIWO$X))/2)+ min(NIWO$X)
 y <- ((max(NIWO$Y) - min(NIWO$Y))/2)+ min(NIWO$Y)
 
 #x <- 454500 
 #y <- 4425608
 
+#subset to 200 m x 200 m (40,000m2) subtile
 data.200m <- lasclipRectangle(NIWO, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
+#creates rasterized digital terrain model
 dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
+#normalize the data based on the digital terrain model (correct for elevation)
 data.200m <- lasnormalize(data.200m, dtm)
 
+#subset to a 40 m x 40 m (1600m2) subtile
 data.40m <- lasclipRectangle(data.200m, 
                              xleft = (x - 20), ybottom = (y - 20),
                              xright = (x + 20), ytop = (y + 20))
+
+#replaces really short veg with zeros
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
 plot(data.40m)
 
 
-#Zip up all the code we previously used and write function to 
-#run all 13 metrics in a single function. 
+#calculate structural diversity metrics 
 structural_diversity_metrics <- function(data.40m) {
   chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
   mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
@@ -80,6 +94,88 @@ structural_diversity_metrics <- function(data.40m) {
 NIWO_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
+###
+#mosaicking
+
+NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_447000_4426000_classified_point_cloud_colorized.laz"))
+NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_447000_4426000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below 2930 -drop_z_above 3541")
+summary(NIWO)
+
+#Let's correct for elevation and measure structural diversity for NIWO
+#find center point of tile
+x <- ((max(NIWO$X) - min(NIWO$X))/2)+ min(NIWO$X)
+y <- ((max(NIWO$Y) - min(NIWO$Y))/2)+ min(NIWO$Y)
+
+#subset to 200 m x 200 m (400m2) subtile
+data.200m <- lasclipRectangle(NIWO, 
+                              xleft = (x - 100), ybottom = (y - 100),
+                              xright = (x + 100), ytop = (y + 100))
+
+dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
+
+data.200m <- lasnormalize(data.200m, dtm)
+
+#subset to 40 m x 40 m (160m2) subtile
+data.40m <- lasclipRectangle(data.200m, 
+                             xleft = (x - 20), ybottom = (y - 20),
+                             xright = (x + 20), ytop = (y + 20))
+
+data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
+plot(data.40m)
+
+
+
+NIWO1 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_450000_4427000_classified_point_cloud_colorized.laz"))
+NIWO1 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_450000_4427000_classified_point_cloud_colorized.laz"),
+                filter = "-drop_z_below 2812 -drop_z_above 3263")
+summary(NIWO1)
+
+#Let's correct for elevation and measure structural diversity for NIWO
+x <- ((max(NIWO1$X) - min(NIWO1$X))/2)+ min(NIWO1$X)
+y <- ((max(NIWO1$Y) - min(NIWO1$Y))/2)+ min(NIWO1$Y)
+
+
+data.200m1 <- lasclipRectangle(NIWO1, 
+                              xleft = (x - 100), ybottom = (y - 100),
+                              xright = (x + 100), ytop = (y + 100))
+
+dtm1 <- grid_terrain(data.200m1, 1, kriging(k = 10L))
+
+data.200m1 <- lasnormalize(data.200m1, dtm)
+
+data.40m1 <- lasclipRectangle(data.200m1, 
+                             xleft = (x - 20), ybottom = (y - 20),
+                             xright = (x + 20), ytop = (y + 20))
+data.40m1@data$Z[data.40m1@data$Z <= .5] <- 0  
+plot(data.40m1)
+
+
+
+NIWO2 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_455000_4425000_classified_point_cloud_colorized.laz"))
+NIWO2 <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_455000_4425000_classified_point_cloud_colorized.laz"),
+                 filter = "-drop_z_below 2388 -drop_z_above 2836")
+summary(NIWO2)
+
+#Let's correct for elevation and measure structural diversity for NIWO
+x <- ((max(NIWO2$X) - min(NIWO2$X))/2)+ min(NIWO2$X)
+y <- ((max(NIWO2$Y) - min(NIWO2$Y))/2)+ min(NIWO2$Y)
+
+
+data.200m2 <- lasclipRectangle(NIWO2, 
+                               xleft = (x - 100), ybottom = (y - 100),
+                               xright = (x + 100), ytop = (y + 100))
+
+dtm2 <- grid_terrain(data.200m2, 1, kriging(k = 10L))
+
+data.200m2 <- lasnormalize(data.200m2, dtm)
+
+data.40m2 <- lasclipRectangle(data.200m2, 
+                              xleft = (x - 20), ybottom = (y - 20),
+                              xright = (x + 20), ytop = (y + 20))
+data.40m2@data$Z[data.40m2@data$Z <= .5] <- 0  
+plot(data.40m2)
+
 
 
 
@@ -104,31 +200,51 @@ coverN <- loadByProduct (dpID = "DP1.10058.001", site = 'NIWO', check.size= FALS
 
 coverDivN <- coverN[[2]]
 
+coverDivN10 <- coverN[[1]]
+
 unique(coverDivN$divDataType)
 
 cover2N <- coverDivN %>%
   filter(divDataType=="plantSpecies")
 
-all_SR <-length(unique(cover2N$scientificName))
+cover2N$monthyear <- substr(cover2N$endDate,1,7)
+
+dates <- unique(cover2N$monthyear)
+dates
+
+#extract data for monthyear combo of interest
+cover2N <- cover2N %>%
+  filter(monthyear == '2018-08' | monthyear == '2019-08' | monthyear == '2020-08')
+
+all_SR <- cover2N %>%
+  group_by(monthyear, plotID) %>%
+  summarize(all_SR =length(scientificName))
+
+#all_SR <-length(unique(cover2N$scientificName))
 
 summary(cover2N$nativeStatusCode)
 #no 'I's...what are NIs?
 
-#subset of invasive only
+#subset of invasive only; here zero invasives at NIWO
 inv <- cover2N %>%
   filter(nativeStatusCode=="I")
 
+#calculate SR of nonnatives
+nonnative_SR <- inv %>%
+  group_by(monthyear, plotID) %>%
+  summarize(nonnative_SR =length(scientificName))
+
 #total SR of exotics across all plots
-exotic_SR <-length(unique(inv$scientificName))
+#exotic_SR <-length(unique(inv$scientificName))
 
-#mean plot percent cover of exotics
-exotic_cover <- inv %>%
-  group_by(plotID) %>%
+#mean percent cover of nonnatives by plot and monthyear
+nonnative_cover <- inv %>%
+  group_by(monthyear, plotID) %>%
   summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
-  summarize(exotic_cov = mean(sumz))
+  summarize(nonnative_cov = mean(sumz))
 
-
-NIWO_table <- cbind(NIWO_structural_diversity, all_SR, exotic_SR, exotic_cover)
+#need to make the table now to have spaces for each plot, monthyear combo
+NIWO_table <- cbind(NIWO_structural_diversity, all_SR, nonnative_SR, nonnative_cover)
 
 NIWO_table <- NIWO_table %>%
   mutate(Site.ID = "NIWO")
