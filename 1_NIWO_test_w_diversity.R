@@ -4,6 +4,7 @@
 library(lidR)
 library(gstat)
 library(neondiversity)
+library(dplyr)
 
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
@@ -12,12 +13,12 @@ setwd(wd)
 #original code, random tile#
 NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
 #NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 2460 -drop_z_above 2947")
+                #filter = "-drop_z_below 2460 -drop_z_above 2947")
 
 NIWO <- NIWO %>%
-  classify_noise(las, algorithm)
+  lidR::classify_noise(las, algorithm)
 
-NIWO <- classify_noise(NIWO, sor(15,3))
+NIWO <- lidR::classify_noise(NIWO, sor(15,3))
 
 summary(NIWO)
 
