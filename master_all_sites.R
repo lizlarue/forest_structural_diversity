@@ -32,8 +32,7 @@ WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_clo
 
 #loop through sites
 sites <- list(NIWO, WREF)
-sites <- list(NIWO, WREF, KONZ, YELL, ONAQ, SJER, CLBJ, OSBS, TALL, HARV, SCBI, UNDE, PUUM, SRER, BONA, GUAN)
-#sites <- as.factor(c('NIWO', 'WREF', 'KONZ', 'YELL', 'ONAQ', 'SJER', 'CLBJ', 'OSBS', 'TALL', 'HARV', 'SCBI', 'UNDE', 'PUUM', 'SRER', 'BONA', 'GUAN'))
+sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
 
 #dfarray <- list(df1, df2, df3)
 #lapply(dfarray, function(i) plot(i$x, i$y))
@@ -109,52 +108,47 @@ i_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 #####################################
+#sites <- list('BONA', 'CLBJ')
+sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
+
+tot_table = data.frame()
 #diversity data
-cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
-
-coverDiv <- cover[[2]]
-
-unique(coverDiv$divDataType)
-
-cover2 <- coverDiv %>%
+for (i in sites) {
+  cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
+  coverDiv <- cover[[3]]
+  cover2 <- coverDiv %>%
   filter(divDataType=="plantSpecies")
+  all_SR <-length(unique(cover2$scientificName))
 
-all_SR <-length(unique(cover2$scientificName))
+  #subset of invasive only
+  inv <- cover2 %>%
+    filter(nativeStatusCode=="I")
 
-summary(cover2$nativeStatusCode)
+  #total SR of exotics across all plots
+  exotic_SR <-length(unique(inv$scientificName))
+
+  #mean plot percent cover of exotics
+  exotic_cover <- inv %>%
+    group_by(plotID) %>%
+    summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+    summarize(exotic_cov = mean(sumz))
+
+  i_table <- cbind(all_SR, exotic_SR, exotic_cover)
+  
+  i_table <- i_table %>%
+    mutate(Site.ID = i)
+  
+  tot_table <- rbind(tot_table,i_table)
+
+  }
 
 
-#subset of invasive only
-inv <- cover2 %>%
-  filter(nativeStatusCode=="I")
-
-#total SR of exotics across all plots
-exotic_SR <-length(unique(inv$scientificName))
-
-#mean plot percent cover of exotics
-exotic_cover <- inv %>%
-  group_by(plotID) %>%
-  summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
-  summarize(exotic_cov = mean(sumz))
-
-i_table <- cbind(i_structural_diversity, all_SR, exotic_SR, exotic_cover)
-
-i_table <- i_table %>%
-  mutate(Site.ID = i)
-
-i_table <- i_table %>%
-  select(-easting, -northing)
-
+###
 veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
   select(Site.ID, Dominant.NLCD.Classes)
 
-i_table <- i_table %>%
+tot_table <- tot_table %>%
   left_join(veg_types)
-
-i_table
-
-}
-
 #############################################
 #calculate spectral reflectance as CV
 #as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
