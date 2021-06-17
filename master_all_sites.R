@@ -152,7 +152,7 @@ for (i in sites) {
   tot_cover <- rbind(tot_cover, cover2)
 }
   
-write.table(tot_cover, file = "prelim_cover.csv", sep = ",", row.names = FALSE)
+write.table(tot_cover, file = "data/prelim_cover.csv", sep = ",", row.names = FALSE)
 
 
 
