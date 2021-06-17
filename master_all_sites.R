@@ -111,13 +111,35 @@ i_structural_diversity <- structural_diversity_metrics(data.40m)
 #sites <- list('BONA', 'CLBJ')
 sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
 
+
+#prep dates to subset cover data to dates of interest
+###
+dates <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_dates.csv')
+
+datezz <- dates %>%
+  gather(key = "datez", value = "date", -siteID)
+
+datezz$sitemonthyear <- stringr::str_c(datezz$siteID, datezz$date)
+
+datezzz <- as.list(datezz$sitemonthyear)
+###
+
+
 tot_table = data.frame()
 #diversity data
 for (i in sites) {
   cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
   coverDiv <- cover[[3]]
+  
   cover2 <- coverDiv %>%
   filter(divDataType=="plantSpecies")
+  
+  cover2$monthyear <- substr(cover2$endDate,1,7) 
+
+  cover2$sitemonthyear <- stringr::str_c(cover2$siteID, cover2$monthyear)
+  
+  cover2[cover2$sitemonthyear %in% datezzz ,]
+  
   all_SR <-length(unique(cover2$scientificName))
 
   #subset of invasive only
