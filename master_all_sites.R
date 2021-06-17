@@ -114,7 +114,7 @@ sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'S
 
 #prep dates to subset cover data to dates of interest; create list of site/date combos of interest
 ###
-dates <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_dates.csv')
+dates <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_dates_for_cover.csv')
 
 datezz <- dates %>%
   gather(key = "datez", value = "date", -siteID) %>%
@@ -125,13 +125,13 @@ datezz$sitemonthyear <- stringr::str_c(datezz$siteID, datezz$date)
 datezzz <- as.list(datezz$sitemonthyear)
 
 
-
+###############################
 ###if decide to do recent only
 recent <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_recent_dates.csv')
 recent$sitemonthyear <- stringr::str_c(recent$siteID, recent$recent)
 
 recentdatezzz <- as.list(recent$sitemonthyear)
-###
+###############################
 
 tot_cover = data.frame()
 
@@ -160,7 +160,7 @@ write.table(tot_cover, file = "data/prelim_cover.csv", sep = ",", row.names = FA
 
 
 
-
+#to create allSR, exoticSR, exotic cover at site level for site, date combos
 tot_table = data.frame()
 
 for (i in datezzz) {
@@ -189,68 +189,105 @@ for (i in datezzz) {
   tot_table <- rbind(tot_table,i_table)
 }
 
+#82 site, date combos
+
 tot_table$siteID <- substr(tot_table$i,1,4) 
 tot_table$monthyear <- substr(tot_table$i,5,11) 
-#tot_table$year <- substr(tot_table$monthyear, 1, 4)
+tot_table$year <- substr(tot_table$monthyear, 1, 4)
 
 count <-unique(tot_table$siteID)
 #31
 
 #remove rows where numplots = 0
-tot_table_align <- tot_table %>%
-  filter(numplots != 0)
+#tot_table_align <- tot_table %>%
+  #filter(numplots != 0)
 #57 site date combos that align of where they sampled 
 
-othercount <- unique(tot_table_align$siteID)
+#othercount <- unique(tot_table_align$siteID)
 #27; only 27 sites with 0 numplots
 
-#choose the most recent of these
-one_date <- tot_table_align %>%
+#choose the most recent of these???
+one_date <- tot_table %>%
   group_by(siteID) %>%
   top_n(n=1)
-
-############################################
-#with recent dates only
-tot_table_recent = data.frame()
-
-for (i in recentdatezzz) {
-  
-  sub <- tot_cover %>%
-    filter (sitemonthyear == i)
-  
-  numplots <-length(unique(sub$plotID))
-  
-  all_SR <-length(unique(sub$scientificName))
-  
-  #subset of invasive only
-  inv <- sub %>%
-    filter(nativeStatusCode=="I")
-  
-  #total SR of exotics across all plots
-  exotic_SR <-length(unique(inv$scientificName))
-  
-  #mean percent cover of exotics
-  exotic_cover <- inv %>%
-    summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
-    summarize(exotic_cov = mean(sumz))
-  
-  i_table <- cbind(numplots, all_SR, exotic_SR, exotic_cover, i)
-  
-  tot_table_recent <- rbind(tot_table_recent,i_table)
-}
-
-
-
-
 
 
 
 ###
 veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes)
+  select(Site.ID, Dominant.NLCD.Classes) %>%
+  rename(siteID = Site.ID)
 
 tot_table <- tot_table %>%
   left_join(veg_types)
+
+
+
+
+
+
+
+#############################################
+#to create allSR, exoticSR, exotic cover at plot level for site, date combos
+
+rm(tot_table_plots)
+tot_table_plots = data.frame()
+
+for (i in datezzz) {
+  
+  all_SR <- tot_cover %>%
+    filter (sitemonthyear == i) %>%
+    group_by(plotID) %>%
+    summarize(SR = n_distinct(scientificName)) 
+ 
+  #subset of invasive only, for this site
+  inv <- tot_cover %>%
+    filter (sitemonthyear == "HEAL2019-08" & nativeStatusCode =="I")
+  
+  #subset of invasive only
+  exotic_SR <- inv %>%
+    filter (sitemonthyear == i) %>%
+    group_by(plotID) %>%
+    summarize(exotic_SR =  n_distinct(scientificName))
+
+  if (length(exotic_SR) = 0) {
+    exotic_SR <- 0
+  }
+  
+  #mean percent cover of exotics
+  exotic_cover <- inv %>%
+    filter (sitemonthyear == i) %>%
+    group_by(plotID) %>%
+    summarize(exotic_cov = sum(percentCover, na.rm = TRUE))
+
+  if (length(exotic_cover) = 0) {
+    exotic_cover <- 0
+  }
+  
+  i_table_plots <- cbind(all_SR, exotic_SR, exotic_cover, i)
+  
+  i_table_plots <- i_table_plots[,!duplicated(names(i_table_plots))]
+  
+  tot_table_plots <- rbind(tot_table_plots,i_table_plots)
+}
+
+
+
+tot_table_plots$siteID <- substr(tot_table_plots$i,1,4) 
+tot_table_plots$monthyear <- substr(tot_table_plots$i,5,11) 
+tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
+
+
+
+
+
+
+
+
+
+
+
+
 #############################################
 #calculate spectral reflectance as CV
 #as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
