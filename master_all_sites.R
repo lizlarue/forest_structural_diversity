@@ -112,21 +112,30 @@ i_structural_diversity <- structural_diversity_metrics(data.40m)
 sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
 
 
-#prep dates to subset cover data to dates of interest
+#prep dates to subset cover data to dates of interest; create list of site/date combos of interest
 ###
 dates <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_dates.csv')
 
 datezz <- dates %>%
-  gather(key = "datez", value = "date", -siteID)
+  gather(key = "datez", value = "date", -siteID) %>%
+  drop_na(.)
 
 datezz$sitemonthyear <- stringr::str_c(datezz$siteID, datezz$date)
 
 datezzz <- as.list(datezz$sitemonthyear)
+
+
+
+###if decide to do recent only
+recent <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_recent_dates.csv')
+recent$sitemonthyear <- stringr::str_c(recent$siteID, recent$recent)
+
+recentdatezzz <- as.list(recent$sitemonthyear)
 ###
 
+tot_cover = data.frame()
 
-tot_table = data.frame()
-#diversity data
+#create diversity dataframe of all 31 sites for dates of interest
 for (i in sites) {
   cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
   coverDiv <- cover[[3]]
@@ -140,29 +149,100 @@ for (i in sites) {
   
   cover2[cover2$sitemonthyear %in% datezzz ,]
   
-  all_SR <-length(unique(cover2$scientificName))
+  tot_cover <- rbind(tot_cover, cover2)
+}
+  
+write.table(tot_cover, file = "prelim_cover.csv", sep = ",", row.names = FALSE)
+
+
+
+
+
+
+
+
+tot_table = data.frame()
+
+for (i in datezzz) {
+  
+  sub <- tot_cover %>%
+    filter (sitemonthyear == i) 
+  
+  numplots <-length(unique(sub$plotID))
+  
+  all_SR <-length(unique(sub$scientificName))
 
   #subset of invasive only
-  inv <- cover2 %>%
+  inv <- sub %>%
     filter(nativeStatusCode=="I")
 
   #total SR of exotics across all plots
   exotic_SR <-length(unique(inv$scientificName))
 
-  #mean plot percent cover of exotics
+  #mean percent cover of exotics
   exotic_cover <- inv %>%
-    group_by(plotID) %>%
     summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
     summarize(exotic_cov = mean(sumz))
 
-  i_table <- cbind(all_SR, exotic_SR, exotic_cover)
-  
-  i_table <- i_table %>%
-    mutate(Site.ID = i)
+  i_table <- cbind(numplots, all_SR, exotic_SR, exotic_cover, i)
   
   tot_table <- rbind(tot_table,i_table)
+}
 
-  }
+tot_table$siteID <- substr(tot_table$i,1,4) 
+tot_table$monthyear <- substr(tot_table$i,5,11) 
+#tot_table$year <- substr(tot_table$monthyear, 1, 4)
+
+count <-unique(tot_table$siteID)
+#31
+
+#remove rows where numplots = 0
+tot_table_align <- tot_table %>%
+  filter(numplots != 0)
+#57 site date combos that align of where they sampled 
+
+othercount <- unique(tot_table_align$siteID)
+#27; only 27 sites with 0 numplots
+
+#choose the most recent of these
+one_date <- tot_table_align %>%
+  group_by(siteID) %>%
+  top_n(n=1)
+
+############################################
+#with recent dates only
+tot_table_recent = data.frame()
+
+for (i in recentdatezzz) {
+  
+  sub <- tot_cover %>%
+    filter (sitemonthyear == i)
+  
+  numplots <-length(unique(sub$plotID))
+  
+  all_SR <-length(unique(sub$scientificName))
+  
+  #subset of invasive only
+  inv <- sub %>%
+    filter(nativeStatusCode=="I")
+  
+  #total SR of exotics across all plots
+  exotic_SR <-length(unique(inv$scientificName))
+  
+  #mean percent cover of exotics
+  exotic_cover <- inv %>%
+    summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
+    summarize(exotic_cov = mean(sumz))
+  
+  i_table <- cbind(numplots, all_SR, exotic_SR, exotic_cover, i)
+  
+  tot_table_recent <- rbind(tot_table_recent,i_table)
+}
+
+
+
+
+
 
 
 ###
