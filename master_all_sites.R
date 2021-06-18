@@ -14,6 +14,7 @@ library(doBy)
 library(sf)
 library(sp)
 library(devtools)
+library(gdata)
 
 
 
@@ -127,10 +128,10 @@ datezzz <- as.list(datezz$sitemonthyear)
 
 ###############################
 ###if decide to do recent only
-recent <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_recent_dates.csv')
-recent$sitemonthyear <- stringr::str_c(recent$siteID, recent$recent)
+#recent <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_recent_dates.csv')
+#recent$sitemonthyear <- stringr::str_c(recent$siteID, recent$recent)
 
-recentdatezzz <- as.list(recent$sitemonthyear)
+#recentdatezzz <- as.list(recent$sitemonthyear)
 ###############################
 
 tot_cover = data.frame()
@@ -230,52 +231,60 @@ tot_table <- tot_table %>%
 #############################################
 #to create allSR, exoticSR, exotic cover at plot level for site, date combos
 
-rm(tot_table_plots)
-tot_table_plots = data.frame()
+#this tells us how many combinations of sitemonthyear and plot we should have in our dataframe
+test <- unique(tot_cover[c("sitemonthyear","plotID")])
+#4763
 
-for (i in datezzz) {
-  
-  all_SR <- tot_cover %>%
-    filter (sitemonthyear == i) %>%
-    group_by(plotID) %>%
-    summarize(SR = n_distinct(scientificName)) 
- 
-  #subset of invasive only, for this site
-  inv <- tot_cover %>%
-    filter (sitemonthyear == "HEAL2019-08" & nativeStatusCode =="I")
-  
-  #subset of invasive only
-  exotic_SR <- inv %>%
-    filter (sitemonthyear == i) %>%
-    group_by(plotID) %>%
-    summarize(exotic_SR =  n_distinct(scientificName))
+#calculates total SR for each sitemonthyear, plot combo
+all_SR <- tot_cover %>%
+  group_by(sitemonthyear, plotID) %>%
+  summarize(all_SR = n_distinct(scientificName)) 
 
-  if (length(exotic_SR) = 0) {
-    exotic_SR <- 0
-  }
-  
-  #mean percent cover of exotics
-  exotic_cover <- inv %>%
-    filter (sitemonthyear == i) %>%
-    group_by(plotID) %>%
-    summarize(exotic_cov = sum(percentCover, na.rm = TRUE))
+#calculates invasive SR for each sitemonthyear, plot combo
+exotic_SR <- tot_cover %>%
+  filter(nativeStatusCode =="I") %>%
+  group_by(sitemonthyear, plotID) %>%
+  summarize(exotic_SR =  n_distinct(scientificName))
 
-  if (length(exotic_cover) = 0) {
-    exotic_cover <- 0
-  }
-  
-  i_table_plots <- cbind(all_SR, exotic_SR, exotic_cover, i)
-  
-  i_table_plots <- i_table_plots[,!duplicated(names(i_table_plots))]
-  
-  tot_table_plots <- rbind(tot_table_plots,i_table_plots)
-}
+#calculates invasive cover for each sitemonthyear, plot combo
+exotic_cover <- tot_cover %>%
+  filter(nativeStatusCode =="I") %>%
+  group_by(sitemonthyear, plotID) %>%
+  summarize(exotic_cov = sum(percentCover))
+
+test3 <- exotic_cover %>%
+  filter(is.na(exotic_cov))
+#49 already are NAs
+
+#joins these tables together
+#close <- left_join(all_SR, exotic_SR, by=c("sitemonthyear", "plotID"))
+closer <- left_join(all_SR, exotic_cover, by=c("sitemonthyear", "plotID")) %>%
+  left_join(., exotic_SR, by=c("sitemonthyear", "plotID")) 
+
+test2 <- tot_table_plots %>%
+  filter(is.na(exotic_SR))
+#2661; this is correct (2661 + 2102 = 4763)
+
+test3 <- tot_table_plots %>%
+  filter(is.na(exotic_cov))
+#2710; this is from 2661 in the 
 
 
 
-tot_table_plots$siteID <- substr(tot_table_plots$i,1,4) 
-tot_table_plots$monthyear <- substr(tot_table_plots$i,5,11) 
+#plot locations
+latitude <- unique(tot_cover[c("sitemonthyear","plotID","decimalLatitude")])
+longitude <- unique(tot_cover[c("sitemonthyear","plotID","decimalLongitude")])
+
+tot_table_plots <- left_join(closer, latitude, by=c("sitemonthyear", "plotID")) %>%
+  left_join(., longitude, by=c("sitemonthyear", "plotID")) 
+
+
+
+tot_table_plots$siteID <- substr(tot_table_plots$sitemonthyear,1,4) 
+tot_table_plots$monthyear <- substr(tot_table_plots$sitemonthyear,5,11) 
 tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
+
+write.table(tot_table_plots, file = "data/cover_by_plot.csv", sep = ",", row.names = FALSE)
 
 
 
