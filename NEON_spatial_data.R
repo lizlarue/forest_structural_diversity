@@ -54,7 +54,11 @@ neonMap
 
 
 
-plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', header=T)
+plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', header=T) %>%
+  rename(
+    decimalLatitude = latitude,
+    decimalLongitude = longitude
+  )
 #this has easting and northing
 
 plot_points <- read.delim('All_NEON_TOS_Plot_Points_V8.csv', sep=',', header=T)
@@ -66,7 +70,6 @@ tot_table_plots <- read.csv(file = '/Users/rana7082/Documents/research/forest_st
 #left join to add the easting and northing variables
 tot_table_plots_en <- tot_table_plots %>%
   left_join(plot_centroids)
-#somehow this increases the number of observations...need to fix this so there are still only 4763 obs
 
 
 
@@ -126,24 +129,19 @@ ggplot() +
 
 #filter to two sites of interest for most recent year
 
-NIWO <- tot_table_plots %>%
+NIWO <- tot_table_plots_en %>%
   filter(siteID == "NIWO", year == 2020)
 #33 obs
 
-SOAP <- tot_table_plots %>%
+SOAP <- tot_table_plots_en %>%
   filter(siteID == "SOAP", year == 2019)
 #32 obs
 
-cord.decN <- SpatialPoints(cbind(NIWO$decimalLongitude, -NIWO$decimalLatitude), proj4string=CRS("+proj=longlat"))
-cord.decS <- SpatialPoints(cbind(SOAP$decimalLongitude, -SOAP$decimalLatitude), proj4string=CRS("+proj=longlat"))
-
-cord.UTMN <- spTransform(cord.decN, CRS("+init=epsg:32611"))
-cord.UTMS <- spTransform(cord.decS, CRS("+init=epsg:32611"))
-
-
-cord.UTMN <- spTransform(cord.decN, CRS('+proj=utm +zone=13 ellps=WGS84'))
-cord.UTMS <- spTransform(cord.decS, CRS('+proj=utm +zone=10 ellps=WGS84'))
 
 byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2020, 
-          easting = cord.UTMN$coords.x1, northing = cord.UTMN$coords.x2,
-          check.size = T, buffer = 500, savepath = ".data/")
+          easting = NIWO$easting, northing = NIWO$northing,
+          check.size = T, buffer = 500, savepath = ".")
+
+byTileAOP(dpID = "DP1.30003.001", site = "SOAP",  year = 2019, 
+          easting = SOAP$easting, northing = SOAP$northing,
+          check.size = T, buffer = 500, savepath = ".")
