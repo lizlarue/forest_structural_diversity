@@ -12,6 +12,9 @@ site_locations <- readOGR(dsn="data/", layer = "terrestrialSamplingBoundaries")
 plot_locations <- readOGR(dsn="data/", layer = "NEON_TOS_Plot_Centroids")
 states <- readOGR(dsn="data/", layer = "s_11au16")
 
+tot_table_plots <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/cover_by_plot.csv')
+
+
 
 
 #initial plot
@@ -52,9 +55,13 @@ head(site_locations)
 ###
 #bring in kmz of AOP flight boundaries
 
-file <- "Burrows_et_al_Nature_traj_ocean_NH1.kmz"
-SST_start = readOGR(file,"SST_start") 
+file <- "data/Burrows_et_al_Nature_traj_ocean_NH1.kmz"
+SST_start = readOGR(dsn = file, layer = "SST_start") 
 
 
 
+
+###plot plot cover data
+ggplot() + 
+  geom_point(data = tot_table_plots, aes(x = decimalLatitude, y = decimalLongitude, color = Dominant.NLCD.Classes))
 

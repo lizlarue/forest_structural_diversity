@@ -284,6 +284,9 @@ tot_table_plots$siteID <- substr(tot_table_plots$sitemonthyear,1,4)
 tot_table_plots$monthyear <- substr(tot_table_plots$sitemonthyear,5,11) 
 tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
 
+tot_table_plots <- tot_table_plots %>%
+  left_join(veg_types)
+
 write.table(tot_table_plots, file = "data/cover_by_plot.csv", sep = ",", row.names = FALSE)
 
 
