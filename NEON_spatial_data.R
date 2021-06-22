@@ -53,44 +53,27 @@ neonMap
 
 
 
-# color is determined by the order that the unique values show up. Check order
-unique(neonSites$Site.Type)
-## [1] "Relocatable Aquatic"     "Core Terrestrial"        "Core Aquatic"            "Relocatable Terrestrial"
 
-# add color
-sitesMap <- neonMap + 
-  geom_point(data=neonSites, 
-             aes(x=Longitude, y=Latitude, color=Site.Type)) + 
-  scale_color_manual(values=c("lightskyblue", "forest green", 
-                              "blue4", "light green"),
-                     name="",
-                     breaks=unique(neonSites$Site.Type))
-sitesMap
+plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', header=T)
+#this has easting and northing
 
+plot_points <- read.delim('All_NEON_TOS_Plot_Points_V8.csv', sep=',', header=T)
+#this also has easting and northing
 
-
-## load TOS plot readme
-rdme <- read.delim('readme.csv', sep=',', header=T)
-
-## View the variables
-rdme[,1]
-#this has lat, long as well as easting, northing
-
-
-
-
-
-
-
-plot_locations <- readOGR(dsn=".", layer = "NEON_TOS_Plot_Centroids")
-
-ecoregions <- readOGR(dsn=".", layer = "us_eco_l3_state_boundaries")
-
+#bring in my data
 tot_table_plots <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/cover_by_plot.csv')
 
+#left join to add the easting and northing variables
+tot_table_plots_en <- tot_table_plots %>%
+  left_join(plot_centroids)
+#somehow this increases the number of observations...need to fix this so there are still only 4763 obs
 
 
 
+#####################################
+#plot_locations <- readOGR(dsn=".", layer = "NEON_TOS_Plot_Centroids")
+
+ecoregions <- readOGR(dsn=".", layer = "us_eco_l3_state_boundaries")
 #initial plot
 plot(site_locations)
 #this looks like it works
