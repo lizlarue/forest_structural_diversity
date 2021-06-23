@@ -23,41 +23,54 @@ setwd(wd)
 
 #read in data for all sites
 #NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
-NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 2460 -drop_z_above 2947")
+#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
+                #filter = "-drop_z_below 2460 -drop_z_above 2947")
 
 #WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"))
-WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"),
-                filter = "-drop_z_below 425 -drop_z_above 1082")
+#WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"),
+                #filter = "-drop_z_below 425 -drop_z_above 1082")
 
 
 #loop through sites
-sites <- list(NIWO, WREF)
+#sites <- list(NIWO, WREF)
 sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
 
-#dfarray <- list(df1, df2, df3)
-#lapply(dfarray, function(i) plot(i$x, i$y))
+NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
 
-for (i in sites) {
+NIWO <- lidR::classify_noise(NIWO, sor(15,3))
+NIWO <- filter_poi(NIWO, Classification != LASNOISE)
+
+str_table = data.frame()
+
+files <- list.files(path="DP1.30003.001/2019/FullSite/D17/2019_SOAP_4/L1/DiscreteLidar/ClassifiedPointCloud/", pattern="*.laz", full.names=TRUE, recursive=FALSE)
+lapply(files, function(q) {
+  i <- readLAS(q) # load each file
+  # apply function to remove noise
+  i <- lidR::classify_noise(i, sor(15,3))
+  i <- filter_poi(i, Classification != LASNOISE)
+    # write to file
+    #write.table(out, "path/to/output", sep="\t", quote=FALSE, row.names=FALSE, col.names=TRUE)
+
+#for (i in sites) {
 
 #Let's correct for elevation and measure structural diversity for SITE
 x <- ((max(i$X) - min(i$X))/2)+ min(i$X)
 y <- ((max(i$Y) - min(i$Y))/2)+ min(i$Y)
 
 
-data.200m <- lasclipRectangle(i, 
+data.200m <- clip_rectangle(i, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
 dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-data.200m <- lasnormalize(data.200m, dtm)
+data.200m <- normalize_height(data.200m, dtm)
 
-data.40m <- lasclipRectangle(data.200m, 
+data.40m <- clip_rectangle(data.200m, 
                              xleft = (x - 20), ybottom = (y - 20),
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
-plot(data.40m)
+#plot(data.40m)
 
 
 #Zip up all the code we previously used and write function to 
@@ -102,8 +115,8 @@ structural_diversity_metrics <- function(data.40m) {
   print(out.plot)
 }
 
-i_structural_diversity <- structural_diversity_metrics(data.40m)
-
+str_table <- rbind(str_table, out.plot)
+})
 
 
 
