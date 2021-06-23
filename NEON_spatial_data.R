@@ -71,6 +71,7 @@ tot_table_plots <- read.csv(file = '/Users/rana7082/Documents/research/forest_st
 tot_table_plots_en <- tot_table_plots %>%
   left_join(plot_centroids)
 
+write.table(tot_table_plots_en, file = "data/tot_table_plots_en.csv", sep = ",", row.names = FALSE)
 
 
 #####################################
