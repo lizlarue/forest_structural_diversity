@@ -21,108 +21,11 @@ library(gdata)
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-#read in data for all sites
-#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
-#NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"),
-                #filter = "-drop_z_below 2460 -drop_z_above 2947")
-
-#WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"))
-#WREF <- readLAS(paste0(wd,"NEON_D16_WREF_DP1_578000_5072000_classified_point_cloud_colorized.laz"),
-                #filter = "-drop_z_below 425 -drop_z_above 1082")
-
-
-#loop through sites
-#sites <- list(NIWO, WREF)
-sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
-
-NIWO <- readLAS(paste0(wd,"NEON_D13_NIWO_DP1_454000_4425000_classified_point_cloud_colorized.laz"))
-
-NIWO <- lidR::classify_noise(NIWO, sor(15,3))
-NIWO <- filter_poi(NIWO, Classification != LASNOISE)
-
-str_table = data.frame()
-
-files <- list.files(path="DP1.30003.001/2019/FullSite/D17/2019_SOAP_4/L1/DiscreteLidar/ClassifiedPointCloud/", pattern="*.laz", full.names=TRUE, recursive=FALSE)
-lapply(files, function(q) {
-  i <- readLAS(q) # load each file
-  # apply function to remove noise
-  i <- lidR::classify_noise(i, sor(15,3))
-  i <- filter_poi(i, Classification != LASNOISE)
-    # write to file
-    #write.table(out, "path/to/output", sep="\t", quote=FALSE, row.names=FALSE, col.names=TRUE)
-
-#for (i in sites) {
-
-#Let's correct for elevation and measure structural diversity for SITE
-x <- ((max(i$X) - min(i$X))/2)+ min(i$X)
-y <- ((max(i$Y) - min(i$Y))/2)+ min(i$Y)
-
-
-data.200m <- clip_rectangle(i, 
-                              xleft = (x - 100), ybottom = (y - 100),
-                              xright = (x + 100), ytop = (y + 100))
-
-dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
-
-data.200m <- normalize_height(data.200m, dtm)
-
-data.40m <- clip_rectangle(data.200m, 
-                             xleft = (x - 20), ybottom = (y - 20),
-                             xright = (x + 20), ytop = (y + 20))
-data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
-#plot(data.40m)
-
-
-#Zip up all the code we previously used and write function to 
-#run all 13 metrics in a single function. 
-structural_diversity_metrics <- function(data.40m) {
-  chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
-  mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
-  max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
-  rumple <- rumple_index(chm) 
-  top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
-  cells <- length(chm@data@values) 
-  chm.0 <- chm
-  chm.0[is.na(chm.0)] <- 0 
-  zeros <- which(chm.0@data@values == 0) 
-  deepgaps <- length(zeros) 
-  deepgap.fraction <- deepgaps/cells 
-  cover.fraction <- 1 - deepgap.fraction 
-  vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
-  sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
-  sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
-  Zs <- data.40m@data$Z
-  Zs <- Zs[!is.na(Zs)]
-  entro <- entropy(Zs, by = 1) 
-  gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
-  GFP.AOP <- mean(gap_frac$gf) 
-  LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
-  VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
-  VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
-  out.plot <- data.frame(
-    matrix(c(x, y, mean.max.canopy.ht,max.canopy.ht, 
-             rumple,deepgaps, deepgap.fraction, 
-             cover.fraction, top.rugosity, vert.sd, 
-             sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
-           ncol = 15)) 
-  colnames(out.plot) <- 
-    c("easting", "northing", "mean.max.canopy.ht.aop",
-      "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
-      "deepgap.fraction.aop", "cover.fraction.aop",
-      "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
-      "entropy.aop", "GFP.AOP.aop",
-      "VAI.AOP.aop", "VCI.AOP.aop") 
-  print(out.plot)
-}
-
-str_table <- rbind(str_table, out.plot)
-})
-
 
 
 
 #####################################
-#sites <- list('BONA', 'CLBJ')
+#loop through sites
 sites <- list('BONA', 'CLBJ', 'HARV', 'KONZ', 'NIWO', 'ONAQ', 'OSBS', 'SCBI', 'SJER', 'TALL', 'UNDE', 'WREF', 'YELL', 'ABBY', 'MOAB', 'SOAP', 'TEAK', 'HEAL', 'DEJU', 'TREE', 'JERC', 'BART', 'GRSM', 'STEI', 'LENO', 'MLBS', 'UKFS', 'BLAN', 'SERC', 'RMNP', 'DELA')
 
 
@@ -312,6 +215,106 @@ write.table(tot_table_plots, file = "data/cover_by_plot.csv", sep = ",", row.nam
 
 
 
+
+#############################################
+#calculate structural metrics
+
+str_table = data.frame()
+
+#files <- list.files(path="DP1.30003.001/2019/FullSite/D17/2019_SOAP_4/L1/DiscreteLidar/ClassifiedPointCloud", pattern="*.laz", full.names=TRUE, recursive=FALSE)
+files <- list.files(path="DP1.30003.001", pattern="*.laz", full.names=TRUE, recursive=TRUE)
+
+
+files 
+
+
+for (q in files)  {
+  i <- readLAS(q) # load each file
+  # apply function to remove noise
+  i <- lidR::classify_noise(i, sor(15,3))
+  i <- filter_poi(i, Classification != LASNOISE)
+  
+  #find center point of tile
+  x <- ((max(i$X) - min(i$X))/2)+ min(i$X)
+  y <- ((max(i$Y) - min(i$Y))/2)+ min(i$Y)
+  
+  #subset to 200 m x 200 m (40,000m2) subtile
+  data.200m <- clip_rectangle(i, 
+                              xleft = (x - 100), ybottom = (y - 100),
+                              xright = (x + 100), ytop = (y + 100))
+  
+  #creates rasterized digital terrain model
+  dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
+  
+  #normalize the data based on the digital terrain model (correct for elevation)
+  data.200m <- normalize_height(data.200m, dtm)
+  
+  #might not need this step
+  #subset to a 40 m x 40 m (1600m2) subtile
+  data.40m <- clip_rectangle(data.200m, 
+                             xleft = (x - 20), ybottom = (y - 20),
+                             xright = (x + 20), ytop = (y + 20))
+  
+  #replaces really short veg with zeros
+  data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
+  #plot(data.40m)
+  
+  
+  #Calculate 13 structural metrics in a single function 
+  structural_diversity_metrics <- function(data.40m) {
+    chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
+    mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
+    max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
+    rumple <- rumple_index(chm) 
+    top.rugosity <- sd(chm@data@values, na.rm = TRUE) 
+    cells <- length(chm@data@values) 
+    chm.0 <- chm
+    chm.0[is.na(chm.0)] <- 0 
+    zeros <- which(chm.0@data@values == 0) 
+    deepgaps <- length(zeros) 
+    deepgap.fraction <- deepgaps/cells 
+    cover.fraction <- 1 - deepgap.fraction 
+    vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
+    sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
+    sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
+    Zs <- data.40m@data$Z
+    Zs <- Zs[!is.na(Zs)]
+    entro <- entropy(Zs, by = 1) 
+    gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
+    GFP.AOP <- mean(gap_frac$gf) 
+    LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
+    VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
+    VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
+    out.plot <- data.frame(
+      matrix(c(x, y, mean.max.canopy.ht,max.canopy.ht, 
+               rumple,deepgaps, deepgap.fraction, 
+               cover.fraction, top.rugosity, vert.sd, 
+               sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
+             ncol = 15)) 
+    colnames(out.plot) <- 
+      c("easting", "northing", "mean.max.canopy.ht.aop",
+        "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
+        "deepgap.fraction.aop", "cover.fraction.aop",
+        "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
+        "entropy.aop", "GFP.AOP.aop",
+        "VAI.AOP.aop", "VCI.AOP.aop") 
+    print(out.plot)
+  }
+  
+  #create table that contains 1 row for each tile
+  new_structural_diversity <- structural_diversity_metrics(data.40m)
+  str_table <- rbind(str_table, new_structural_diversity)
+}
+
+
+str_table
+
+
+
+#join cover table with structure table by easting and northing
+tot_table_plots_en_str <- tot_table_plots_en %>%
+  left_join(str_table)
+#no points in common
 
 #############################################
 #calculate spectral reflectance as CV
