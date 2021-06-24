@@ -61,7 +61,7 @@ plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', head
   )
 #this has easting and northing
 
-plot_points <- read.delim('All_NEON_TOS_Plot_Points_V8.csv', sep=',', header=T)
+#plot_points <- read.delim('All_NEON_TOS_Plot_Points_V8.csv', sep=',', header=T)
 #this also has easting and northing
 
 #bring in my data
