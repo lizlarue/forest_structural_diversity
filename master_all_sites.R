@@ -207,7 +207,18 @@ write.table(tot_table_plots, file = "data/cover_by_plot.csv", sep = ",", row.nam
 
 
 
+#bring in NEON metadata on plot locations
+plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', header=T) %>%
+  rename(
+    decimalLatitude = latitude,
+    decimalLongitude = longitude
+  )
 
+#left join to add the easting and northing variables
+tot_table_plots_en <- tot_table_plots %>%
+  left_join(plot_centroids)
+
+write.table(tot_table_plots_en, file = "data/tot_table_plots_en.csv", sep = ",", row.names = FALSE)
 
 
 
