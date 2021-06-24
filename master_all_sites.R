@@ -261,8 +261,10 @@ for (q in files)  {
   miny <- min(i$Y)
   maxy <- max(i$Y)
   
-  matches<-filter(plots, plots$easting <= maxx & plots$easting >= minx & plots$northing <= maxy & plots$northing >= miny) 
+  #select only the plot centroids that are found in this tile
+  matches<-filter(plots, plots$easting <= (maxx - 100) & plots$easting >= (minx + 100) & plots$northing <= (maxy - 100) & plots$northing >= (miny + 100)) 
   
+  #loop through the matches
   foreach(x = matches$easting, y = matches$northing) %do% {
  
   #subset to 40 m x 40 m (1600m2) subtile
