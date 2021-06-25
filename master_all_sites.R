@@ -313,7 +313,7 @@ for (q in files)  {
   maxy <- max(i$Y)
   
   #select only the plot centroids that are found in this tile (plus a buffer)
-  matches<-filter(plots, plots$easting <= (maxx - 100) & plots$easting >= (minx + 100) & plots$northing <= (maxy - 100) & plots$northing >= (miny + 100)) 
+  matches<-filter(plots, plots$easting <= (maxx - 40) & plots$easting >= (minx + 40) & plots$northing <= (maxy - 40) & plots$northing >= (miny + 40)) 
   
   #loop through the matches
   foreach(x = matches$easting, y = matches$northing) %do% {
@@ -325,7 +325,7 @@ for (q in files)  {
 
   
   #creates rasterized digital terrain model
-      dtm <- grid_terrain(data.40m, 1, kriging(k = 10L))
+      dtm <- grid_terrain(data.40m[!is.na(data.40m)], 1, kriging(k = 10L))
   
   #normalize the data based on the digital terrain model (correct for elevation)
       data.40m <- normalize_height(data.40m, dtm)
