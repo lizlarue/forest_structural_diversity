@@ -16,6 +16,7 @@ library(sp)
 library(devtools)
 library(gdata)
 library(foreach)
+library(tidyverse)
 
 
 
@@ -65,12 +66,18 @@ for (i in sites) {
 
   cover2$sitemonthyear <- stringr::str_c(cover2$siteID, cover2$monthyear)
   
-  cover2[cover2$sitemonthyear %in% datezzz ,]
+  #cover2[cover2$sitemonthyear %in% datezzz ,]
   
   tot_cover <- rbind(tot_cover, cover2)
 }
-  
-write.table(tot_cover, file = "data/prelim_cover.csv", sep = ",", row.names = FALSE)
+
+
+#tot_cover[tot_cover$sitemonthyear %in% datezzz ,]
+
+tot_cover <- tot_cover %>%
+  filter(sitemonthyear %in% datezzz)
+
+write.table(tot_cover, file = "prelim_cover.csv", sep = ",", row.names = FALSE)
 
 
 
@@ -116,6 +123,8 @@ tot_table$year <- substr(tot_table$monthyear, 1, 4)
 count <-unique(tot_table$siteID)
 #31
 
+
+
 #remove rows where numplots = 0
 #tot_table_align <- tot_table %>%
   #filter(numplots != 0)
@@ -125,23 +134,23 @@ count <-unique(tot_table$siteID)
 #27; only 27 sites with 0 numplots
 
 #choose the most recent of these???
-one_date <- tot_table %>%
-  group_by(siteID) %>%
-  top_n(n=1)
+#one_date <- tot_table %>%
+  #group_by(siteID) %>%
+  #top_n(n=1)
 
 
 
 ###
 veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
-  select(Site.ID, Dominant.NLCD.Classes) %>%
+  dplyr::select(Site.ID, Dominant.NLCD.Classes) %>%
   rename(siteID = Site.ID)
 
 tot_table <- tot_table %>%
   left_join(veg_types)
 
 
-
-
+hist(tot_table$all_SR, breaks = 20)
+hist(tot_table$exotic_SR, breaks = 20)
 
 
 
@@ -150,7 +159,7 @@ tot_table <- tot_table %>%
 
 #this tells us how many combinations of sitemonthyear and plot we should have in our dataframe
 test <- unique(tot_cover[c("sitemonthyear","plotID")])
-#4763
+#995
 
 #calculates total SR for each sitemonthyear, plot combo
 all_SR <- tot_cover %>%
@@ -204,7 +213,7 @@ tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
 tot_table_plots <- tot_table_plots %>%
   left_join(veg_types)
 
-write.table(tot_table_plots, file = "data/cover_by_plot.csv", sep = ",", row.names = FALSE)
+write.table(tot_table_plots, file = "cover_by_plot.csv", sep = ",", row.names = FALSE)
 
 
 
@@ -219,7 +228,7 @@ plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', head
 tot_table_plots_en <- tot_table_plots %>%
   left_join(plot_centroids)
 
-write.table(tot_table_plots_en, file = "data/tot_table_plots_en.csv", sep = ",", row.names = FALSE)
+write.table(tot_table_plots_en, file = "tot_table_plots_en.csv", sep = ",", row.names = FALSE)
 
 
 rm(plots)
@@ -236,6 +245,48 @@ tail(plots)
 
 #names(plots)[1] <- "x"
 #names(plots)[2] <- "y"
+
+
+hist(tot_table_plots_en$all_SR, breaks = 20)
+hist(tot_table_plots_en$exotic_SR, breaks = 20)
+hist(tot_table_plots_en$exotic_cov, breaks = 40)
+
+numinv <- tot_table_plots_en %>%
+  filter(exotic_SR > 0) %>%
+  summarize(plots_w_nonnatives = n_distinct(plotID)) 
+#63 site/date combos
+
+numplots <- tot_table_plots_en %>%
+  summarize(totplots = n_distinct(plotID)) 
+#82 site/date combos
+
+percent_invaded <- numplots %>%
+  left_join(numinv) %>%
+  replace_na(list(plots_w_nonnatives = 0)) %>%
+  mutate(perc_inv = (plots_w_nonnatives / totplots)*100)
+
+
+#merge percent_invaded with tot_table
+
+
+tot_table_expanded <- tot_table %>%
+  rename(sitemonthyear = i) %>%
+  left_join(percent_invaded) %>%
+  dplyr::select(-numplots)
+
+
+#not sure what this tells us?
+meaninv <- tot_table_plots_en %>%
+  summarize(meaninv = mean(exotic_cov))
+
+check <- tot_table_plots_en %>%
+  summarize(n_distinct(sitemonthyear))
+#82
+
+
+
+
+
 
 #############################################
 #calculate structural metrics
@@ -261,7 +312,7 @@ for (q in files)  {
   miny <- min(i$Y)
   maxy <- max(i$Y)
   
-  #select only the plot centroids that are found in this tile
+  #select only the plot centroids that are found in this tile (plus a buffer)
   matches<-filter(plots, plots$easting <= (maxx - 100) & plots$easting >= (minx + 100) & plots$northing <= (maxy - 100) & plots$northing >= (miny + 100)) 
   
   #loop through the matches
