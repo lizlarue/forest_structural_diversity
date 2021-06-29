@@ -8,6 +8,7 @@ library(ggplot2)
 library(tidyverse)
 library(neonUtilities)
 library(devtools)
+library(geoNEON)
 
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
@@ -133,6 +134,10 @@ ggplot() +
 NIWO <- tot_table_plots_en %>%
   filter(siteID == "NIWO", year == 2020)
 #33 obs
+
+NIWO <- tot_table_plots_en %>%
+  filter(siteID == "NIWO", year == 2019)
+#12 obs
 
 SOAP <- tot_table_plots_en %>%
   filter(siteID == "SOAP", year == 2019)
