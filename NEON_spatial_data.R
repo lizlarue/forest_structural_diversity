@@ -143,6 +143,10 @@ byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2020,
           easting = NIWO$easting, northing = NIWO$northing,
           check.size = T, buffer = 500, savepath = ".")
 
+byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2019, 
+          easting = NIWO$easting, northing = NIWO$northing,
+          check.size = T, buffer = 500, savepath = ".")
+
 byTileAOP(dpID = "DP1.30003.001", site = "SOAP",  year = 2019, 
           easting = SOAP$easting, northing = SOAP$northing,
           check.size = T, buffer = 500, savepath = ".")
