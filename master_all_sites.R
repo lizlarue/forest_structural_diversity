@@ -388,13 +388,28 @@ for (q in files)  {
 str_table
 
 
+######note: 
+#will need to match these up both based on easting, northing and by monthyear
 
 #join cover table with structure table by easting and northing
 tot_table_plots_en_str <- tot_table_plots_en %>%
   left_join(str_table)
+write.table(tot_table_plots_en_str, file = "tot_table_plots_en_str.csv", sep = ",", row.names = FALSE)
+
+################################
+
+sub <- tot_table_plots_en %>%
+  filter(sitemonthyear == "SOAP2019-06" | sitemonthyear == "NIWO2020-08")
 
 
+subby <- sub %>%
+  left_join(str_table)
 
+
+means <- subby %>%
+  filter(sitemonthyear == "SOAP2019-06") %>%
+  summarise(meangf = mean(deepgap.fraction.aop))
+  
 
 ###############################################################
 #copy using centroid of tile rather than plot centroid
