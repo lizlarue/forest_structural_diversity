@@ -296,6 +296,8 @@ str_table = data.frame()
 #files <- list.files(path="DP1.30003.001/2019/FullSite/D17/2019_SOAP_4/L1/DiscreteLidar/ClassifiedPointCloud", pattern="*.laz", full.names=TRUE, recursive=FALSE)
 files <- list.files(path="DP1.30003.001", pattern="*.laz", full.names=TRUE, recursive=TRUE)
 
+tot_table_plots_en <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/tot_table_plots_en.csv')
+plots <- as.data.frame(unique(tot_table_plots_en[c("easting","northing")]))
 
 files 
 
@@ -312,20 +314,20 @@ for (q in files)  {
   miny <- min(i$Y)
   maxy <- max(i$Y)
   
-  #select only the plot centroids that are found in this tile (plus a buffer)
-  matches<-filter(plots, plots$easting <= (maxx - 40) & plots$easting >= (minx + 40) & plots$northing <= (maxy - 40) & plots$northing >= (miny + 40)) 
+  #select only the plot centroids that are found in this tile (plus a buffer?)
+  matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots$northing <= (maxy) & plots$northing >= (miny)) 
   
   #loop through the matches
-  foreach(x = matches$easting, y = matches$northing) %do% {
+  foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
  
-  #subset to 40 m x 40 m (1600m2) subtile
+  #subset to 200 m x 200 m (1600m2) subtile
       data.40m <- clip_rectangle(i, 
-                              xleft = (x - 20), ybottom = (y - 20),
-                              xright = (x + 20), ytop = (y + 20))
+                              xleft = (x - 100), ybottom = (y - 100),
+                              xright = (x + 100), ytop = (y + 100))
 
   
   #creates rasterized digital terrain model
-      dtm <- grid_terrain(data.40m[!is.na(data.40m)], 1, kriging(k = 10L))
+      dtm <- grid_terrain(data.40m, 1, kriging(k = 10L))
   
   #normalize the data based on the digital terrain model (correct for elevation)
       data.40m <- normalize_height(data.40m, dtm)
