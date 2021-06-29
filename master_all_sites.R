@@ -408,8 +408,20 @@ subby <- sub %>%
 
 means <- subby %>%
   filter(sitemonthyear == "SOAP2019-06") %>%
-  summarise(meangf = mean(deepgap.fraction.aop))
-  
+  summarise(meangf = mean(deepgap.fraction.aop), meanoutcanht = mean(mean.max.canopy.ht.aop), meaninthet = mean(sd.sd.aop), meanextht = mean(top.rugosity.aop))
+
+ggplot(data = subby) +
+  geom_point(aes(x = deepgap.fraction.aop, y = exotic_cov, color = sitemonthyear)) +
+  xlab("Gap Fraction") + 
+  ylab("% Cover of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+ggplot(data = subby) +
+  geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_cov, color = sitemonthyear)) + 
+  xlab("Mean Outer Canopy Height") + 
+  ylab("% Cover of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 ###############################################################
 #copy using centroid of tile rather than plot centroid
