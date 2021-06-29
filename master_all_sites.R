@@ -320,7 +320,7 @@ for (q in files)  {
   #loop through the matches
   foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
  
-  #subset to 200 m x 200 m (1600m2) subtile
+  #subset to 200 m x 200 m (40,000m2) subtile
       data.200m <- clip_rectangle(i, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
@@ -335,6 +335,12 @@ for (q in files)  {
   #replaces really short veg with zeros
       data.200m@data$Z[data.200m@data$Z <= .5] <- 0  
 
+  #subset to 40 m x 40 m (1600m2) subtile
+    #data.40m <- clip_rectangle(data.200m, 
+                                  #xleft = (x - 20), ybottom = (y - 20),
+                                  #xright = (x + 20), ytop = (y + 20))
+  #when subsetting further, get the following error message: Error in { : 
+      #task 1 failed - "Interpolation failed (NAs everywhere). Input parameters might be wrong."
   
   
   #Calculate 13 structural metrics in a single function 
