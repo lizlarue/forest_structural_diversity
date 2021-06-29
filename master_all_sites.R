@@ -321,25 +321,25 @@ for (q in files)  {
   foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
  
   #subset to 200 m x 200 m (1600m2) subtile
-      data.40m <- clip_rectangle(i, 
+      data.200m <- clip_rectangle(i, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
   
   #creates rasterized digital terrain model
-      dtm <- grid_terrain(data.40m, 1, kriging(k = 10L))
+      dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
   
   #normalize the data based on the digital terrain model (correct for elevation)
-      data.40m <- normalize_height(data.40m, dtm)
+      data.200m <- normalize_height(data.200m, dtm)
   
   #replaces really short veg with zeros
-      data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
+      data.200m@data$Z[data.200m@data$Z <= .5] <- 0  
 
   
   
   #Calculate 13 structural metrics in a single function 
-  structural_diversity_metrics <- function(data.40m) {
-    chm <- grid_canopy(data.40m, res = 1, dsmtin()) 
+  structural_diversity_metrics <- function(data.200m) {
+    chm <- grid_canopy(data.200m, res = 1, dsmtin()) 
     mean.max.canopy.ht <- mean(chm@data@values, na.rm = TRUE) 
     max.canopy.ht <- max(chm@data@values, na.rm=TRUE) 
     rumple <- rumple_index(chm) 
@@ -351,10 +351,10 @@ for (q in files)  {
     deepgaps <- length(zeros) 
     deepgap.fraction <- deepgaps/cells 
     cover.fraction <- 1 - deepgap.fraction 
-    vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
-    sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
+    vert.sd <- cloud_metrics(data.200m, sd(Z, na.rm = TRUE)) 
+    sd.1m2 <- grid_metrics(data.200m, sd(Z), 1) 
     sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
-    Zs <- data.40m@data$Z
+    Zs <- data.200m@data$Z
     Zs <- Zs[!is.na(Zs)]
     entro <- entropy(Zs, by = 1) 
     gap_frac <- gap_fraction_profile(Zs, dz = 1, z0=3)
@@ -379,7 +379,7 @@ for (q in files)  {
     }
   
   #create table that contains 1 row for each plot centroid
-  new_structural_diversity <- structural_diversity_metrics(data.40m)
+  new_structural_diversity <- structural_diversity_metrics(data.200m)
   str_table <- rbind(str_table, new_structural_diversity)
   }  
 }
