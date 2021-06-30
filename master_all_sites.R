@@ -231,6 +231,9 @@ tot_table_plots_en <- tot_table_plots %>%
 write.table(tot_table_plots_en, file = "tot_table_plots_en.csv", sep = ",", row.names = FALSE)
 
 
+#myDataframe[is.na(myDataframe)] = 0
+tot_table_plots_en[is.na(tot_table_plots_en)] = 0
+
 rm(plots)
 plots <- as.data.frame(unique(tot_table_plots_en[c("easting","northing")]))
 #766
@@ -405,7 +408,7 @@ write.table(tot_table_plots_en_str, file = "tot_table_plots_en_str.csv", sep = "
 ################################
 
 sub <- tot_table_plots_en %>%
-  filter(sitemonthyear == "SOAP2019-06" | sitemonthyear == "NIWO2020-08")
+  filter(siteID == "SOAP" | siteID == "NIWO")
 
 
 subby <- sub %>%
@@ -417,17 +420,33 @@ means <- subby %>%
   summarise(meangf = mean(deepgap.fraction.aop), meanoutcanht = mean(mean.max.canopy.ht.aop), meaninthet = mean(sd.sd.aop), meanextht = mean(top.rugosity.aop))
 
 ggplot(data = subby) +
-  geom_point(aes(x = deepgap.fraction.aop, y = exotic_cov, color = sitemonthyear)) +
+  geom_point(aes(x = deepgap.fraction.aop, y = exotic_cov, color = siteID)) +
   xlab("Gap Fraction") + 
   ylab("% Cover of Non-Native Species") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 
 ggplot(data = subby) +
-  geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_cov, color = sitemonthyear)) + 
+  geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_cov, color = siteID)) + 
   xlab("Mean Outer Canopy Height") + 
   ylab("% Cover of Non-Native Species") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+ggplot(data = subby) +
+  geom_point(aes(x = deepgap.fraction.aop, y = exotic_SR, color = siteID)) +
+  xlab("Gap Fraction") + 
+  ylab("Species Richness of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+ggplot(data = subby) +
+  geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = siteID)) + 
+  xlab("Mean Outer Canopy Height") + 
+  ylab("Species Richness of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
 
 ###############################################################
 #copy using centroid of tile rather than plot centroid
