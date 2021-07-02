@@ -636,8 +636,8 @@ colnames(out.plot) <-
 print(out.plot)
 
 #create table that contains 1 row for each tile
-newspec <- out.plot
-spec_table <- bind_rows(spec_table, newspec)
+#newspec <- out.plot
+spec_table <- rbind(spec_table, out.plot)
 
 }
 h5closeAll()
