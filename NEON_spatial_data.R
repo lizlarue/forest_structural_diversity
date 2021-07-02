@@ -144,6 +144,7 @@ SOAP <- tot_table_plots_en %>%
 #32 obs
 
 
+#get lidar data
 byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2020, 
           easting = NIWO$easting, northing = NIWO$northing,
           check.size = T, buffer = 500, savepath = ".")
@@ -155,3 +156,18 @@ byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2019,
 byTileAOP(dpID = "DP1.30003.001", site = "SOAP",  year = 2019, 
           easting = SOAP$easting, northing = SOAP$northing,
           check.size = T, buffer = 500, savepath = ".")
+
+
+#get hyperspectral data
+byTileAOP(dpID = "DP3.30006.001", site = "NIWO",  year = 2020, 
+          easting = NIWO$easting, northing = NIWO$northing,
+          check.size = T, buffer = 500, savepath = ".")
+
+#byTileAOP(dpID = "DP1.30003.001", site = "NIWO",  year = 2019, 
+          #easting = NIWO$easting, northing = NIWO$northing,
+          #check.size = T, buffer = 500, savepath = ".")
+
+byTileAOP(dpID = "DP3.30006.001", site = "SOAP",  year = 2019, 
+          easting = SOAP$easting, northing = SOAP$northing,
+          check.size = T, buffer = 500, savepath = ".")
+
