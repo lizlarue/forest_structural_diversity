@@ -149,10 +149,18 @@ tot_table <- tot_table %>%
   left_join(veg_types)
 
 
-hist(tot_table$all_SR, breaks = 20)
-hist(tot_table$exotic_SR, breaks = 20)
+hist(tot_table$all_SR, breaks = 20, xlab="Total species richness", ylab= "Number of sites", main="")
+hist(tot_table$exotic_SR, breaks = 20, xlab="Non-native species richness", ylab= "Number of sites", main="")
 
+meanz <- tot_table %>%
+  filter (exotic_SR > 0) %>%
+  summarize(meaninv = mean(exotic_SR))
+#8.74
 
+maxinv <- tot_table %>%
+  filter (exotic_SR > 0) %>%
+  summarize(maxinv = max(exotic_SR))
+#53; SCBI
 
 #############################################
 #to create allSR, exoticSR, exotic cover at plot level for site, date combos
@@ -250,9 +258,9 @@ tail(plots)
 #names(plots)[2] <- "y"
 
 
-hist(tot_table_plots_en$all_SR, breaks = 20)
-hist(tot_table_plots_en$exotic_SR, breaks = 20)
-hist(tot_table_plots_en$exotic_cov, breaks = 40)
+hist(tot_table_plots_en$all_SR, breaks = 20, xlab="Total species richness", ylab= "Number of plots", main="")
+hist(tot_table_plots_en$exotic_SR, breaks = 20, xlab="Non-native species richness", ylab= "Number of plots", main="")
+hist(tot_table_plots_en$exotic_cov, breaks = 40, xlab="Non-native species percent cover", ylab= "Number of plots", main="")
 
 numinv <- tot_table_plots_en %>%
   filter(exotic_SR > 0) %>%
