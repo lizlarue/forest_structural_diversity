@@ -17,13 +17,16 @@ library(devtools)
 library(gdata)
 library(foreach)
 library(tidyverse)
+library(raster)
+library(rhdf5)
+library(rgdal)
 
 
 
 wd <- "/Users/rana7082/Documents/research/forest_structural_diversity/data/"
 setwd(wd)
 
-
+getwd()
 
 
 #####################################
@@ -436,7 +439,7 @@ ggplot(data = subby) +
 
 ggplot(data = subby) +
   geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_cov, color = siteID)) + 
-  xlab("Mean Outer Canopy Height") + 
+  xlab("Mean Outer Canopy Height (m)") + 
   ylab("% Cover of Non-Native Species") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -450,7 +453,7 @@ ggplot(data = subby) +
 
 ggplot(data = subby) +
   geom_point(aes(x = mean.max.canopy.ht.aop, y = exotic_SR, color = siteID)) + 
-  xlab("Mean Outer Canopy Height") + 
+  xlab("Mean Outer Canopy Height (m)") + 
   ylab("Species Richness of Non-Native Species") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -576,37 +579,58 @@ tot_table_plots_en_str <- tot_table_plots_en %>%
 #############################################
 #calculate spectral reflectance as CV
 #as defined here: https://www.mdpi.com/2072-4292/8/3/214/htm
-f <- paste0(wd,"NEON_D13_NIWO_DP3_453000_4427000_reflectance.h5")
+#f <- paste0(wd,"NEON_D13_NIWO_DP3_453000_4427000_reflectance.h5")
 
+files2 <- list.files(path="DP3.30006.001/2019", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+files3 <- list.files(path="DP3.30006.001/2020", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+
+
+files2[1]
 
 ###
-#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels 
+#for each of the 426 bands, I need to calculate the mean reflectance and the SD reflectance across all pixels in the tile
+#reflInfo <- h5readAttributes(f, "/SJER/Reflectance/Reflectance_Data")
+#myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
 
-myNoDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
+myNoDataValue <- -9999
 
 dat <- data.frame()
+spec_table <- data.frame()
 
-for (i in 1:426){
+
+for (t in files2) {
+
+  for (i in 1:426){
+  #read metadata
+    reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+    
+    nRows <- reflInfo$Dimensions[1]
+    nCols <- reflInfo$Dimensions[2]
+    nBands <- reflInfo$Dimensions[3]
+    
   #extract one band
-  b <- h5read(f,"/i/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    b <- h5read(t,"/SOAP/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
   
   # set all values equal to -9999 to NA
-  b[b == myNoDataValue] <- NA
+    b[b == myNoDataValue] <- NA
   
   #calculate mean and sd
-  meanref <- mean(b, na.rm = TRUE)
-  SDref <- sd(b, na.rm = TRUE)
+    meanref <- mean(b, na.rm = TRUE)
+    SDref <- sd(b, na.rm = TRUE)
   
-  rowz <- cbind(i, meanref, SDref)
+    rowz <- cbind(i, meanref, SDref)
   
-  dat <- rbind(dat, rowz)
-}
-
-dat
+    dat <- rbind(dat, rowz)
+  }
 
 dat$calc <- dat$SDref/dat$meanref
 
 CV <- sum(dat$calc)/426
 
 
-i_table$specCV <- CV
+newspec <- CV
+spec_table <- rbind(spec_table, newspec)
+
+}
+
+h5closeAll()
