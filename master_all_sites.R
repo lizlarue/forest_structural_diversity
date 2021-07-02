@@ -595,7 +595,7 @@ files2[1]
 myNoDataValue <- -9999
 
 dat <- data.frame()
-spec_table <- data.frame()
+spec_table <-  data.frame() 
 
 
 for (t in files2) {
@@ -623,13 +623,21 @@ for (t in files2) {
     dat <- rbind(dat, rowz)
   }
 
+#calculate CV
 dat$calc <- dat$SDref/dat$meanref
 
 CV <- sum(dat$calc)/426
 
+out.plot <- data.frame(
+  matrix(c(t, CV),
+         ncol = 2)) 
+colnames(out.plot) <- 
+  c("tile", "CV") 
+print(out.plot)
 
-newspec <- CV
-spec_table <- rbind(spec_table, newspec)
+#create table that contains 1 row for each tile
+newspec <- out.plot
+spec_table <- bind_rows(spec_table, newspec)
 
 }
 
