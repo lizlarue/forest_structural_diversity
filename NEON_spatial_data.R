@@ -38,6 +38,21 @@ domainMap <- ggplot(neonDomainsDF) +
            fill="white", color="black", size=0.3)
 domainMap
 
+subby <- neonDomainsDF %>%
+  filter(DomainName != "Pacific Tropical" & DomainName != "Atlantic Neotropical" & DomainName != "Tundra")
+
+
+sub3 <- subby %>%
+  filter(DomainName == "Pacific Northwest")
+
+#alternative
+domainMap2 <- ggplot(data = subby) + 
+  geom_polygon(aes(x = long, y = lat, fill = DomainName)) +
+  theme_bw() +
+  xlab("longitude")+
+  ylab("latitude")
+domainMap2
+
 
 #read in the data
 neonSites <- read.delim("field-sites.csv", sep=",", header=T)
@@ -52,6 +67,20 @@ neonMap <- domainMap +
 
 neonMap
 
+
+# plot only my sites
+
+#select my 31 sites from the 81
+select <- neonSites %>%
+  filter(Site.ID %in% sites)
+
+
+#plot here with domains; keep this figure
+neonMap2 <- domainMap2 + 
+  geom_point(data=select, 
+             aes(x=Longitude, y=Latitude))
+
+neonMap2
 
 
 
