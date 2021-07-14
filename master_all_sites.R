@@ -494,14 +494,14 @@ for (t in files3) {
 
   for (i in 1:426){
   #read metadata
-    reflInfo <- h5readAttributes(t, "/NEON/Reflectance/Reflectance_Data")
+    reflInfo <- h5readAttributes(t, "/NIWO/Reflectance/Reflectance_Data")
     
     nRows <- reflInfo$Dimensions[1]
     nCols <- reflInfo$Dimensions[2]
     nBands <- reflInfo$Dimensions[3]
     
   #extract one band
-    b <- h5read(t,"/NEON/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    b <- h5read(t,"/NIWO/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
   
   # set all values equal to -9999 to NA
     b[b == myNoDataValue] <- NA
