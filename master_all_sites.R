@@ -490,18 +490,18 @@ spec_table <- data.frame()
 #files2 <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5")
 #t <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4101000_reflectance.h5")
 
-for (t in files2) {
+for (t in files3) {
 
   for (i in 1:426){
   #read metadata
-    reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+    reflInfo <- h5readAttributes(t, "/NEON/Reflectance/Reflectance_Data")
     
     nRows <- reflInfo$Dimensions[1]
     nCols <- reflInfo$Dimensions[2]
     nBands <- reflInfo$Dimensions[3]
     
   #extract one band
-    b <- h5read(t,"/SOAP/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    b <- h5read(t,"/NEON/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
   
   # set all values equal to -9999 to NA
     b[b == myNoDataValue] <- NA
@@ -540,3 +540,76 @@ h5closeAll()
 
 write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
 
+
+
+
+#########################
+#based on plot centroid, not on tile
+
+files2 <- list.files(path="DP3.30006.001/2019", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+files3 <- list.files(path="DP3.30006.001/2020", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+
+myNoDataValue <- -9999
+spec_table <- data.frame()
+
+for (t in files2) {
+
+#find extent of tile
+minx <- min(t$X) 
+maxx <- max(t$X)
+miny <- min(t$Y)
+maxy <- max(t$Y)
+
+#select only the plot centroids that are found in this tile (plus a buffer?)
+matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots$northing <= (maxy) & plots$northing >= (miny)) 
+
+#loop through the matches
+  foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
+  
+    for (i in 1:426){
+    #read metadata
+    reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+    
+    nRows <- reflInfo$Dimensions[1]
+    nCols <- reflInfo$Dimensions[2]
+    nBands <- reflInfo$Dimensions[3]
+    
+    #extract one band
+    b <- h5read(t,"/SOAP/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    
+    # set all values equal to -9999 to NA
+    b[b == myNoDataValue] <- NA
+    
+    #calculate mean and sd
+    meanref <- mean(b, na.rm = TRUE)
+    SDref <- sd(b, na.rm = TRUE)
+    
+    rowz <- cbind(i, meanref, SDref)
+    dat <- data.frame()
+    dat <- rbind(dat, rowz)
+    }
+  
+  #calculate CV
+  dat$calc <- dat$SDref/dat$meanref
+  
+  CV <- sum(dat$calc)/426
+  
+  out.plot <- data.frame(
+    matrix(c(t, CV, x, y),
+           ncol = 2)) 
+  colnames(out.plot) <- 
+    c("tile", "CV", "easting", "northing") 
+  print(out.plot)
+  
+  #create table that contains 1 row for each plot centroid
+  #newspec <- out.plot
+  spec_table <- rbind(spec_table, out.plot)
+  #spec_table[t] <- out.plot
+  
+  #spec_table[t, ] <- out.plot
+  
+  
+  h5closeAll()
+  }
+}
+write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
