@@ -594,9 +594,14 @@ files2[1]
 
 myNoDataValue <- -9999
 
-dat <- data.frame()
-spec_table <-  data.frame() 
+spec_table <- data.frame()
+#spec_table <-  data.frame(matrix(ncol = 2, nrow = length(files2))) 
+#colnames(spec_table) <- c("tile", "CV") 
 
+#files2 <- c("DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5", "DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4101000_reflectance.h5")
+
+#files2 <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5")
+#t <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4101000_reflectance.h5")
 
 for (t in files2) {
 
@@ -619,7 +624,7 @@ for (t in files2) {
     SDref <- sd(b, na.rm = TRUE)
   
     rowz <- cbind(i, meanref, SDref)
-  
+    dat <- data.frame()
     dat <- rbind(dat, rowz)
   }
 
@@ -638,8 +643,13 @@ print(out.plot)
 #create table that contains 1 row for each tile
 #newspec <- out.plot
 spec_table <- rbind(spec_table, out.plot)
+#spec_table[t] <- out.plot
 
-}
+#spec_table[t, ] <- out.plot
+
+
 h5closeAll()
+}
 
+write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
 
