@@ -541,9 +541,20 @@ h5closeAll()
 write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
 
 
+###won't need this 
+spec_table <- spec_table %>%
+  mutate(siteID = str_sub(tile, start = 38, end = 41))
 
+spec_table$CV <- as.numeric(spec_table$CV)
+#once add in easting and northing, can line up with plots to map as a function of SR and cover
+ggplot(data = spec_table) +
+  geom_point(aes(x = tile, y = CV, color = siteID)) + 
+  ylab("Spectral Diversity: CV of Reflectance") + 
+  xlab("Tile") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
-
+is.numeric(spec_table$CV)
+###
 
 
 #########################
