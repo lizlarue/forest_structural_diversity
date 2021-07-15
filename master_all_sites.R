@@ -543,6 +543,9 @@ write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
 
 
 
+
+
+
 #########################
 #based on plot centroid, not on tile
 
@@ -613,3 +616,14 @@ matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots
   }
 }
 write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
+
+
+
+#once add in easting and northing, can line up with plots to map as a function of SR and cover
+ggplot(data = spec_table) +
+  geom_point(aes(x = CV, y = exotic_SR, color = siteID)) + 
+  xlab("Spectral Diversity: CV of Reflectance") + 
+  ylab("Species Richness of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
