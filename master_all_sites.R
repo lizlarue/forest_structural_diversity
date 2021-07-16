@@ -441,9 +441,14 @@ for (q in files)  {
 
 str_table
 
+write.table(str_table, file = "str_table.csv", sep = ",", row.names = FALSE)
+
 
 ######note: 
 #will need to match these up both based on easting, northing and by monthyear
+
+str_table <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/str_table.csv')
+
 
 #join cover table with structure table by easting and northing
 tot_table_plots_en_str <- tot_table_plots_en %>%
@@ -451,6 +456,8 @@ tot_table_plots_en_str <- tot_table_plots_en %>%
 write.table(tot_table_plots_en_str, file = "tot_table_plots_en_str.csv", sep = ",", row.names = FALSE)
 
 ################################
+
+
 
 sub <- tot_table_plots_en %>%
   filter(siteID == "SOAP" | siteID == "NIWO")
@@ -583,15 +590,41 @@ for (t in files3) {
 }
 write.table(spec_table, file = "spec_table.csv", sep = ",", row.names = FALSE)
 
+spec_table <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/spec_table.csv')
+
+
+tot_table_plots_en_str <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/tot_table_plots_en_str.csv')
+
+is.factor(spec_table$easting)
+
+spec_table$easting <- as.numeric(spec_table$easting)
+spec_table$northing <- as.numeric(spec_table$northing)
+
+tot_table_plots_en_str_spec <- tot_table_plots_en_str %>%
+  left_join(spec_table)
+
+
+write.table(tot_table_plots_en_str_spec, file = "tot_table_plots_en_str_spec.csv", sep = ",", row.names = FALSE)
 
 
 
+sub3 <- tot_table_plots_en_str_spec %>%
+  filter(siteID == "SOAP" | siteID == "NIWO")
+
+#df %>% drop_na(col1)
+sub3 <- sub3 %>% drop_na(CV)
 
 #once add in easting and northing, can line up with plots to map as a function of SR and cover
-ggplot(data = spec_table) +
+ggplot(data = sub3) +
   geom_point(aes(x = CV, y = exotic_SR, color = siteID)) + 
   xlab("Spectral Diversity: CV of Reflectance") + 
   ylab("Species Richness of Non-Native Species") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+ggplot(data = sub3) +
+  geom_point(aes(x = CV, y = exotic_cov, color = siteID)) + 
+  xlab("Spectral Diversity: CV of Reflectance") + 
+  ylab("Percent Cover of Non-Native Species") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 
