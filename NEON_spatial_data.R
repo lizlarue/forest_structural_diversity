@@ -45,7 +45,7 @@ subby <- neonDomainsDF %>%
 sub3 <- subby %>%
   filter(DomainName == "Pacific Northwest")
 
-#alternative
+#alternative, colored by Domain
 domainMap2 <- ggplot(data = subby) + 
   geom_polygon(aes(x = long, y = lat, fill = DomainName)) +
   theme_bw() +
