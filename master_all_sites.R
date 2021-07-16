@@ -243,11 +243,14 @@ write.table(tot_table_plots_en, file = "tot_table_plots_en.csv", sep = ",", row.
 
 
 #myDataframe[is.na(myDataframe)] = 0
-tot_table_plots_en[is.na(tot_table_plots_en)] = 0
+#tot_table_plots_en[is.na(tot_table_plots_en)] = 0
+
+tot_table_plots_en$exotic_cov[is.na(tot_table_plots_en$exotic_cov)] <- 0
+tot_table_plots_en$exotic_SR[is.na(tot_table_plots_en$exotic_SR)] <- 0
 
 rm(plots)
 plots <- as.data.frame(unique(tot_table_plots_en[c("easting","northing")]))
-#766
+#537
 
 plots
 
@@ -264,6 +267,14 @@ tail(plots)
 hist(tot_table_plots_en$all_SR, breaks = 20, xlab="Total species richness", ylab= "Number of plots", main="")
 hist(tot_table_plots_en$exotic_SR, breaks = 20, xlab="Non-native species richness", ylab= "Number of plots", main="")
 hist(tot_table_plots_en$exotic_cov, breaks = 40, xlab="Non-native species percent cover", ylab= "Number of plots", main="")
+
+#take out zeros and show just those invaded
+onlyinv <- tot_table_plots_en %>%
+  filter(exotic_SR > 0)
+
+hist(onlyinv$exotic_cov, breaks = 40, xlab="Non-native species percent cover", ylab= "Number of plots", main="")
+
+
 
 numinv <- tot_table_plots_en %>%
   filter(exotic_SR > 0) %>%
@@ -282,12 +293,44 @@ percent_invaded <- numplots %>%
 
 #merge percent_invaded with tot_table
 
+rm(tot_table_expanded)
 
 tot_table_expanded <- tot_table %>%
-  rename(sitemonthyear = i) %>%
+  dplyr::rename(sitemonthyear = i) %>%
   left_join(percent_invaded) %>%
   dplyr::select(-numplots)
 
+
+tot_table_expanded$date <- lubridate::as_date(tot_table_expanded$monthyear, format = '%Y-%m')
+as_date(x, tz = NULL, format = NULL)
+
+
+#tot_table_expanded$monthyear<-as.factor(tot_table_expanded$monthyear)
+#tot_table_expanded$abis<-strptime(tot_table_expanded$monthyear,format="%Y-%m") #defining what is the original format of your date
+#tot_table_expanded$dated<-as.Date(tot_table_expanded$abis,format="%Y-%m")
+
+
+recent <- tot_table_expanded %>%
+  group_by(siteID) %>%
+  slice_max(year) %>%
+  filter(sitemonthyear != "SERC2017-07")
+
+is.character(tot_table_expanded$monthyear) #TRUE
+
+
+tabforpres <- recent %>%
+  select(siteID, all_SR, exotic_SR, exotic_cov) %>%
+  arrange(all_SR) %>%
+  dplyr::rename(nonnative_SR = exotic_SR) %>%
+  dplyr::rename(nonnative_cov = exotic_cov) %>%
+  dplyr::rename(total_SR = all_SR)
+
+
+write.table(tabforpres, file = "tabforpres.csv", sep = ",", row.names = FALSE)
+
+
+#library(plyr)
+#recent <- ddply(tot_table_expanded, .(siteID), summarize, most_recent = max(as.Date(monthyear, '%Y-%m')))
 
 #not sure what this tells us?
 meaninv <- tot_table_plots_en %>%
