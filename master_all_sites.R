@@ -329,16 +329,7 @@ tabforpres <- recent %>%
 write.table(tabforpres, file = "tabforpres.csv", sep = ",", row.names = FALSE)
 
 
-#library(plyr)
-#recent <- ddply(tot_table_expanded, .(siteID), summarize, most_recent = max(as.Date(monthyear, '%Y-%m')))
 
-#not sure what this tells us?
-meaninv <- tot_table_plots_en %>%
-  summarize(meaninv = mean(exotic_cov))
-
-check <- tot_table_plots_en %>%
-  summarize(n_distinct(sitemonthyear))
-#82
 
 
 
@@ -600,32 +591,50 @@ is.numeric(spec_table$CV)
 ###
 
 
+
+
+
+
+
+
+
+
+
 #########################
 #based on plot centroid, not on tile
 
+
 files2 <- list.files(path="DP3.30006.001/2019", pattern="*.h5", full.names=TRUE, recursive=TRUE)
 files3 <- list.files(path="DP3.30006.001/2020", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+
+#try with one tile first
+#files2 <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5")
+
+#t <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5")
+
 
 myNoDataValue <- -9999
 spec_table <- data.frame()
 
 for (t in files2) {
-
-#find extent of tile
-minx <- min(t$X) 
-maxx <- max(t$X)
-miny <- min(t$Y)
-maxy <- max(t$Y)
-
-#select only the plot centroids that are found in this tile (plus a buffer?)
-matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots$northing <= (maxy) & plots$northing >= (miny)) 
-
-#loop through the matches
-  foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
   
+  reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+  
+  #find extent of tile 
+  minx <- reflInfo$Spatial_Extent_meters[1] 
+  maxx <- reflInfo$Spatial_Extent_meters[2]
+  miny <- reflInfo$Spatial_Extent_meters[3]
+  maxy <- reflInfo$Spatial_Extent_meters[4]
+  
+  #select only the plot centroids that are found in this tile (plus a buffer?)
+  matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots$northing <= (maxy) & plots$northing >= (miny)) 
+  
+  #loop through the matches
+  foreach(x = matches$easting, y = matches$northing, .packages="sp") %do% {
+    
     for (i in 1:426){
     #read metadata
-    reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+    
     
     nRows <- reflInfo$Dimensions[1]
     nCols <- reflInfo$Dimensions[2]
@@ -653,7 +662,7 @@ matches<-filter(plots, plots$easting <= (maxx) & plots$easting >= (minx) & plots
   
   out.plot <- data.frame(
     matrix(c(t, CV, x, y),
-           ncol = 2)) 
+           ncol = 4)) 
   colnames(out.plot) <- 
     c("tile", "CV", "easting", "northing") 
   print(out.plot)
