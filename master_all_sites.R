@@ -460,7 +460,7 @@ write.table(tot_table_plots_en_str, file = "tot_table_plots_en_str.csv", sep = "
 
 
 sub <- tot_table_plots_en %>%
-  filter(siteID == "SOAP" | siteID == "NIWO")
+  filter(siteID == "SOAP" | siteID == "NIWO" | siteID == "DELA")
 
 
 subby <- sub %>%
@@ -469,7 +469,7 @@ subby <- sub %>%
 subby[is.na(subby)] = 0
 
 means <- subby %>%
-  filter(sitemonthyear == "SOAP2019-06"| sitemonthyear == "NIWO2020-08") %>%
+  filter(sitemonthyear == "SOAP2019-06" | sitemonthyear == "NIWO2020-08" | sitemonthyear == "DELA2017-05") %>%
   summarise(meangf = mean(deepgap.fraction.aop), meanoutcanht = mean(mean.max.canopy.ht.aop), meaninthet = mean(sd.sd.aop), meanextht = mean(top.rugosity.aop), meanvertsd = mean(vert.sd.aop), meanentropy = mean(entropy.aop))
 
 
@@ -570,6 +570,7 @@ ggplot(data = subby) +
 
 files2 <- list.files(path="DP3.30006.001/2019", pattern="*.h5", full.names=TRUE, recursive=TRUE)
 files3 <- list.files(path="DP3.30006.001/2020", pattern="*.h5", full.names=TRUE, recursive=TRUE)
+files4 <- list.files(path="DP3.30006.001/2017", pattern="*.h5", full.names=TRUE, recursive=TRUE)
 
 #try with one tile first
 #files2 <- paste0(wd,"DP3.30006.001/2019/FullSite/D17/2019_SOAP_4/L3/Spectrometer/Reflectance/NEON_D17_SOAP_DP3_296000_4100000_reflectance.h5")
