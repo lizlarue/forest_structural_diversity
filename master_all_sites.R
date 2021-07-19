@@ -581,9 +581,9 @@ files4 <- list.files(path="DP3.30006.001/2017", pattern="*.h5", full.names=TRUE,
 myNoDataValue <- -9999
 spec_table <- data.frame()
 
-for (t in files3) {
+for (t in files2) {
   
-  reflInfo <- h5readAttributes(t, "/NIWO/Reflectance/Reflectance_Data")
+  reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
   
   #find extent of tile 
   minx <- reflInfo$Spatial_Extent_meters[1] 
@@ -606,7 +606,7 @@ for (t in files3) {
     nBands <- reflInfo$Dimensions[3]
     
     #extract one band
-    b <- h5read(t,"/NIWO/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    b <- h5read(t,"/SOAP/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
     
     # set all values equal to -9999 to NA
     b[b == myNoDataValue] <- NA
