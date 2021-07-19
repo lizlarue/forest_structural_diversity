@@ -302,7 +302,7 @@ tot_table_expanded <- tot_table %>%
 
 
 tot_table_expanded$date <- lubridate::as_date(tot_table_expanded$monthyear, format = '%Y-%m')
-as_date(x, tz = NULL, format = NULL)
+#as_date(x, tz = NULL, format = NULL)
 
 
 #tot_table_expanded$monthyear<-as.factor(tot_table_expanded$monthyear)
