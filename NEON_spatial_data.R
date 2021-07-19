@@ -158,8 +158,7 @@ ggplot() +
 #extract the LIDAR AOP 1 km2 tiles that match the plot centroids specified but can only do 1 year and site at a time
 #will ask if you want to download - indicate y
 
-#filter to two sites of interest for most recent year
-
+#filter to two sites of interest for most recent year; getting easting and northing info
 NIWO <- tot_table_plots_en %>%
   filter(siteID == "NIWO", year == 2020)
 #33 obs
@@ -171,6 +170,10 @@ NIWO <- tot_table_plots_en %>%
 SOAP <- tot_table_plots_en %>%
   filter(siteID == "SOAP", year == 2019)
 #32 obs
+
+DELA <- tot_table_plots_en %>%
+  filter(siteID == "DELA", year == 2017)
+
 
 
 #get lidar data
