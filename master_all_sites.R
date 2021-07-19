@@ -451,6 +451,7 @@ str_table <- read.csv(file = '/Users/rana7082/Documents/research/forest_structur
 
 
 #join cover table with structure table by easting and northing
+#NOTE: this is not joining properly, more than the 995 original observations....
 tot_table_plots_en_str <- tot_table_plots_en %>%
   left_join(str_table)
 write.table(tot_table_plots_en_str, file = "tot_table_plots_en_str.csv", sep = ",", row.names = FALSE)
@@ -581,9 +582,9 @@ files4 <- list.files(path="DP3.30006.001/2017", pattern="*.h5", full.names=TRUE,
 myNoDataValue <- -9999
 spec_table <- data.frame()
 
-for (t in files2) {
+for (t in files4) {
   
-  reflInfo <- h5readAttributes(t, "/SOAP/Reflectance/Reflectance_Data")
+  reflInfo <- h5readAttributes(t, "/DELA/Reflectance/Reflectance_Data")
   
   #find extent of tile 
   minx <- reflInfo$Spatial_Extent_meters[1] 
@@ -606,7 +607,7 @@ for (t in files2) {
     nBands <- reflInfo$Dimensions[3]
     
     #extract one band
-    b <- h5read(t,"/SOAP/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
+    b <- h5read(t,"/DELA/Reflectance/Reflectance_Data",index=list(i,1:nCols,1:nRows)) 
     
     # set all values equal to -9999 to NA
     b[b == myNoDataValue] <- NA
