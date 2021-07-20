@@ -665,7 +665,7 @@ write.table(tot_table_plots_en_str_spec, file = "tot_table_plots_en_str_spec.csv
 
 
 sub3 <- tot_table_plots_en_str_spec %>%
-  filter(siteID == "SOAP" | siteID == "NIWO")
+  filter(siteID == "SOAP" | siteID == "NIWO" | siteID == "DELA")
 
 #df %>% drop_na(col1)
 sub3 <- sub3 %>% drop_na(CV)
