@@ -42,7 +42,7 @@ subby <- neonDomainsDF %>%
   filter(DomainName != "Pacific Tropical" & DomainName != "Atlantic Neotropical" & DomainName != "Tundra")
 
 
-sub3 <- subby %>%
+sub30 <- subby %>%
   filter(DomainName == "Pacific Northwest")
 
 #alternative, colored by Domain
@@ -73,6 +73,10 @@ neonMap
 #select my 31 sites from the 81
 select <- neonSites %>%
   filter(Site.ID %in% sites)
+
+
+write.table(select, file = "forest_sites.csv", sep = ",", row.names = FALSE)
+
 
 
 #plot here with domains; keep this figure
