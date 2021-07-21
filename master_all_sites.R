@@ -684,3 +684,74 @@ ggplot(data = sub3) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 
+#######################################################
+#####################################################
+#linear regression with structural diversity and cover data
+
+#external heterogeneity
+ggplot(sub3, aes(x = top.rugosity.aop, y = log(exotic_cov +1), color = siteID))+
+  geom_point()+
+  #geom_text(aes(label = SiteID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")+
+  xlab("Outer Canopy Roughness") + 
+  ylab("Log (% Cover of Non-Native Species) + 1") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ top.rugosity.aop, data = sub3)
+summary(fit)
+#r2 = 0.07058, p=0.00329
+
+
+#vert (height) SD
+ggplot(sub3, aes(x = vert.sd.aop, y = log(exotic_cov +1), color = siteID))+
+  geom_point()+
+  #geom_text(aes(label = SiteID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")+
+  xlab("SD of Canopy Height") + 
+  ylab("Log (% Cover of Non-Native Species) + 1") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+#expect to see negative relationship here
+
+fit <- lm(log(exotic_cov +1) ~ vert.sd.aop, data = sub3)
+summary(fit)
+#r2 = 0.05677, p=0.007714
+
+
+#entropy
+ggplot(sub3, aes(x = entropy.aop, y = log(exotic_cov +1), color = siteID))+
+  geom_point()+
+  #geom_text(aes(label = SiteID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")+
+  xlab("Entropy") + 
+  ylab("Log (% Cover of Non-Native Species) + 1") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+#expect to see positive relationship here
+
+fit <- lm(log(exotic_cov +1) ~ entropy.aop, data = sub3)
+summary(fit)
+#r2 = 0.01438, p=0.1136
+
+
+
+
+
+
+
+#CV of reflectance
+ggplot(sub3, aes(x = CV, y = log(exotic_cov +1), color = siteID))+
+  geom_point()+
+  #geom_text(aes(label = SiteID),hjust=0, vjust=0) +
+  geom_smooth(method = "lm")+
+  xlab("CV of Reflectance") + 
+  ylab("Log (% Cover of Non-Native Species) + 1") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+#expect to see positive relationship here
+
+fit <- lm(log(exotic_cov +1) ~ CV, data = sub3)
+summary(fit)
+#r2 = 0.07258, p=0.002906
