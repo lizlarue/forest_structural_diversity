@@ -63,18 +63,20 @@ tot_cover = data.frame()
 #create diversity dataframe of all 31 sites for dates of interest from plot level plant cover data; 
 #this contains all dates at each site that will be split out later
 for (i in sites) {
-  #loading plant cover data
+  #loading plant cover data product
   cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
   
-  #pulling out diversity data at XXX m2 plots
+  #selecting the nested plant diversity information at XX m2 plots
   coverDiv <- cover[[3]]
   
   cover2 <- coverDiv %>%
   
   filter(divDataType=="plantSpecies")
   
+  #creating sitemonthyear part 1 to match up with dates of interest
   cover2$monthyear <- substr(cover2$endDate,1,7) 
-
+  
+  #part 2
   cover2$sitemonthyear <- stringr::str_c(cover2$siteID, cover2$monthyear)
   
   tot_cover <- rbind(tot_cover, cover2)
@@ -95,26 +97,34 @@ write.table(tot_cover, file = "prelim_cover.csv", sep = ",", row.names = FALSE)
 
 
 
-#to create allSR, exoticSR, exotic cover at site level for site, date combos
+#creating metrics of interest from plant cover data including total species richness (allSR), 
+#exotic species richness (exoticSR), exotic plant cover at site level for site, date combos
+
+#creating a dataframe
 tot_table = data.frame()
 
+
+#looping through dates
 for (i in datezzz) {
   
+  #filter for site/date combinations of interest
   sub <- tot_cover %>%
     filter (sitemonthyear == i) 
   
+  #calculating number of plots within a site
   numplots <-length(unique(sub$plotID))
   
+  #total species richness
   all_SR <-length(unique(sub$scientificName))
 
   #subset of invasive only
   inv <- sub %>%
     filter(nativeStatusCode=="I")
 
-  #total SR of exotics across all plots
+  #total species richness of exotics across all plots
   exotic_SR <-length(unique(inv$scientificName))
 
-  #mean percent cover of exotics
+  #calculating mean percent cover of exotic species per plot
   exotic_cover <- inv %>%
     summarize(sumz = sum(percentCover, na.rm = TRUE)) %>%
     summarize(exotic_cov = mean(sumz))
@@ -124,62 +134,61 @@ for (i in datezzz) {
   tot_table <- rbind(tot_table,i_table)
 }
 
-#82 site, date combos
+#check: 82 site/date combos
 
+#creating variables to line up with other datasets
 tot_table$siteID <- substr(tot_table$i,1,4) 
 tot_table$monthyear <- substr(tot_table$i,5,11) 
 tot_table$year <- substr(tot_table$monthyear, 1, 4)
 
+#check number of sites
 count <-unique(tot_table$siteID)
 #31
 
 
 
-#remove rows where numplots = 0
-#tot_table_align <- tot_table %>%
-  #filter(numplots != 0)
-#57 site date combos that align of where they sampled 
 
-#othercount <- unique(tot_table_align$siteID)
-#27; only 27 sites with 0 numplots
-
-#choose the most recent of these???
-#one_date <- tot_table %>%
-  #group_by(siteID) %>%
-  #top_n(n=1)
 
 
 
 ###
+#looking at summary statistics of percent cover and diversity information based on forest types AT SITE LEVEL
+
+#bring in NLCD information for each site
+
+#read .csv file
 veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
   dplyr::select(Site.ID, Dominant.NLCD.Classes) %>%
   rename(siteID = Site.ID)
 
+#join NLCD information with plot cover data
 tot_table <- tot_table %>%
   left_join(veg_types)
 
-
+#look at distribution of total species richness and exotic species richness across sites 
 hist(tot_table$all_SR, breaks = 20, xlab="Total species richness", ylab= "Number of sites", main="")
 hist(tot_table$exotic_SR, breaks = 20, xlab="Non-native species richness", ylab= "Number of sites", main="")
 
+#calculate mean exotic species richness across sites
 meanz <- tot_table %>%
   filter (exotic_SR > 0) %>%
   summarize(meaninv = mean(exotic_SR))
 #8.74
 
+#calculate maximum exotic species richness across sites
 maxinv <- tot_table %>%
   filter (exotic_SR > 0) %>%
   summarize(maxinv = max(exotic_SR))
 #53; SCBI
 
 #############################################
-#to create allSR, exoticSR, exotic cover at plot level for site, date combos
+#to create allSR, exoticSR, exotic cover AT PLOT LEVEL for site, date combos
 
-#this tells us how many combinations of sitemonthyear and plot we should have in our dataframe
+#check: this tells us how many combinations of sitemonthyear and plot we should have in our dataframe
 test <- unique(tot_cover[c("sitemonthyear","plotID")])
 #995
 
-#calculates total SR for each sitemonthyear, plot combo
+#calculates total species richness for each sitemonthyear, plot combo
 all_SR <- tot_cover %>%
   group_by(sitemonthyear, plotID) %>%
   summarize(all_SR = n_distinct(scientificName)) 
