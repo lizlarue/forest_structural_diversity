@@ -188,83 +188,94 @@ maxinv <- tot_table %>%
 test <- unique(tot_cover[c("sitemonthyear","plotID")])
 #995
 
-#calculates total species richness for each sitemonthyear, plot combo
+#calculates total species richness for each sitemonthyear, plot combination
 all_SR <- tot_cover %>%
   group_by(sitemonthyear, plotID) %>%
   summarize(all_SR = n_distinct(scientificName)) 
 
-#calculates invasive SR for each sitemonthyear, plot combo
+#calculates exotic species richness for each sitemonthyear, plot combo
 exotic_SR <- tot_cover %>%
   filter(nativeStatusCode =="I") %>%
   group_by(sitemonthyear, plotID) %>%
   summarize(exotic_SR =  n_distinct(scientificName))
 
-#calculates invasive cover for each sitemonthyear, plot combo
+#calculates exotic cover for each sitemonthyear, plot combo
 exotic_cover <- tot_cover %>%
   filter(nativeStatusCode =="I") %>%
   group_by(sitemonthyear, plotID) %>%
   summarize(exotic_cov = sum(percentCover))
 
+#check to see how many NAs
 test3 <- exotic_cover %>%
   filter(is.na(exotic_cov))
 #49 already are NAs
 
 #joins these tables together
-#close <- left_join(all_SR, exotic_SR, by=c("sitemonthyear", "plotID"))
 closer <- left_join(all_SR, exotic_cover, by=c("sitemonthyear", "plotID")) %>%
   left_join(., exotic_SR, by=c("sitemonthyear", "plotID")) 
 
+#check on how many plots do not have any exotic species
 test2 <- tot_table_plots %>%
   filter(is.na(exotic_SR))
 #2661; this is correct (2661 + 2102 = 4763)
 
+#check on how many plots do not have any exotic plant cover
 test3 <- tot_table_plots %>%
   filter(is.na(exotic_cov))
 #2710; this is from 2661 in the 
 
 
+###
+#pulling the plot location information from the plant cover data 
+#note: (this is in decimaldegrees and will need to be converted to easting/northing to join with lidar data)
 
-#plot locations
+#extracting plot locations
 latitude <- unique(tot_cover[c("sitemonthyear","plotID","decimalLatitude")])
 longitude <- unique(tot_cover[c("sitemonthyear","plotID","decimalLongitude")])
 
+#adding just longitude to the plant cover data by plot (assuming this will be unique enough to match up with easting)
 tot_table_plots <- left_join(closer, latitude, by=c("sitemonthyear", "plotID")) %>%
   left_join(., longitude, by=c("sitemonthyear", "plotID")) 
 
 
-
+#creating variables to join by later
 tot_table_plots$siteID <- substr(tot_table_plots$sitemonthyear,1,4) 
 tot_table_plots$monthyear <- substr(tot_table_plots$sitemonthyear,5,11) 
 tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
 
+#joining with forest type info from NLCD data
 tot_table_plots <- tot_table_plots %>%
   left_join(veg_types)
 
+#export table of plant cover by plot with longitude
 write.table(tot_table_plots, file = "cover_by_plot.csv", sep = ",", row.names = FALSE)
 
 
 
-#bring in NEON metadata on plot locations
+#bring in NEON metadata on plot locations which has both latitude/longitude and easting/northing
 plot_centroids <- read.delim('All_NEON_TOS_Plot_Centroids_V8.csv', sep=',', header=T) %>%
   rename(
     decimalLatitude = latitude,
     decimalLongitude = longitude
   )
 
-#left join to add the easting and northing variables
+#left join to add the easting and northing variables from NEON metadata to our plant cover dataset
 tot_table_plots_en <- tot_table_plots %>%
   left_join(plot_centroids)
 
+#writing the plant cover plot level data with easting northing that we need to match with lidar data
 write.table(tot_table_plots_en, file = "tot_table_plots_en.csv", sep = ",", row.names = FALSE)
 
 
 #myDataframe[is.na(myDataframe)] = 0
 #tot_table_plots_en[is.na(tot_table_plots_en)] = 0
 
+#setting NAs for zeros 
 tot_table_plots_en$exotic_cov[is.na(tot_table_plots_en$exotic_cov)] <- 0
 tot_table_plots_en$exotic_SR[is.na(tot_table_plots_en$exotic_SR)] <- 0
 
-rm(plots)
+#rm(plots)
+#creating dataset of plot locations (easting/northing only) for each plot that we have plant cover data
 plots <- as.data.frame(unique(tot_table_plots_en[c("easting","northing")]))
 #537
 
@@ -279,7 +290,7 @@ tail(plots)
 #names(plots)[1] <- "x"
 #names(plots)[2] <- "y"
 
-
+#looking at distribution of total species richness, exotic species richness, and exotic plant cover by plot
 hist(tot_table_plots_en$all_SR, breaks = 20, xlab="Total species richness", ylab= "Number of plots", main="")
 hist(tot_table_plots_en$exotic_SR, breaks = 20, xlab="Non-native species richness", ylab= "Number of plots", main="")
 hist(tot_table_plots_en$exotic_cov, breaks = 40, xlab="Non-native species percent cover", ylab= "Number of plots", main="")
@@ -288,19 +299,24 @@ hist(tot_table_plots_en$exotic_cov, breaks = 40, xlab="Non-native species percen
 onlyinv <- tot_table_plots_en %>%
   filter(exotic_SR > 0)
 
+#looking at only plots that are invaded
 hist(onlyinv$exotic_cov, breaks = 40, xlab="Non-native species percent cover", ylab= "Number of plots", main="")
 
 
+#how many plots are invaded?
 
+#first look at total number of invaded sites/dates
 numinv <- tot_table_plots_en %>%
   filter(exotic_SR > 0) %>%
   summarize(plots_w_nonnatives = n_distinct(plotID)) 
 #63 site/date combos
 
+#then look at total number of sites/dates
 numplots <- tot_table_plots_en %>%
   summarize(totplots = n_distinct(plotID)) 
 #82 site/date combos
 
+#calculate the percent of invaded plots across site/date combinations
 percent_invaded <- numplots %>%
   left_join(numinv) %>%
   replace_na(list(plots_w_nonnatives = 0)) %>%
@@ -309,14 +325,13 @@ percent_invaded <- numplots %>%
 
 #merge percent_invaded with tot_table
 
-rm(tot_table_expanded)
-
+#rm(tot_table_expanded)
 tot_table_expanded <- tot_table %>%
   dplyr::rename(sitemonthyear = i) %>%
   left_join(percent_invaded) %>%
   dplyr::select(-numplots)
 
-
+#creating date field 
 tot_table_expanded$date <- lubridate::as_date(tot_table_expanded$monthyear, format = '%Y-%m')
 #as_date(x, tz = NULL, format = NULL)
 
@@ -325,7 +340,7 @@ tot_table_expanded$date <- lubridate::as_date(tot_table_expanded$monthyear, form
 #tot_table_expanded$abis<-strptime(tot_table_expanded$monthyear,format="%Y-%m") #defining what is the original format of your date
 #tot_table_expanded$dated<-as.Date(tot_table_expanded$abis,format="%Y-%m")
 
-
+#don't need this code
 recent <- tot_table_expanded %>%
   group_by(siteID) %>%
   slice_max(year) %>%
