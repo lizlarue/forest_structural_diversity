@@ -42,8 +42,10 @@ datezz <- dates %>%
   gather(key = "datez", value = "date", -siteID) %>%
   drop_na(.)
 
+#create sitemonthyear as variable to sort the data to the site/date combos of interest
 datezz$sitemonthyear <- stringr::str_c(datezz$siteID, datezz$date)
 
+#create a list of dates
 datezzz <- as.list(datezz$sitemonthyear)
 
 
@@ -55,31 +57,36 @@ datezzz <- as.list(datezz$sitemonthyear)
 #recentdatezzz <- as.list(recent$sitemonthyear)
 ###############################
 
+#creating a dataframe to fill with the plant cover data
 tot_cover = data.frame()
 
-#create diversity dataframe of all 31 sites for dates of interest
+#create diversity dataframe of all 31 sites for dates of interest from plot level plant cover data; 
+#this contains all dates at each site that will be split out later
 for (i in sites) {
+  #loading plant cover data
   cover <- loadByProduct (dpID = "DP1.10058.001", site = i, check.size= FALSE)
+  
+  #pulling out diversity data at XXX m2 plots
   coverDiv <- cover[[3]]
   
   cover2 <- coverDiv %>%
+  
   filter(divDataType=="plantSpecies")
   
   cover2$monthyear <- substr(cover2$endDate,1,7) 
 
   cover2$sitemonthyear <- stringr::str_c(cover2$siteID, cover2$monthyear)
   
-  #cover2[cover2$sitemonthyear %in% datezzz ,]
-  
   tot_cover <- rbind(tot_cover, cover2)
 }
 
 
-#tot_cover[tot_cover$sitemonthyear %in% datezzz ,]
 
+#filter for the site/date combos of interest
 tot_cover <- tot_cover %>%
   filter(sitemonthyear %in% datezzz)
 
+#write .csv for just plant cover diversity data at sites/dates of interest
 write.table(tot_cover, file = "prelim_cover.csv", sep = ",", row.names = FALSE)
 
 
