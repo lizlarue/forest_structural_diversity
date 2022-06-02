@@ -333,30 +333,31 @@ tot_table_expanded <- tot_table %>%
 
 #creating date field 
 tot_table_expanded$date <- lubridate::as_date(tot_table_expanded$monthyear, format = '%Y-%m')
-#as_date(x, tz = NULL, format = NULL)
+
 
 
 #tot_table_expanded$monthyear<-as.factor(tot_table_expanded$monthyear)
 #tot_table_expanded$abis<-strptime(tot_table_expanded$monthyear,format="%Y-%m") #defining what is the original format of your date
 #tot_table_expanded$dated<-as.Date(tot_table_expanded$abis,format="%Y-%m")
 
-#don't need this code
-recent <- tot_table_expanded %>%
-  group_by(siteID) %>%
-  slice_max(year) %>%
-  filter(sitemonthyear != "SERC2017-07")
+#this is to remove a second date for a site if only concerned with the most recent data; won't need this once we have all dates/sites lined up
+#recent <- tot_table_expanded %>%
+  #group_by(siteID) %>%
+  #slice_max(year) %>%
+  #filter(sitemonthyear != "SERC2017-07")
 
+#check
 is.character(tot_table_expanded$monthyear) #TRUE
 
-
-tabforpres <- recent %>%
+#clean table for presentation with diversity metrics of interest
+tabforpres <- tot_table_expanded %>%
   select(siteID, all_SR, exotic_SR, exotic_cov) %>%
   arrange(all_SR) %>%
   dplyr::rename(nonnative_SR = exotic_SR) %>%
   dplyr::rename(nonnative_cov = exotic_cov) %>%
   dplyr::rename(total_SR = all_SR)
 
-
+#writing table
 write.table(tabforpres, file = "tabforpres.csv", sep = ",", row.names = FALSE)
 
 
