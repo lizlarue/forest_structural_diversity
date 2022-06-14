@@ -49,13 +49,7 @@ datezz$sitemonthyear <- stringr::str_c(datezz$siteID, datezz$date)
 datezzz <- as.list(datezz$sitemonthyear)
 
 
-###############################
-###if decide to do recent only
-#recent <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/NEON_sites_recent_dates.csv')
-#recent$sitemonthyear <- stringr::str_c(recent$siteID, recent$recent)
 
-#recentdatezzz <- as.list(recent$sitemonthyear)
-###############################
 
 #creating a dataframe to fill with the plant cover data
 tot_cover = data.frame()
@@ -147,15 +141,15 @@ count <-unique(tot_table$siteID)
 
 
 
-
-#Bring in NLCD information for each site
-
+#############################################
+#BRING IN NLCD DATA
 #read .csv file
 veg_types <- read.csv(file = '/Users/rana7082/Documents/research/forest_structural_diversity/data/field-sites.csv') %>%
   dplyr::select(Site.ID, Dominant.NLCD.Classes) %>%
   rename(siteID = Site.ID)
 
-#join NLCD information with plot cover data
+
+#join NLCD information with site level plot cover data
 tot_table <- tot_table %>%
   left_join(veg_types)
 #############################################
@@ -299,14 +293,6 @@ for (q in files)  {
   #replaces really short veg with zeros
       data.200m@data$Z[data.200m@data$Z <= .5] <- 0  
 
-  #subset to 40 m x 40 m (1600m2) subtile
-    #data.40m <- clip_rectangle(data.200m, 
-                                  #xleft = (x - 20), ybottom = (y - 20),
-                                  #xright = (x + 20), ytop = (y + 20))
-  #when subsetting further, get the following error message: Error in { : 
-      #task 1 failed - "Interpolation failed (NAs everywhere). Input parameters might be wrong."
-  
-  
   #Calculate 13 structural metrics in a single function 
   structural_diversity_metrics <- function(data.200m) {
     chm <- grid_canopy(data.200m, res = 1, dsmtin()) 
