@@ -206,9 +206,14 @@ tot_table_plots$siteID <- substr(tot_table_plots$sitemonthyear,1,4)
 tot_table_plots$monthyear <- substr(tot_table_plots$sitemonthyear,5,11) 
 tot_table_plots$year <- substr(tot_table_plots$monthyear, 1, 4)
 
+
+######################
+#data brought in above
 #joining with forest type info from NLCD data
 tot_table_plots <- tot_table_plots %>%
   left_join(veg_types)
+#######################
+
 
 #export table of plant cover by plot with longitude
 write.table(tot_table_plots, file = "cover_by_plot.csv", sep = ",", row.names = FALSE)
@@ -237,7 +242,7 @@ tot_table_plots_en$exotic_SR[is.na(tot_table_plots_en$exotic_SR)] <- 0
 #creating dataset of plot locations (easting/northing only) for each plot that we have plant cover data
 plots <- as.data.frame(unique(tot_table_plots_en[c("easting","northing")]))
 #537
-
+#############################################
 
 
 
