@@ -190,7 +190,6 @@ closer <- left_join(all_SR, exotic_cover, by=c("sitemonthyear", "plotID")) %>%
 
 ###
 #pulling the plot location information from the plant cover data 
-#note: (this is in decimaldegrees and will need to be converted to easting/northing to join with lidar data)
 
 #extracting plot locations
 latitude <- unique(tot_cover[c("sitemonthyear","plotID","decimalLatitude")])
