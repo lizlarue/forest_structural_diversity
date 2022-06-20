@@ -183,7 +183,7 @@ exotic_cover <- tot_cover %>%
 
 #joins these tables together
 closer <- left_join(all_SR, exotic_cover, by=c("sitemonthyear", "plotID")) %>%
-  left_join(., exotic_SR, by=c("sitemonthyear", "plotID")) 
+  left_join(., exotic_SR, by=c("sitemonthyear", "plotID"))
 
 
 
