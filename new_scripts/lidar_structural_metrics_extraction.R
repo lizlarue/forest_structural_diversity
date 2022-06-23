@@ -1,5 +1,4 @@
-# This script will extract structural metrics data from 
-# plot level LiDAR files
+# This script will extract structural metrics data from plot level LiDAR files
 
 library(lidR)
 library(gstat)
@@ -118,7 +117,6 @@ structural_diversity_metrics <- function(normalized_lidar_data, new_plot_size, e
           "VAI.AOP.aop", "VCI.AOP.aop") 
       return(out.plot)
     },
-    # Specifying error message
     error = function(e){ 
       outerflag <<- FALSE
       print(paste("There was an error message:- ", e))
@@ -132,8 +130,7 @@ structural_diversity_metrics <- function(normalized_lidar_data, new_plot_size, e
 
 error <- c()
 not_available <- c()
-for (i in 1:500){ # nrow(plot_data_table)
-  #  i = 25
+for (i in 1:nrow(plot_data_table)){
   row <- plot_data_table[i,]
   if(!row$fname %in% lidar_structural_metrics_fname){
     fn <- paste0(plot_level_lidar_path, row$fname)
@@ -154,10 +151,7 @@ for (i in 1:500){ # nrow(plot_data_table)
       cropped_lidar_data <- clip_rectangle(lidar_data,
                                            xleft = (easting - (buffer_size/2)), ybottom = (northing - (buffer_size/2)),
                                            xright = (easting + (buffer_size/2)), ytop = (northing + (buffer_size/2)))
-      # ----------------------------------------------------
       get_dtm_and_normalized_lidar_data(cropped_lidar_data)
-      # ---------------------------------------------------
-      
       output <- structural_diversity_metrics(normalized_lidar_data, plot_size, easting, northing)
       plot_details <- row %>% select(siteID, monthyear, sitemonthyear, plotID)
       
@@ -177,4 +171,4 @@ for (i in 1:500){ # nrow(plot_data_table)
     }
   }
 }
-#write.table(lidar_structural_metrics, file = "lidar_structural_metrics.csv", sep = ",", row.names = FALSE)
+write.table(lidar_structural_metrics, file = "lidar_structural_metrics.csv", sep = ",", row.names = FALSE)
