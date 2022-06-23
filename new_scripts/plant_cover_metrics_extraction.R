@@ -1,4 +1,5 @@
-# This code extracts plant cover data on a site and a plot level
+# This code extracts plant cover data on a site and a plot level.
+# Then combines plot-level plant cover data with plot-level LiDAR data.
 
 library(lidR)
 library(gstat)
@@ -8,6 +9,11 @@ library(dplyr)
 coverdata <- read.csv("prelim_cover.csv")
 veg_types <- read.csv('field-sites.csv')
 plot_data_table <- read.csv("plot_data_table.csv")
+lidar_data <- read.csv("lidar_structural_metrics.csv")
+
+veg_types <- veg_types %>% 
+  select(Site.ID, Dominant.NLCD.Classes) %>% 
+  rename(siteID = Site.ID, Dominant_NLCD_Classes = Dominant.NLCD.Classes)
 
 #---------------------------------------------------------------
 # SITE-LEVEL DATA
@@ -43,10 +49,6 @@ for (sitemonthyear in unique_sitemonthyear) {
   i_table <- cbind(sitemonthyear, siteID, monthyear, year, numplots, species_richness, exotic_richness, exotic_cover)
   tot_table <- rbind(tot_table,i_table)
 }
-
-veg_types <- veg_types %>% 
-  select(Site.ID, Dominant.NLCD.Classes) %>% 
-  rename(siteID = Site.ID, Dominant_NLCD_Classes = Dominant.NLCD.Classes)
 
 #join veg table data with tot_table
 tot_table <- tot_table %>% left_join(veg_types)
@@ -117,3 +119,7 @@ tot_table_plots <- tot_table_plots[, c(1, 10, 11, 12 , 2:9, 13)]
 #export table of plant cover by plot 
 write.table(tot_table_plots, file = "cover_by_plot.csv", sep = ",", row.names = FALSE)
 
+structural_metrics <- left_join(tot_table_plots, lidar_data, by=c("sitemonthyear", "siteID", "monthyear", "easting", "northing", "plotID"))
+
+#export combined table of plant cover and lidar data by plot 
+write.table(structural_metrics, file = "structural_metrics_by_plot.csv", sep = ",", row.names = FALSE)
