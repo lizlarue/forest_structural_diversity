@@ -10,9 +10,11 @@ lastools_bin_path <- "C:/Users/Lenovo/LAStools/LAStools/bin/"
 root <- paste0(getwd(), "/")
 plot_level_lidar_path <- paste0(root, "LiDAR_Data/plot_level_LiDAR/")
 
+# read required files
 plot_data_table <- read.csv(paste0(root, "plot_data_table.csv"), colClasses = "character")
 plot_data_table$fname <- paste0(plot_data_table$siteID, "_", plot_data_table$monthyear, "_", plot_data_table$easting, "_", plot_data_table$northing, ".laz")
 
+# create an empty dataframe
 lidar_structural_metrics <- data.frame()
 lidar_structural_metrics_fname <- c()
 if (file.exists("lidar_structural_metrics.csv")){
@@ -24,6 +26,7 @@ buffer_size <- 200
 plot_size <- 40
 
 get_dtm_and_normalized_lidar_data <- function(cropped_lidar_data, res_level = 1, fn = kriging(k = 10L), use_class = c(1L, 2L), ct = 3){
+  # gets cropped plot with buffer as input and returns normalized data as output
   flag <- TRUE
   loop <- 1
   while (flag & loop<(ct+1)){
@@ -47,7 +50,9 @@ get_dtm_and_normalized_lidar_data <- function(cropped_lidar_data, res_level = 1,
     )
   }
 }
+
 get_cropped_plot_and_chm <- function(normalized_lidar_data, new_plot_size, easting, northing, ct){
+  # get normalized cropped plot with buffer as input and returns normalized cropped plot without buffer with chm
   flag <- TRUE
   loop <- 1
   while (flag & loop<(ct+1)){
@@ -74,7 +79,9 @@ get_cropped_plot_and_chm <- function(normalized_lidar_data, new_plot_size, easti
     )
   }
 }
+
 structural_diversity_metrics <- function(normalized_lidar_data, new_plot_size, easting, northing) {
+  # extract structural metrics from the ormalized data and the chm plot
   outerflag <- TRUE
   tryCatch(               
     expr = {                     
@@ -133,26 +140,36 @@ not_available <- c()
 for (i in 1:nrow(plot_data_table)){
   row <- plot_data_table[i,]
   if(!row$fname %in% lidar_structural_metrics_fname){
+    # get plot data from the plot_data_table
     fn <- paste0(plot_level_lidar_path, row$fname)
     easting <- as.numeric(row$easting)
     northing <- as.numeric(row$northing)
     
     print(paste(i, row$fname, row$plotID))
-    
+
     if (file.exists(fn))
     {
+      # read file and figure out the outlier values
       lidar_data <- readLAS(fn, filter = "-drop_class 7")
       median_data <- median(lidar_data@data$Z)
       sd_data <- sd(lidar_data@data$Z)
       lower_limit <- median_data - (2*sd_data)
       upper_limit <- median_data + (3*sd_data)
       filter_data <- paste("-drop_z_below ",lower_limit," -drop_z_above ",upper_limit, " -drop_class 7")
+      
+      # read the file again with filtered values
       lidar_data <- readLAS(fn, filter = filter_data)
+      
+      # crop data for the plot along with buffer
       cropped_lidar_data <- clip_rectangle(lidar_data,
                                            xleft = (easting - (buffer_size/2)), ybottom = (northing - (buffer_size/2)),
                                            xright = (easting + (buffer_size/2)), ytop = (northing + (buffer_size/2)))
+      
+      # get normalized data from the function defined above
       get_dtm_and_normalized_lidar_data(cropped_lidar_data)
+      # extract structural metrics from the data using the function defined above
       output <- structural_diversity_metrics(normalized_lidar_data, plot_size, easting, northing)
+      
       plot_details <- row %>% select(siteID, monthyear, sitemonthyear, plotID)
       
       if (!output == "error"){
@@ -162,6 +179,7 @@ for (i in 1:nrow(plot_data_table)){
         print(paste("Error in file:-", row$fname, "with PlotID:-", row$plotID))
         output <- data.frame(matrix(c(easting, northing, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), ncol = 15)) 
       }
+      # write entries in the dataframe created above
       record <- cbind(plot_details, output)
       lidar_structural_metrics <- rbind(lidar_structural_metrics, record)
     
@@ -171,4 +189,5 @@ for (i in 1:nrow(plot_data_table)){
     }
   }
 }
+# write dataframe into a csv
 write.table(lidar_structural_metrics, file = "lidar_structural_metrics.csv", sep = ",", row.names = FALSE)
