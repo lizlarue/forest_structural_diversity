@@ -24,13 +24,12 @@ buffer=200
 
 uniquesitemonthyear <- c(unique(plot_data_table$sitemonthyear))
 
-for (sitemonthyear in uniquesitemonthyear){ #length(uniquesitemonthyear)
-  print(sitemonthyear)
+for (sitemonthyear in uniquesitemonthyear){
   sliced_plot_data_table <- plot_data_table[plot_data_table$sitemonthyear == sitemonthyear,]
   
   notexist <- c()
   notexistdf <- data.frame()
-  for (i in 1:nrow(sliced_plot_data_table)) { # 
+  for (i in 1:nrow(sliced_plot_data_table)) {
     row <- sliced_plot_data_table[i,]
     site <- row$siteID
     monthyear <- row$monthyear
@@ -47,24 +46,23 @@ for (sitemonthyear in uniquesitemonthyear){ #length(uniquesitemonthyear)
     }
   }
   if (length(notexist) > 0){
+    print(sitemonthyear)
     print(c(notexistdf$easting))
     print(c(notexistdf$northing))
     
     flag <- TRUE
     tryCatch(               
-      
+      # download Lidar data
       expr = {                     
         byTileAOP(dpID=dpID, site=site, 
                   year=year, easting=notexistdf$easting, northing=notexistdf$northing,
-                  buffer=buffer, check.size = FALSE, # set check.size = FALSE
+                  buffer=(buffer/2), check.size = FALSE,
                   savepath = paste0('./LiDAR_Data/',site,'/'))
       },
-      # Specifying error message
       error = function(e){ 
         flag <<- FALSE
         print(paste("There was an error message:- ", e))
       },
-      # Specifying warning message
       warning = function(w){   
         flag <<- FALSE
         print(paste("There was a warning message:- ", w))
@@ -75,10 +73,12 @@ for (sitemonthyear in uniquesitemonthyear){ #length(uniquesitemonthyear)
     # code to merge .laz files
     if (flag){
       pt <- paste0(root, "LiDAR_Data/", site, "/", dpID, "/neon-aop-products/" ,year ,"/FullSite/")
-      f <- system2("dir", c(pt), stdout = TRUE)
+      f <- list.files(pt)
       pt <- paste0(pt, f, "/")
-      f <- system2("dir", c(pt), stdout = TRUE)
+      f <- list.files(pt)
       pt <- paste0(pt, f, "/L1/DiscreteLidar/ClassifiedPointCloud/")
+      
+      if (length(pt) > 1){pt <- pt[1]}
       
       merged_cmd <- paste0(lastools_bin_path, 
                            "lasmerge -i ", 
@@ -93,7 +93,7 @@ for (sitemonthyear in uniquesitemonthyear){ #length(uniquesitemonthyear)
       
       
       # code to crop plots required from the merged plot
-      for (i in 1:nrow(notexistdf)) { # 
+      for (i in 1:nrow(notexistdf)) {
         row <- notexistdf[i,]
         easting <- as.numeric(row$easting)
         northing <- as.numeric(row$northing)
