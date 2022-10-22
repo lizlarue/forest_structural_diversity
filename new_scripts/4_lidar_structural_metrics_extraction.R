@@ -109,19 +109,22 @@ structural_diversity_metrics <- function(normalized_lidar_data, new_plot_size, e
       LADen<-LAD(Zs, dz = 1, k=0.5, z0=3) 
       VAI.AOP <- sum(LADen$lad, na.rm=TRUE) 
       VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
+      #new metrics added 10/22/22
+      vert_quantiles <- cloud_metrics(lidar_data, quantile(Z, na.rm = TRUE))
+      
       out.plot <- data.frame(
         matrix(c(easting, northing, mean.max.canopy.ht,max.canopy.ht, 
                  rumple,deepgaps, deepgap.fraction, 
                  cover.fraction, top.rugosity, vert.sd, 
-                 sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP),
-               ncol = 15)) 
+                 sd.sd, entro, GFP.AOP, VAI.AOP,VCI.AOP,vert_quantiles),
+               ncol = 20)) 
       colnames(out.plot) <- 
         c("easting", "northing", "mean.max.canopy.ht.aop",
           "max.canopy.ht.aop", "rumple.aop", "deepgaps.aop",
           "deepgap.fraction.aop", "cover.fraction.aop",
           "top.rugosity.aop","vert.sd.aop","sd.sd.aop", 
           "entropy.aop", "GFP.AOP.aop",
-          "VAI.AOP.aop", "VCI.AOP.aop") 
+          "VAI.AOP.aop", "VCI.AOP.aop", "q0", "q25", "q50", "q75", "q100") 
       return(out.plot)
     },
     error = function(e){ 
